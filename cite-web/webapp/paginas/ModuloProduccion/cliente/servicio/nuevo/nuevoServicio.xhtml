@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevoServicio"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+			
+		</p:outputPanel>
+		
+		<p:separator />
+		
+		<p:panelGrid id="pnlGridNuevoServicio">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="6">Nuevo servicio</p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				<p:column colspan="3" styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lSubtitulo"
+						value="#{mensaje['produccion.nuevo.servicio.label.subtitulo']}" />
+				</p:column>
+				<p:column colspan="1" styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lFecha"
+						value="#{mensaje['general.label.fecha']}" />
+				</p:column>
+				<p:column>
+					<p:calendar value="#{servicioMBean.date}" id="fechaServicio"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="6"  styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h3><h:outputText id="lRequerimiento"
+						value="#{mensaje['produccion.nuevo.servicio.label.requerimiento']}" />
+					</h3>
+				</p:column>
+				
+			</p:row>
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblNombreServicio"
+						value="#{mensaje['produccion.nuevo.servicio.label.nombre']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="nombreServicio" size="40" 
+						value="#{servicioMBean.servicioModel.nombre}" />
+					
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCITE"
+						value="#{mensaje['produccion.nuevo.servicio.label.CITE']}" />
+				</p:column>
+				<p:column colspan="2">
+					<p:selectOneMenu id="selectOneCITE"
+						value="#{servicioMBean.servicioModel.codigoCITE}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione el CITE " />
+						<f:selectItems value="#{servicioMBean.servicioModel.listarCITE}"
+							var="CITE" itemLabel="#{CITE.descripcion}"
+							itemValue="#{CITE.codigo}" />
+					</p:selectOneMenu>
+				</p:column>
+
+			</p:row>
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDescripcion"
+						value="#{mensaje['produccion.nuevo.servicio.label.descripcion']}" />
+				</p:column>
+
+				<p:column colspan="5">
+					<p:inputTextarea id="descripcionServicio" size="40" cols="38"
+						value="#{servicioMBean.servicioModel.descripcion}"  />
+					<p:message for="descripcionServicio" />
+				</p:column>
+
+			</p:row>
+
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblNombreSolicitante"
+						value="#{mensaje['produccion.nuevo.servicio.label.nombre.solicitante']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="nombreSolicitante" size="40"
+						value="#{servicioMBean.servicioModel.nombreSolicitante}" />
+					<p:message for="nombreSolicitante" />
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCargo"
+						value="#{mensaje['produccion.nuevo.servicio.label.cargo']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="cargo" size="40"
+						value="#{servicioMBean.servicioModel.cargo}" />
+					<p:message for="cargo" />
+				</p:column>
+
+
+			</p:row>
+
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblTelefono"
+						value="#{mensaje['produccion.nuevo.servicio.label.telefono']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="telefono" size="40"
+						value="#{servicioMBean.servicioModel.telefono}" />
+					<p:message for="telefono" />
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblEmail"
+						value="#{mensaje['produccion.nuevo.servicio.label.email']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="email" size="40"
+						value="#{servicioMBean.servicioModel.email}" />
+					<p:message for="email" />
+				</p:column>
+
+
+			</p:row>
+
+		</p:panelGrid>
+		
+		<p:spacer width="5px" />
+		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">
+			<p:row>
+				<p:column colspan="2" styleClass="styleAlignLeftColumn">
+					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
+						value="#{mensaje['produccion.nuevo.servicio.label.enviar']}"
+						actionListener="#{servicioMBean.guardarNuevoServicio}"
+						update="lFecha,nombreServicio, descripcionServicio,  nombreSolicitante,  cargo,  telefono, email"
+						ajax="false" />
+				</p:column>
+				
+				<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar"
+						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>
+</html>

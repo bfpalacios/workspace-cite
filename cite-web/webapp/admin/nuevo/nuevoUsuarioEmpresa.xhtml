@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/plantilla/plantilla-login.xhtml">
+	<ui:define name="contenido">
+	
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:500px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+
+		<p:spacer width="5px" />
+		<p:panel id="panelRegistroUsuario"
+			header="Plataforma de Gestion de Cites - Registro de Empresas"
+			style="width: 100%;">
+			<p:panelGrid id="pnlGridLoginAcceso">
+				<p:row>
+					<p:column colspan="6"
+						sstyleClass="ui-column-label-spij styleAlignRightColumn">
+						<h3>
+							<h:outputText id="lblTitulo"
+								value="#{mensaje['produccion.nuevo.empresa.datosgeneralesempresa']}" />
+						</h3>
+					</p:column>
+				</p:row>
+				<p:row>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblRazonSocial"
+							value="#{mensaje['produccion.nuevo.empresa.razonsocial']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="razonSocial" size="20"
+							value="#{usuarioMBean.usuarioModel.empresaModel.razonSocial}" />
+						<p:message for="razonSocial" />
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblRuc"
+							value="#{mensaje['produccion.nuevo.empresa.ruc']}" />
+					</p:column>
+
+					<p:column colspan="3">
+						<p:inputText id="ruc" size="12" maxlength="12"
+							value="#{usuarioMBean.usuarioModel.empresaModel.ruc}" />
+						<p:message for="ruc" />
+					</p:column>
+
+
+				</p:row>
+
+				<p:row>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblRubro"
+							value="#{mensaje['produccion.nuevo.cliente.rubro']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="rubro" size="20"
+							value="#{usuarioMBean.usuarioModel.rubro}" />
+						<p:message for="rubro" />
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblRepresentante"
+							value="#{mensaje['produccion.nuevo.empresa.representante']}" />
+					</p:column>
+
+
+					<p:column colspan="3">
+						<p:inputText id="representante" size="20"
+							value="#{usuarioMBean.usuarioModel.empresaModel.representante}" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblDireccion"
+							value="#{mensaje['produccion.nuevo.cliente.direccion']}" />
+					</p:column>
+
+					<p:column colspan="5">
+						<p:inputText id="direccionUsuario" size="20"
+							value="#{usuarioMBean.usuarioModel.direccion}" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblDpto"
+							value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="dpto"
+							value="#{usuarioMBean.usuarioModelSelect.codDepartamento}"
+							valueChangeListener="#{usuarioMBean.actualizarlistProvincia}"
+                    		styleClass="ui-column-label-spij styleAlignRightColumn">
+							<f:selectItem itemLabel="Seleccione el departamento:" />
+							<f:selectItems 
+								value="#{usuarioMBean.usuarioModel.listUbigeo}"
+								var="dpto" itemLabel="#{dpto.departamento}"
+								itemValue="#{dpto.idUbigeo}" />
+							<f:ajax event="change" execute="@this" render="provincia" />
+						</p:selectOneMenu>
+
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblProvincia"
+							value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
+					</p:column>
+					
+					<p:column>
+							<p:selectOneMenu 
+                    			id="provincia" 
+                    			value="#{usuarioMBean.usuarioModelSelect.codProvincia}" 
+                    			valueChangeListener="#{usuarioMBean.actualizarlistDistrito}"
+                    			styleClass="ui-column-label-spij styleAlignRightColumn">
+                        		<f:selectItem itemLabel="Seleccione la provincia " />
+                        		<f:selectItems 
+                        			value="#{usuarioMBean.usuarioModel.listProvincia}"
+                                    var="prov" itemLabel="#{prov.provincia}"
+                                    itemValue="#{prov.idUbigeo}"/>
+                                    
+							<f:ajax event="change" execute="@this" render="distrito" />
+                    		</p:selectOneMenu>
+						</p:column>
+					
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblDistrito"
+							value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
+					</p:column>
+				
+					<p:column>
+							<p:selectOneMenu 
+                    			id="distrito" 
+                    			value="#{usuarioMBean.usuarioModelSelect.codDistrito}" 
+                    			styleClass="ui-column-label-spij styleAlignRightColumn">
+                        		<f:selectItem itemLabel="Seleccione el distrito " />
+                        		<f:selectItems 
+                        			value="#{usuarioMBean.usuarioModel.listDistrito}"
+                                    var="distrito" itemLabel="#{distrito.distrito}"
+                                    itemValue="#{distrito.idUbigeo}"/>
+                    		</p:selectOneMenu>
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblTelefonoUsuario"
+							value="#{mensaje['produccion.nuevo.cliente.telefono']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="telefonoUsuario" size="10"
+							value="#{usuarioMBean.usuarioModel.telefono}" />
+						<p:inputText id="telefonoUsuario2" size="10"
+							value="#{usuarioMBean.usuarioModel.telefono2}" />
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblEmail1"
+							value="#{mensaje['produccion.nuevo.cliente.email1']}" />
+					</p:column>
+
+					<p:column colspan="3">
+						<p:inputText id="email1" size="20"
+							value="#{usuarioMBean.usuarioModel.email1}" />
+					</p:column>
+
+				</p:row>
+
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblPortal"
+							value="#{mensaje['produccion.nuevo.empresa.portal']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="portal" size="20"
+							value="#{usuarioMBean.usuarioModel.empresaModel.portalWeb}" />
+					</p:column>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblEmail2"
+							value="#{mensaje['produccion.nuevo.cliente.email2']}" />
+					</p:column>
+
+					<p:column colspan="3">
+						<p:inputText id="email2" size="20"
+							value="#{usuarioMBean.usuarioModel.email2}" />
+					</p:column> 
+
+				</p:row>
+				 
+				<p:spacer width="5px" />
+				<!-- Comienza datos de Usuario  -->
+				<p:row>
+					<p:column colspan="6"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h3>
+							<h:outputText id="lblDatosUsuario"
+								value="#{mensaje['produccion.nuevo.cliente.datosusuario']}" />
+						</h3>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblCodContacto"
+							value="#{mensaje['produccion.nuevo.cliente.nombreContacto']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="nombreContacto" size="20"
+							value="#{usuarioMBean.usuarioModel.empresaModel.nombreContacto}" />
+					</p:column>
+					<p:column  styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblNombreCargo"
+							value="#{mensaje['produccion.nuevo.cliente.nombrecargo']}" />
+					</p:column>
+
+					<p:column colspan="3">
+						<p:inputText id="nombrecargo" size="20"
+							value="#{usuarioMBean.usuarioModel.empresaModel.nombreCargo}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblCodUsuario"
+							value="#{mensaje['produccion.nuevo.cliente.nombreusuario']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="idUsuario" size="20"
+							value="#{usuarioMBean.usuarioModel.idUsuario}" />
+					</p:column>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblEmaiiadmin"
+							value="#{mensaje['produccion.nuevo.cliente.emaiiadmin']}" />
+					</p:column>
+
+					<p:column colspan="3">
+						<p:inputText id="emailAdmin" size="20"
+							value="#{usuarioMBean.usuarioModel.emailAdmin}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblLoginPassword"
+							value="#{mensaje['demo.mantenimiento.usuario.clave']}" />
+					</p:column>
+
+					<p:column styleClass="styleAlignLeftColumn">
+						<p:password id="clave" size="20"
+							value="#{usuarioMBean.usuarioModel.clave}" />
+						<p:message for="clave" />
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblPerfil"
+							value="#{mensaje['produccion.nuevo.cliente.perfil']}" />
+					</p:column>
+
+					<p:column colspan="3" styleClass="styleAlignLeftColumn">
+						<p:selectOneMenu id="rol"
+							value="#{usuarioMBean.usuarioModelSelect.rol}">
+							<f:selectItem itemLabel="Seleccione el Perfil" />
+							<f:selectItem itemLabel="Rol Cliente" itemValue="1" />
+							<f:selectItem itemLabel="Rol Usuario CITE " itemValue="2" />
+							<f:selectItem itemLabel="Rol Empresa " itemValue="3" />
+						</p:selectOneMenu>
+					</p:column>
+
+				</p:row>
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblLoginPasswordEmpresa"
+							value="#{mensaje['demo.mantenimiento.usuario.confirmaclave']}" />
+					</p:column>
+
+					<p:column colspan="4" styleClass="styleAlignLeftColumn">
+						<p:password id="confirmaclave" size="20"
+							value="#{usuarioMBean.usuarioModel.confirmarClave}" />
+						<p:message for="clave" />
+					</p:column> 
+
+				</p:row>
+
+
+
+			</p:panelGrid>
+		</p:panel>
+
+		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">
+				<p:row>
+					<p:column colspan="2" styleClass="styleAlignRightColumn">
+						<p:commandButton 
+							id="botonGuardar" value="Registrar Usuario" styleClass="buttonMarginNormal"
+							actionListener="#{usuarioMBean.guardarNuevoUsuarioEmpresa}"
+							update="razonSocial,ruc,rubro,representante,dpto, provincia, distrito, portal, nombreContacto,nombrecargo, idUsuario, emailAdmin, clave, email1,email2, direccionUsuario, telefonoUsuario, rol" 
+							ajax="true"/>							
+					</p:column>
+					
+					<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar" 
+						action="#{usuarioMBean.cancelarRegistrarNuevoUsuario(1)}" ajax="true" />
+				</p:column>
+				</p:row>
+			</p:outputPanel>
+	</ui:define>
+</ui:composition>
+</html>

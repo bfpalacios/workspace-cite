@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/resources/css/demo.css" />
+
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+		target="head" />
+	<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"
+		target="head" />
+ 
+		
+
+</h:head>      
+      <ui:composition template="/plantilla/ModuloProduccion/Plantillas/plantilla.xhtml">      		
+	        <ui:define name="contenido">	        
+	        		 <h:graphicImage 
+	        		 	id="imgPrincipal"
+	        		  	value="/resources/images/principal/body.png"
+	        		  	height="100%"
+	        		  	width="75%"/>		    	 
+			</ui:define>
+      </ui:composition>		
+</html>

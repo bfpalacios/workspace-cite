@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+		
+		<p:panel header="Registro de Clientes Empresa" style="width: 800px;">
+			
+			<p:panelGrid id="pnlGridBuscarCotizacion">
+				
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lNumero"
+							value="#{mensaje['produccion.registro.label.buscarempresa']}" />
+							<p:inputText id="numeroCotizacion"
+							value="#{servicioMBean.servicioModel.nombre}" size="20" />
+					</p:column>
+					
+
+				</p:row>
+
+				<p:row id="filServicios">
+					<p:column colspan="4"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Buscar" id="botonBuscar" actionListener="#{servicioMBean.buscarServicio}" ajax="true"
+							update="tablaServicios" />
+					</p:column>
+					
+				</p:row>
+			</p:panelGrid>
+			
+		</p:panel>
+		<p:spacer width="10px" />
+				
+		<p:panelGrid id="pnlGridResultadoBuscarServicio">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="2">Consulta de Clientes por Empresa: </p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.registro.label.datosgenerales']}</p:column>
+			</p:row>
+
+			<p:row id="filTabla">
+				<p:column id="colTabla"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
+
+					<p:dataTable id="tablaServicios"
+						value="#{servicioMBean.datosServiciosModelGrid}"
+						selectionMode="multiple"
+						selection="#{servicioMBean.selectedServicios}"
+						rowKey="#{registro.codigo}" var="registro" binding="#{tabla}"
+						emptyMessage="Sin datos para cargar" paginator="true" rows="5">
+
+
+						<p:column headerText="Nombre Empresa"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.codigo}" />
+						</p:column>
+
+						<p:column headerText="Nombre Contacto"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.nombre}" />
+						</p:column>
+
+						<p:column headerText="Cargo Empresa"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.unidad}" />
+						</p:column>
+
+						<p:column headerText="Email de Contacto"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.requisito}" />
+						</p:column>
+
+						<p:column headerText="Perfil de Usuario"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.valorDeVenta}" />
+						</p:column>
+
+						<p:column headerText="Fecha de Creación"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.precioDeVenta}" />
+
+						</p:column>
+						<p:column headerText="Opciones" 
+							styleClass="ui-column-label-spij styleAlignRightColumn opcionesIconos">
+							<h:form>
+								<p:growl id="growl" life="2000" />
+
+								<p:commandButton value="agregar usuario" id="agregarUsuario"
+									actionListener="#{buttonView.buttonAction}" update="growl"
+									icon="ui-icon-plus" />
+									<p:commandButton value="editar" id="editar"
+									actionListener="#{buttonView.buttonAction}" update="growl"
+									icon="ui-icon-pencil" />
+									<p:commandButton value="eliminar" id="eliminar"
+									actionListener="#{buttonView.buttonAction}" update="growl"
+									icon="ui-icon-trash" />
+							</h:form>
+
+						</p:column>
+
+						
+					</p:dataTable>
+
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+		<p:spacer width="5px" />
+		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">
+			<p:row>
+				<p:column colspan="2" styleClass="styleAlignLeftColumn">
+					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal" 
+						value="#{mensaje['produccion.registro.crear.btn.clienteempresa']}"
+						actionListener="#{servicioMBean.guardarNuevoServicio}"
+						update="lFecha,nombreServicio, descripcionServicio,  nombreSolicitante,  cargo,  telefono, email"
+						ajax="false" />
+				</p:column>
+				
+				<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar"
+						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+			
+
+		
+
+	</ui:define>
+</ui:composition>
+</html>

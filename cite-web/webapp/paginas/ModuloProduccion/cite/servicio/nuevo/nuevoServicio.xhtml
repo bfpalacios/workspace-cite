@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevoServicio"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+			
+		</p:outputPanel>
+		<p:separator />
+		
+		<p:panelGrid id="pnlGridNuevoServicio">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="6">Crear Nuevo Servicio</p:column>
+				</p:row>
+			</f:facet>
+			
+			<p:spacer  width="5px"/>
+
+			<p:row>
+				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCITE"
+						value="#{mensaje['produccion.nuevo.servicio.label.crear.codigoServicioCITE']}" />
+				</p:column>
+				<p:column colspan="2">
+					<p:selectOneMenu id="selectOneCITE"
+						value="#{servicioMBean.servicioModel.codigoCITE}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione el CITE " />
+						<f:selectItems value="#{servicioMBean.servicioModel.listarCITE}"
+							var="CITE" itemLabel="#{CITE.descripcion}"
+							itemValue="#{CITE.codigo}" />
+					</p:selectOneMenu>
+				</p:column>
+				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblNombreServicio"
+						value="#{mensaje['produccion.nuevo.servicio.label.crear.nombreServicio']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="nombreServicio" size="20" 
+						value="#{servicioMBean.servicioModel.nombre}" />
+					
+				</p:column>
+			</p:row>
+			<p:spacer  width="5px"/>
+
+			<p:row>
+				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblUnidad"
+						value="#{mensaje['produccion.nuevo.servicio.label.crear.unidad']}" />
+				</p:column>
+				<p:column colspan="2">
+					<p:selectOneMenu id="unidad"
+						value="#{servicioMBean.servicioModel.unidad}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione la unidad " />
+						<f:selectItems value="#{servicioMBean.servicioModel.listarMuestra}"
+							var="unidad" itemLabel="#{unidad.descripcion}"
+							itemValue="#{unidad.codigo}" />
+					</p:selectOneMenu>
+				</p:column>
+				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblRequisito"
+						value="#{mensaje['produccion.nuevo.servicio.label.crear.requisito']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="requisito" size="20" 
+						value="#{servicioMBean.servicioModel.requisito}" />
+					
+				</p:column>
+			</p:row>
+			
+			<p:spacer  width="5px"/>
+			<p:row>
+				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblvalorDeVenta"
+						value="#{mensaje['produccion.nuevo.servicio.label.crear.valorDeVenta']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="valorDeVenta" size="20" 
+						value="#{servicioMBean.servicioModel.valorDeVenta}" />
+					
+				</p:column>
+				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblPrecioDeVenta"
+						value="#{mensaje['produccion.nuevo.servicio.label.crear.precioDeVenta']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="precioDeVenta" size="20" 
+						value="#{servicioMBean.servicioModel.precioDeVenta}" />
+					
+				</p:column>
+			</p:row>
+			
+
+			
+
+		</p:panelGrid>
+		
+		<p:spacer width="5px" />
+		<p:outputPanel id="pnlRegistrar" style="width:400x;margin-top:10px;">
+			<p:row>
+				<p:column colspan="2" styleClass="styleAlignLeftColumn">
+					<p:commandButton id="botonRegistrar" styleClass="buttonMarginNormal"
+						value="#{mensaje['produccion.nuevo.servicio.botton.registrar.nuevoServicio']}"
+						actionListener="#{servicioMBean.guardarNuevoServicio(2)}"
+						update="nombreServicio, unidad, requisito, valorDeVenta, precioDeVenta"
+						ajax="false" />
+				</p:column>
+				
+				<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar"
+						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>
+</html>

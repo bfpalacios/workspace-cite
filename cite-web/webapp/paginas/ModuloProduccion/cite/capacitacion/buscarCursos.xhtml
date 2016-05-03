@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+		
+		<p:panel header="Buscar Cursos de Capacitación" style="width: 800px;">
+			
+			<p:panelGrid id="pnlGridBuscarCursos">
+				
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lNombreCurso"
+							value="Buscar por Nombre:" />
+					</p:column>
+					<p:column colspan="4">
+						<p:inputText id="NombreCurso"
+							value=" " size="20" />
+					</p:column>
+
+				</p:row>
+				
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lCite"
+							value="Cite" />
+					</p:column>
+					<p:column colspan="4">
+						<p:selectOneMenu id="selectOneCITE"
+							value="#{cotizacionMBean.servicioModel.codigoCITE}"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<f:selectItem itemLabel="Seleccione el CITE " />
+							<f:selectItems value="#{cotizacionMBean.servicioModel.listarCITE}"
+								var="CITE" itemLabel="#{CITE.descripcion}"
+								itemValue="#{CITE.codigo}" />
+				</p:selectOneMenu>
+					</p:column>
+
+				</p:row>
+				
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lSede"
+							value="Sede" />
+					</p:column>
+					<p:column colspan="4">
+						<p:selectOneMenu id="selectOneSede"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<f:selectItem itemLabel="Seleccione la Sede " itemValue="" />
+							<f:selectItem itemLabel="Sede 1" itemValue="Sede 1" />
+							<f:selectItem itemLabel="Sede 2" itemValue="Sede 2" />
+							<f:selectItem itemLabel="Sede 3" itemValue="Sede 3" />
+						</p:selectOneMenu>
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lFechaCotizacion"
+							value="#{mensaje['produccion.buscar.ordenpago.label.fecha']}" />
+					</p:column>
+					
+					
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lFechaInicio"
+							value="#{mensaje['produccion.buscar.ordenpago.label.fechainicio']}" />
+						<p:calendar value="#{servicioMBean.date}" id="fechaInicio"
+							pattern="dd/MM/yyyy" mode="popup" showOn="button">
+						</p:calendar>
+					</p:column>
+					
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lfechaFin"
+							value="#{mensaje['produccion.buscar.ordenpago.label.fechafin']}" />
+						<p:calendar value="#{servicioMBean.date}" id="fechaFin"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+					</p:column>
+				
+				</p:row>
+
+				<p:row id="filServicios">
+					<p:column colspan="4"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Buscar" id="botonBuscar" actionListener="#{servicioMBean.buscarServicio}" ajax="true"
+							update="tablaServicios" />
+					</p:column>
+					
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<p:spacer width="10px" />
+				
+		<p:panelGrid id="pnlGridResultadoBuscarServicio">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="2">Consulta de Cursos de Capacitación: </p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">Lista de Cursos Disponibles</p:column>
+			</p:row>
+
+			<p:row id="filTabla">
+				<p:column id="colTabla"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
+
+					<p:dataTable id="tablaServicios"
+						value="#{servicioMBean.datosServiciosModelGrid}"
+						selectionMode="multiple"
+						selection="#{servicioMBean.selectedServicios}"
+						rowKey="#{registro.codigo}" var="registro" binding="#{tabla}"
+						emptyMessage="Sin datos para cargar" paginator="true" rows="20">
+
+
+						<p:column headerText="Código Curso"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="CCC-160" />
+						</p:column>
+
+						<p:column headerText="Nombre de la Capacitación"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="Control de Calidad" />
+						</p:column>
+
+						<p:column headerText="Tipo Curso"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="Regular Presencial" />
+						</p:column>
+
+						<p:column headerText="Duración"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="24 horas" />
+						</p:column>
+
+						<p:column headerText="Fecha Inicio"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="08/04/2016" />
+						</p:column>
+						<p:column headerText="Fecha Fin"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="08/04/2016)" />
+						</p:column>
+
+						<p:column headerText="Costo Curso"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="S/. 300.00" />
+
+						</p:column>
+						<p:column headerText="Opciones"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<p:commandButton action="#{ordenPagoMBean.mostrarPreOrdenPago()}"
+									type="submit" image="ui-icon ui-icon-wrench" value="Matricular" title="Matricular" ajax="false">
+									<f:param name="codCurso" value=" " />
+								</p:commandButton>
+							</p:column>
+
+						
+					</p:dataTable>
+
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+		<p:spacer width="5px" />
+			
+	</ui:define>
+</ui:composition>
+</html>

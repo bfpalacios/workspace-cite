@@ -1,0 +1,70 @@
+.botonNormal {
+	border: 1px solid #c5dbec;
+	background: #dfeffc
+		url("/produccion-web/javax.faces.resource/images/ui-bg_glass_85_dfeffc_1x400.png.xhtml?ln=primefaces-redmond")
+		50% 50% repeat-x;
+	font-weight: bold;
+	color: #2e6e9e;
+	text-transform: capitalize !important;
+	border-radius:5px; 
+	-moz-border-radius:5px; /* Firefox */ 
+	-webkit-border-radius:5px; /* Safari y Chrome */
+	 padding: 5px;
+	
+}
+
+#botonNuevo {
+	float: right;
+}
+
+#disabledButton {
+	opacity:1 !important;
+	margin: 5px;
+}
+
+.buscarNumeroCotizacion {
+	    margin-left: 32x;
+}
+
+.buttonMarginNormal{
+	   margin-right: 50px;
+}
+
+.numeroCuenta{
+	   width:300px; float:left; padding-left:45px;
+}
+
+.opcionesIconos{
+	
+	width: 350px;
+}
+
+.disabledInput{
+
+	opacity:1 !important;
+}
+
+.selectOneEstado{
+
+	margin-left: 10px;
+}
+
+.previewComprobante{
+
+	border: 5px solid #DDECF7;
+    padding: 5px;
+    background: #fff;
+}
+
+.ui-layout-unit-content ui-widget-content{
+	overflow: hidden !important;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevoServicio"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panelGrid id="pnlGridNuevoServicio">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="6">Datos de la Nueva Sede</p:column>
+				</p:row>
+			</f:facet>
+
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblNombreSede" value="Nombre de la Sede" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="nombreSede" size="40"
+						value="#{usuarioMBean.usuarioModel.idUsuario}" />
+
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCodigoSede" value="Codigo de la Sede" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="codigoSede" size="20"
+						value="#{usuarioMBean.usuarioModel.clave}" />
+
+				</p:column>
+
+			</p:row>
+			<p:row>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDpto"
+						value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
+				</p:column>
+				<p:column>
+					<p:selectOneMenu id="dpto"
+						value="#{usuarioMBean.usuarioModelSelect.codDepartamento}"
+						valueChangeListener="#{usuarioMBean.actualizarlistProvincia}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione el departamento:" />
+						<f:selectItems value="#{usuarioMBean.usuarioModel.listUbigeo}"
+							var="dpto" itemLabel="#{dpto.departamento}"
+							itemValue="#{dpto.idUbigeo}" />
+						<f:ajax event="change" execute="@this" render="provincia" />
+					</p:selectOneMenu>
+
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblProvincia"
+						value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
+				</p:column>
+
+				<p:column>
+					<p:selectOneMenu id="provincia"
+						value="#{usuarioMBean.usuarioModelSelect.codProvincia}"
+						valueChangeListener="#{usuarioMBean.actualizarlistDistrito}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione la provincia " />
+						<f:selectItems value="#{usuarioMBean.usuarioModel.listProvincia}"
+							var="prov" itemLabel="#{prov.provincia}"
+							itemValue="#{prov.idUbigeo}" />
+
+						<f:ajax event="change" execute="@this" render="distrito" />
+					</p:selectOneMenu>
+				</p:column>
+
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDistrito"
+						value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
+				</p:column>
+
+				<p:column>
+					<p:selectOneMenu id="distrito"
+						value="#{usuarioMBean.usuarioModelSelect.codDistrito}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione el distrito " />
+						<f:selectItems value="#{usuarioMBean.usuarioModel.listDistrito}"
+							var="distrito" itemLabel="#{distrito.distrito}"
+							itemValue="#{distrito.idUbigeo}" />
+					</p:selectOneMenu>
+				</p:column>
+		
+			</p:row>
+			
+
+
+		</p:panelGrid>
+
+		<p:spacer width="5px" />
+		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">
+			<p:row>
+				<p:column colspan="2" styleClass="styleAlignLeftColumn">
+					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
+						value="Guardar SEDE"
+						actionListener="#{servicioMBean.guardarNuevoServicio}"
+						update="nombreSede,codigoSede,dpto, provincia, distrito"
+						ajax="false" />
+				</p:column>
+
+				<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar"
+						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>
+</html>

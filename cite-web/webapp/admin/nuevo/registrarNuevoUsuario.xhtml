@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:composition template="/plantilla/plantilla-login.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+
+		<p:panel header="Registro de Nuevos Clientes " style="width: 800px;">
+			<p:panelGrid id="pnlGridBuscarServicio" style="width: 600px;">
+
+				<p:row>
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lEmpresa"
+							value="#{mensaje['produccion.nuevo.usuario.empresa']}" />
+					</p:column>
+
+					<p:spacer width="10px" />
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Registrar Empresa"
+							id="botonRegistrarEmpresa"
+							action="#{usuarioMBean.registraNuevaEmpresa(1)}"
+							ajax="false" />
+					</p:column>
+
+				</p:row>
+
+				<p:spacer width="10px" />
+
+				<p:row>
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lCliente"
+							value="#{mensaje['produccion.nuevo.usuario.cliente']}" />
+					</p:column>
+					
+					
+								
+					<p:spacer width="10px" />
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Registrar Cliente"
+							id="botonRegistrarCliente"
+							action="#{usuarioMBean.registraNuevoCliente(1)}"
+							ajax="false" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						
+					</p:column>
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<p:commandButton value="Cancelar"
+							id="botonCancelarRegistrarCliente"
+							action="#{usuarioMBean.cancelarRegisttro}"
+							ajax="true" />
+						
+					</p:column>
+					
+					
+
+					<p:spacer width="10px" />
+					<!--p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:link outcome="/login" value="Ayuda para Registrar">
+							<f:param name="ayudaId" value="10" />
+						</p:link>
+					</p:column -->
+
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+
+	</ui:define>
+</ui:composition>
+</html>

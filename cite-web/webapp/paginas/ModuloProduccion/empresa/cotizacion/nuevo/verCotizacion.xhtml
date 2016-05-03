@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_empresa.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+
+
+		<p:panel id="panelRegistroUsuario"
+			header="Solicitud de Cotizacion - Nueva Cotizacion"
+			style="width: 100%;">
+			<p:panelGrid id="pnlGridNuevaCotizacion">
+				
+				<p:row>
+				<!-- p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lCotizacion"
+						value="#{mensaje['produccion.buscar.servicio.label.cotizacionnro']}" />
+				</p:column>
+				<p:column>
+					<p:inputText id="cotizacionNro"
+						value="#{cotizacionMBean.cotizacionModel.codigo}" size="20" />
+				</p:column -->
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lFecha" value="#{mensaje['general.label.fecha']}" />
+				</p:column >
+				<p:column>
+					<p:calendar value="#{cotizacionMBean.date}" id="fechaCotizacion"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+				</p:column>
+			</p:row>
+				<p:row>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblRazonSocial"
+							value="#{mensaje['produccion.nuevo.empresa.razonsocial']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="razonSocial" size="40"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.empresaModel.razonSocial}" />
+						<p:message for="razonSocial" />
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblRuc"
+							value="#{mensaje['produccion.nuevo.empresa.ruc']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="ruc" size="10"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.empresaModel.ruc}" />
+						<p:message for="ruc" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblDireccion"
+							value="#{mensaje['produccion.nuevo.cliente.direccion']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="direccionUsuario" size="40"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.direccion}" />
+						<p:message for="direccionUsuario" />
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblRepresentante"
+							value="#{mensaje['produccion.nuevo.empresa.representante']}" />
+					</p:column>
+
+					<p:column colspan="5">
+						<p:inputText id="representante" size="10"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.empresaModel.representante}" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblSolicitante"
+							value="#{mensaje['produccion.nuevo.empresa.solicitante']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="solcitante" size="40"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.empresaModel.nombreContacto}" />
+						<p:message for="solcitante" />
+					</p:column>
+
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblNombreCargo"
+							value="#{mensaje['produccion.nuevo.empresa.nombrecargo']}" />
+					</p:column>
+
+					<p:column colspan="5">
+						<p:inputText id="nombreCargo" size="10"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.empresaModel.nombreCargo}" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblEmail1"
+							value="#{mensaje['produccion.nuevo.cliente.email1']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="email1" size="25"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.email1}" />
+					</p:column>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblEmail2"
+							value="#{mensaje['produccion.nuevo.cliente.email2']}" />
+					</p:column>
+
+					<p:column colspan="3">
+						<p:inputText id="email2" size="25"
+							value="#{cotizacionMBean.cotizacionModel.usuarioModel.email2}" />
+					</p:column>
+
+
+
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblCite"
+							value="#{mensaje['produccion.nuevo.cliente.cite']}" />
+					</p:column>
+
+					<p:column>
+						<p:inputText id="cite" size="25"
+							value="#{cotizacionMBean.servicioModel.descripcionCITE}" />
+					</p:column>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblSede"
+							value="#{mensaje['produccion.nuevo.cliente.sede']}" />
+					</p:column>
+
+					<p:column colspan="3">
+						<p:inputText id="sede" size="25"
+							value="#{cotizacionMBean.servicioModel.sede}" />
+					</p:column>
+
+
+
+				</p:row>
+				<p:spacer width="10px" />
+
+				<p:row id="filTabla2">
+					<p:column id="colTabla2"
+						styleClass="ui-column-label-spij styleAlignRightColumn"
+						colspan="5">
+						<p:dataTable id="grillaTablaServicios"
+							value="#{cotizacionMBean.servicioCotizacion}" var="registro"
+							paginator="true" rows="20">
+
+						
+							<p:column headerText="Codigo(*)"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<h:outputText value="#{registro.codigo}" />
+							</p:column>
+
+							<p:column headerText="Nombre Servicio"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<h:outputText value="#{registro.nombre}" />
+							</p:column>
+
+							<p:column headerText="Unidad"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<h:outputText value="#{registro.unidad}" />
+							</p:column>
+
+							<p:column headerText="Requisito"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<h:outputText value="#{registro.requisito}" />
+							</p:column>
+
+							<p:column headerText="Valor de Venta"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<h:outputText value="#{registro.valorDeVenta}">
+								</h:outputText>
+							</p:column>
+
+
+							<p:column headerText="Precio de Venta"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<h:outputText value="#{registro.precioDeVenta}">
+								</h:outputText>
+
+							</p:column>
+
+							<p:columnGroup type="footer">
+								<p:row>
+									<p:column colspan="5" style="text-align:right"
+										footerText="Costo Total:" />
+									<p:column footerText="S/. #{cotizacionMBean.totalSumaCotizar} " />
+								</p:row>
+							</p:columnGroup>
+
+						</p:dataTable>
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+			<p:spacer width="10px" />
+
+			<p:row id="pnlTerminos">
+				<p:column>
+					<p:link outcome="/login"
+						value="#{mensaje['produccion.terminos.condiciones.titulo']}">
+						<f:param name="lTerminosYCondiciones" value="10" />
+					</p:link>
+				</p:column>
+
+			</p:row>
+
+
+		</p:panel>
+
+		<p:outputPanel id="pnlGuardarCotizacion"
+			style="width:400x;margin-top:10px;">
+			<p:row>
+				<p:column colspan="2" styleClass="styleAlignLeftColumn">
+
+					<p:commandButton id="botonDialogGuardarCotizacion"
+						value="#{mensaje['produccion.nueva.cotizacion.label.guardarcotizacion']}">
+						<p:confirm header="Informacion del Sistema" 
+							message="Detalle de la Cotizacion" />
+
+					</p:commandButton>
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<h:panelGrid id="pnlBuscador" 
+							style="font-size: 12px;text-align: center" columns="2"
+							cellspacing="2">
+					
+							<h:outputText id="lCiteConfirmacion"
+								value="#{mensaje['produccion.nuevo.cliente.cite']}"/>
+							<h:inputText id="citeConfirmacion"
+								value="#{cotizacionMBean.servicioModel.descripcionCITE}" size="20" />
+
+							<h:outputText id="LFechaConfirmacion"
+								value="#{mensaje['general.label.fecha']}" />
+							<h:inputText id="fechaConfirmacion"
+								value="#{cotizacionMBean.date}" size="20" >
+								<f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss"/>
+							</h:inputText>
+							
+							<p:spacer width="5px" />
+							<p:outputPanel id="disabledConfirmacion">
+							<p:commandButton
+								value="#{mensaje['general.label.confirmacion']}"
+								style="opacity:1 !important; margin-bottom: 10px;" id="disabled"
+								disabled="true" />
+							</p:outputPanel>
+							
+					</h:panelGrid>
+
+					<p:commandButton value="Si" type="submit"
+						id="botonGuardarCotizacion"
+						action="#{cotizacionMBean.enviarCotizacionEmpresa}"
+						update="grillaTablaServicios,cite,fechaCotizacion "
+						title="Generar Cotizacion" oncomplete="PF('dlg1').show()"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+
+
+						<f:param name="numCotizacion"
+							value="#{cotizacionMBean.cotizacionModel.descripcion}" />
+
+
+
+					</p:commandButton>
+
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+
+
+				</p:column>
+
+				<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar"
+						action="#{cotizacionMBean.cancelar}" ajax="false" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+
+		<p:dialog header="Informacion del Sistema" widgetVar="dlg1"
+			style="height: 350px; width: 400px;">
+
+			<h:outputText id="lCodigoCotizacion"
+				value="#{mensaje['produccion.buscar.servicio.label.cotizacionnro']}" />
+			<h:outputText id="IcotizacionNro"
+				value="#{cotizacionMBean.cotizacionModel.descripcion}" size="20" />
+			<h3>SU COTIZACION SE ENVIO CON ÉXITO</h3>
+			<br />
+			<p:commandButton value="Aceptar" id="aceptar" type="submit"
+				action="#{cotizacionMBean.redireccionarBusquedaCotizaciones()}"
+				ajax="false">
+			</p:commandButton>
+			<br />
+
+		</p:dialog>	
+
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

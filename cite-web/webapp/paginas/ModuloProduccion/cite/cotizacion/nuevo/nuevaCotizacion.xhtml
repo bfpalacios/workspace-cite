@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes" style="width:500px;margin-top:5px;">
+				<p:row>
+    				<p:column colspan="4" rowspan="2">
+    					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+   					</p:column>
+   				</p:row>
+   		</p:outputPanel>
+		
+		<p:panel header="Nueva Cotización" style="width: 800px;">
+			
+			<p:panelGrid id="pnlGridBuscarCotizacion">
+				<p:outputPanel id="disabledButton">
+					<p:commandButton value="#{mensaje['produccion.buscar.cotizacion.disabled.cliente']}" style="opacity:1 !important; margin-bottom: 10px;" id="disabled" disabled="true" />
+				</p:outputPanel>
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lNumero"
+							value="#{mensaje['produccion.buscar.ordenpago.label.numero']}" />
+					</p:column>
+					<p:column colspan="4">
+						<p:inputText id="numeroCotizacion"
+							value="#{servicioMBean.servicioModel.nombre}" size="20" />
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lFechaCotizacion"
+							value="#{mensaje['produccion.buscar.ordenpago.label.fecha']}" />
+					</p:column>
+					
+					
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lFechaInicio"
+							value="#{mensaje['produccion.buscar.ordenpago.label.fechainicio']}" />
+						<p:calendar value="#{servicioMBean.date}" id="fechaInicio"
+							pattern="dd/MM/yyyy" mode="popup" showOn="button">
+						</p:calendar>
+					</p:column>
+					
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lfechaFin"
+							value="#{mensaje['produccion.buscar.ordenpago.label.fechafin']}" />
+						<p:calendar value="#{servicioMBean.date}" id="fechaFin"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+					</p:column>
+				
+				</p:row>
+
+				<p:row id="filServicios">
+					<p:column colspan="4"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Buscar" id="botonBuscar" actionListener="#{servicioMBean.buscarServicio}" ajax="true"
+							update="tablaServicios" />
+					</p:column>
+					
+				</p:row>
+			</p:panelGrid>
+		</p:panel>	
+			
+		<p:panelGrid id="pnlGridResultadoBuscarServicio" style="width: 95%;border: 0px;" >
+			
+			<p:row>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.servicio.label.resultadobusqueda']}</p:column>
+			</p:row>
+
+			<p:row id="filTabla">
+				<p:column id="colTabla"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
+
+					<p:dataTable id="tablaServicios"
+						value="#{servicioMBean.datosServiciosModelGrid}"
+						selectionMode="multiple"
+						selection="#{servicioMBean.selectedServicios}"
+						rowKey="#{registro.codigo}" var="registro" binding="#{tabla}"
+						emptyMessage="Sin datos para cargar" paginator="true" rows="20">
+
+
+						<p:column headerText="Codigo(*)"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.codigo}" />
+						</p:column>
+
+						<p:column headerText="Nombre Servicio"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.nombre}" />
+						</p:column>
+
+						<p:column headerText="Unidad"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.unidad}" />
+						</p:column>
+
+						<p:column headerText="Requisito"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.requisito}" />
+						</p:column>
+						<p:column headerText="CITE"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.descripcionCITE}" />
+						</p:column>
+						<p:column headerText="Valor de Venta"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.valorDeVenta}" />
+						</p:column>
+
+						<p:column headerText="Precio de Venta"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.precioDeVenta}" />
+
+						</p:column>
+
+						<f:facet name="footer">
+							<p:commandButton process="tablaServicios"
+								update=":formPrincipal:multiServicioDetail"
+								icon="ui-icon-search" value="Agregar Servicio a Cotizar">
+
+							</p:commandButton>
+						</f:facet>
+					</p:dataTable>
+
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+		
+		<p:spacer width="5px" />
+		
+		<p:panelGrid id="pnlGridNuevaCotizacion" style="width: 95%;border: 0px;">
+
+			<p:row>
+				<p:column colspan="4"  style="font-weight:bold;font-size:15px"
+					styleClass="ui-column-label-spij styleAlignCenterColumn">#{mensaje['produccion.buscar.servicio.label.subtitulo']}</p:column>
+			</p:row>
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lCotizacion"
+						value="#{mensaje['produccion.buscar.servicio.label.cotizacionnro']}" />
+				</p:column>
+				<p:column>
+					<p:inputText id="cotizacionNro"
+						value="#{servicioMBean.servicioModel.codigo}" size="20" />
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lFecha" value="#{mensaje['general.label.fecha']}" />
+				</p:column>
+				<p:column>
+					<p:calendar value="#{servicioMBean.date}" id="fechaServicio"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+				</p:column>
+
+			</p:row>
+
+			<p:row id="filTabla2">
+
+				<p:column id="colTabla2"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="4">
+
+					<p:dataTable id="multiServicioDetail" widgetVar="multiServicioList"
+						value="#{servicioMBean.selectedServicios}" var="registro"
+						paginator="true" rows="5">
+
+						<p:column headerText="Codigo(*)"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.codigo}" />
+						</p:column>
+
+						<p:column headerText="Nombre Servicio"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.nombre}" />
+						</p:column>
+
+						<p:column headerText="Unidad"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.unidad}" />
+						</p:column>
+
+						<p:column headerText="Requisito"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.requisito}" />
+						</p:column>
+
+						<p:column headerText="Valor de Venta"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.valorDeVenta}">
+							</h:outputText>
+						</p:column>
+
+
+						<p:column headerText="Precio de Venta"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.precioDeVenta}">
+							</h:outputText>
+
+						</p:column>
+
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column colspan="5" style="text-align:right"
+									footerText="Costo Total:" />
+								<p:column footerText="S/.#{egistro.precioDeVenta}" />
+							</p:row>
+						</p:columnGroup>
+
+					</p:dataTable>
+				</p:column>
+
+			</p:row>
+			
+		
+		</p:panelGrid>
+		
+
+	</ui:define>
+</ui:composition>
+</html>

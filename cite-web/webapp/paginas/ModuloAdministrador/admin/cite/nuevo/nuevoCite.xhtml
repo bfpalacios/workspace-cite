@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevoServicio"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+			
+		</p:outputPanel>
+		
+		<p:panelGrid id="pnlGridNuevoServicio">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="6">Datos de la Nueva CITE</p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblFecha"
+						value="Fecha" />
+				</p:column>
+				<p:column colspan="5">
+					<p:calendar value="#{servicioMBean.date}" id="fechaServicio"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblNombreCITE"
+						value="Nombre del CITE" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="nombreCITE" size="40" 
+						value="#{servicioMBean.servicioModel.nombre}" />
+					
+				</p:column>
+				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCodigoCITE"
+						value="Codigo del CITE" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="codigoCITE" size="20" 
+						value="#{servicioMBean.servicioModel.nombre}" />
+					
+				</p:column>
+
+			</p:row>
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText 
+								id="lblTSede"
+								value="Sede :" />
+					</p:column>
+						
+					<p:column>
+							<p:selectOneMenu id="sede" 
+								value="#{uservicioMBean.servicioModel.codigo}">
+								<f:selectItem itemLabel="Seleccione La Sede " />
+								<f:selectItem itemLabel="UTT HUALLAGA" itemValue="1" />
+								<f:selectItem itemLabel="UTT Pucallpa" itemValue="2" />					
+							</p:selectOneMenu>
+							
+							<p:message for="sede" />
+					</p:column>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDireccion"
+						value="Direccion" />
+				</p:column>
+
+				<p:column colspan="4">
+					<p:inputText id="direccion" size="40" 
+						value="#{servicioMBean.servicioModel.descripcion}"  />
+					<p:message for="direccion" />
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblNombreSolicitante"
+						value="Director Ejecutivo" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="nombreSolicitante" size="40"
+						value="#{servicioMBean.servicioModel.nombreSolicitante}" />
+					<p:message for="nombreSolicitante" />
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCargo"
+						value="Telefono" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="cargo" size="40"
+						value="#{servicioMBean.servicioModel.cargo}" />
+					<p:message for="cargo" />
+				</p:column>
+
+
+			</p:row>
+
+
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblTelefono"
+						value="Localizacion" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="telefono" size="40"
+						value="#{servicioMBean.servicioModel.telefono}" />
+					<p:message for="telefono" />
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblEmail"
+						value="#{mensaje['produccion.nuevo.servicio.label.email']}" />
+				</p:column>
+
+				<p:column colspan="2">
+					<p:inputText id="email" size="40"
+						value="#{servicioMBean.servicioModel.email}" />
+					<p:message for="email" />
+				</p:column>
+
+
+			</p:row>
+
+		</p:panelGrid>
+		
+		<p:spacer width="5px" />
+		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">
+			<p:row>
+				<p:column colspan="2" styleClass="styleAlignLeftColumn">
+					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
+						value="Guardar CITE"
+						actionListener="#{servicioMBean.guardarNuevoServicio}"
+						update="lFecha,nombreServicio, descripcionServicio,  nombreSolicitante,  cargo,  telefono, email"
+						ajax="false" />
+				</p:column>
+				
+				<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar"
+						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:body>
+		<p:panelMenu 
+			style="font-size:10px;"
+			transient="true" >
+			<p:submenu label="Catalogo de Servicios">
+				<p:menuitem 
+					value="Buscar Servicios" action="#{servicioMBean.selectorBuscarServicio(1)}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Recomendar Nuevo Servicio" action="#{servicioMBean.selectorNuevoServicio(1)}"
+					icon="ui-icon-arrowrefresh-1-w" />
+			</p:submenu>  
+			<p:submenu label="Cotizacion de Servicios">
+				<p:menuitem 
+					value="Nueva Cotizacion" action="#{cotizacionMBean.selectorNuevaCotizacion(1)}"
+					icon="ui-icon-arrowrefresh-1-w"  />	
+				<p:menuitem 
+					value="Buscar Cotizaciones" action="#{cotizacionMBean.selectorBuscarCotizacionServicio(1)}"
+					icon="ui-icon-arrowrefresh-1-w" />			 
+			</p:submenu>
+			<p:submenu label="Orden de Pago">
+				<p:menuitem 
+					value="Nueva Orden de Pago" action="#{ordenPagoMBean.selectorNuevaOrdenPago(1)}"
+					icon="ui-icon-arrowrefresh-1-w"  />	
+				<p:menuitem 
+					value="Enviar Orden de Pago" action="#{ordenPagoMBean.selectorEnviarOrdenPago(1)}"
+					icon="ui-icon-arrowrefresh-1-w"  />	
+				<p:menuitem 
+					value="Buscar Orden de Pago" action="#{ordenPagoMBean.selectorBuscarOrdenPago(1)}"
+					icon="ui-icon-arrowrefresh-1-w"  />	
+			</p:submenu>
+			 <!-- <p:submenu label="Facturacion">
+				<p:menuitem 
+					value="facturación" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />			
+			</p:submenu> 		 -->		
+			<p:submenu label="Orden de Servicio">
+				<p:menuitem 
+					value="Estado Orden de Servicio" action="#{ordenServicioMBean.selectorEstadoOrdenServicio(1)}"
+					icon="ui-icon-arrowrefresh-1-w" />	
+				<p:menuitem 
+					value="Consultar Orden de Servicio" action="#{ordenServicioMBean.selectorBuscarOrdenServicio(1)}"
+					icon="ui-icon-arrowrefresh-1-w" />		
+			</p:submenu>
+			<p:submenu label="Informe de Laboratorios">
+				<p:menuitem 
+					value="Ver Informe" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Historial de Informes" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />
+			</p:submenu>
+			<p:submenu label="Cursos de Capacitacion">
+				<p:menuitem 
+					value="Consultar Cursos" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />	
+				<p:menuitem 
+					value="Matriculados" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />		
+			</p:submenu>				 
+			<p:submenu label="Actualizar Datos">
+				<p:menuitem 
+					value="Cambiar Datos" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />	
+				<p:menuitem 
+					value="Cambiar Contraseña" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />	
+				<p:menuitem 
+					value="Crear Nuevo Usuario" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />		
+			</p:submenu>
+			<p:submenu label="Ayuda del Sistema">
+				<p:menuitem 
+					value="Estadísticas" action="#"
+					icon="ui-icon-arrowrefresh-1-w" />		
+			</p:submenu>				 
+			<p:submenu label="Salir del sistema">
+            	<p:menuitem 
+            		value="Cerrar Sesion" url="#{request.contextPath}/j_spring_security_logout"
+					icon="ui-icon-arrowrefresh-1-w" />			 
+			</p:submenu>				
+		</p:panelMenu>
+	</h:body>
+</html>

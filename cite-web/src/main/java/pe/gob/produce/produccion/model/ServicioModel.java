@@ -7,7 +7,6 @@ import javax.faces.bean.RequestScoped;
 import org.springframework.stereotype.Component;
 
 import pe.gob.produce.cite.bo.CITEBO;
-import pe.gob.produce.cite.bo.MuestraBO;
 
 @Component("serviceModel")
 @RequestScoped
@@ -30,12 +29,6 @@ public class ServicioModel {
 	private String totalPrecioDeVenta;
 
 	private List<CITEBO> listarCITE;
-
-	private List<MuestraBO> listarMuestra;
-
-	public List<MuestraBO> getListarMuestra() {
-		return listarMuestra;
-	}
 	
 	
 	public String getSede() {
@@ -47,10 +40,6 @@ public class ServicioModel {
 		this.sede = sede;
 	}
 
-
-	public void setListarMuestra(List<MuestraBO> listarMuestra) {
-		this.listarMuestra = listarMuestra;
-	}
 
 	public String getTotalPrecioDeVenta() {
 		return totalPrecioDeVenta;

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FilenameUtils;
@@ -26,6 +27,8 @@ import pe.gob.produce.produccion.core.util.Convertidor;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
 import pe.gob.produce.produccion.core.util.ObtenerNumeroAleatorio;
 import pe.gob.produce.produccion.model.ServicioModel;
+import pe.gob.produce.produccion.model.UbigeoModel;
+import pe.gob.produce.produccion.model.UsuarioModel;
 import pe.gob.produce.produccion.services.CITEServices;
 import pe.gob.produce.produccion.services.ComunServices;
 import pe.gob.produce.produccion.services.ServicioServices;
@@ -40,6 +43,9 @@ public class ServicioMBean {
 	private ServicioModel servicioModel;
 	
 	@Autowired
+	private UsuarioModel usuarioModel;
+	
+	@Autowired
 	private CITEServices citeServices;
 	
 	
@@ -51,7 +57,7 @@ public class ServicioMBean {
 	
 	//datos complementarios de la pantalla
 	private Date date;
-
+	private UsuarioModel usuarioModelSelect;
 	private String rutaComprobante;
 	
 	//constantes
@@ -73,6 +79,9 @@ public class ServicioMBean {
 		new Convertidor();
 		new FormateadorFecha();
 		date=new Date();
+		
+		this.usuarioModel = new UsuarioModel();
+		this.usuarioModelSelect = new UsuarioModel();
 		
 		
 	}
@@ -102,7 +111,7 @@ public class ServicioMBean {
 		 /*@@ESTE ES EL CASO PARA PERFIL CITE */
 		 case 2:  						
 			 
-			listarMuestras(); 
+			//listarMuestras(); 
 			pagina = "/paginas/ModuloProduccion/cite/servicio/nuevo/nuevoServicio.xhtml"; break;
 		 
 		/*@@ESTE ES EL CASO PARA PERFIL EMPRESA */
@@ -153,6 +162,30 @@ public class ServicioMBean {
 		 String pagina = "";
 			
 		 inicializarClases();
+		 
+			List<UbigeoBO> listarUbigeo = new ArrayList<UbigeoBO>();
+
+			List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
+
+			try {
+				// se llama para cargar al combo de departamento
+				listarUbigeo = comunServices.listUbigeo();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			for (UbigeoBO ubigeoBO : listarUbigeo) {
+
+				UbigeoModel ubigeo = new UbigeoModel();
+				ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
+				ubigeo.setDepartamento(ubigeoBO.getDepartamento());
+				// ubigeo.setProvincia(ubigeoBO.getProvincia());
+				// ubigeo.setDistrito(ubigeoBO.getDistrito());
+				listaUbigeoModel.add(ubigeo);
+			}
+
+		getUsuarioModel().setListUbigeo(listaUbigeoModel);
 
 		 switch(modo){ 
 		
@@ -183,6 +216,61 @@ public class ServicioMBean {
 		 System.out.println("nuevoServicioInformativo:FIN");
 		 return pagina;		
 	
+	}
+	
+	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
+		String codDepartamento = (String) (e.getNewValue() == null ? "" : e
+				.getNewValue());
+
+		codDepartamento = codDepartamento.substring(0, 2);
+		System.out.println("codigo de departamento " + codDepartamento);
+		List<UbigeoBO> listarProvincia = new ArrayList<UbigeoBO>();
+		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
+
+		listarProvincia = comunServices.listarProvincia(codDepartamento);
+
+		for (UbigeoBO ubigeoBO : listarProvincia) {
+
+			UbigeoModel ubigeo = new UbigeoModel();
+			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
+			// ubigeo.setDepartamento(ubigeoBO.getDepartamento());
+			ubigeo.setProvincia(ubigeoBO.getProvincia());
+			// ubigeo.setDistrito(ubigeoBO.getDistrito());
+			listaUbigeoModel.add(ubigeo);
+		}
+
+		getUsuarioModel().setListProvincia(listaUbigeoModel);
+	}
+
+	public void actualizarlistDistrito(ValueChangeEvent e) throws Exception {
+		String codDepartamento = getUsuarioModelSelect().getCodDepartamento() == null ? ""
+				: getUsuarioModelSelect().getCodDepartamento();
+
+		String codProvincia = (String) (e.getNewValue() == null ? "" : e
+				.getNewValue());
+
+		codDepartamento = codDepartamento.substring(0, 2);
+		codProvincia = codProvincia.substring(2, 4);
+		System.out.println("codigo de departamento " + codDepartamento);
+		System.out.println("codigo de provincia " + codProvincia);
+
+		List<UbigeoBO> listarProvincia = new ArrayList<UbigeoBO>();
+		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
+
+		listarProvincia = comunServices.listarDistrito(codDepartamento,
+				codProvincia);
+
+		for (UbigeoBO ubigeoBO : listarProvincia) {
+
+			UbigeoModel ubigeo = new UbigeoModel();
+			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
+			// ubigeo.setDepartamento(ubigeoBO.getDepartamento());
+			// ubigeo.setProvincia(ubigeoBO.getProvincia());
+			ubigeo.setDistrito(ubigeoBO.getDistrito());
+			listaUbigeoModel.add(ubigeo);
+		}
+
+		getUsuarioModel().setListDistrito(listaUbigeoModel);
 	}
 	
 	public void handleFileUpload(FileUploadEvent e) throws IOException {
@@ -434,16 +522,6 @@ public class ServicioMBean {
 		}
 	}
 	
-	private void listarMuestras(){
-		try{
-			
-		
-			getServicioModel().setListarMuestra(comunServices.listarMuestra());
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 		
 	private void listarServicios(){
 		
@@ -530,5 +608,21 @@ public class ServicioMBean {
 	public void setDatosServiciosModelGrid(
 			List<ServicioModel> datosServiciosModelGrid) {
 		this.datosServiciosModelGrid = datosServiciosModelGrid;
+	}
+
+	public UsuarioModel getUsuarioModel() {
+		return usuarioModel;
+	}
+
+	public void setUsuarioModel(UsuarioModel usuarioModel) {
+		this.usuarioModel = usuarioModel;
+	}
+
+	public UsuarioModel getUsuarioModelSelect() {
+		return usuarioModelSelect;
+	}
+
+	public void setUsuarioModelSelect(UsuarioModel usuarioModelSelect) {
+		this.usuarioModelSelect = usuarioModelSelect;
 	}
 }

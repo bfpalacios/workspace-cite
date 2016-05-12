@@ -33,7 +33,7 @@
 
 				<p:column colspan="2">
 					<p:inputText id="nombreSede" size="40" 
-						value="#{usuarioMBean.usuarioModel.idUsuario}" />
+						value="#{servicioMBean.usuarioModel.idUsuario}" />
 					
 				</p:column>
 				
@@ -44,7 +44,7 @@
 
 				<p:column colspan="2">
 					<p:inputText id="codigoSede" size="20" 
-						value="#{usuarioMBean.usuarioModel.idUsuario}" />
+						value="#{servicioMBean.usuarioModel.idUsuario}" />
 					
 				</p:column>
 
@@ -57,11 +57,11 @@
 					</p:column>
 					<p:column>
 						<p:selectOneMenu id="dpto"
-							value="#{usuarioMBean.usuarioModelSelect.codDepartamento}"
-							valueChangeListener="#{usuarioMBean.actualizarlistProvincia}"
+							value="#{servicioMBean.usuarioModelSelect.codDepartamento}"
+							valueChangeListener="#{servicioMBean.actualizarlistProvincia}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione el departamento:" />
-							<f:selectItems value="#{usuarioMBean.usuarioModel.listUbigeo}"
+							<f:selectItems value="#{servicioMBean.usuarioModel.listUbigeo}"
 								var="dpto" itemLabel="#{dpto.departamento}"
 								itemValue="#{dpto.idUbigeo}" />
 							<f:ajax event="change" execute="@this" render="provincia" />
@@ -76,11 +76,11 @@
 
 					<p:column>
 						<p:selectOneMenu id="provincia"
-							value="#{usuarioMBean.usuarioModelSelect.codProvincia}"
-							valueChangeListener="#{usuarioMBean.actualizarlistDistrito}"
+							value="#{servicioMBean.usuarioModelSelect.codProvincia}"
+							valueChangeListener="#{servicioMBean.actualizarlistDistrito}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione la provincia " />
-							<f:selectItems value="#{usuarioMBean.usuarioModel.listProvincia}"
+							<f:selectItems value="#{servicioMBean.usuarioModel.listProvincia}"
 								var="prov" itemLabel="#{prov.provincia}"
 								itemValue="#{prov.idUbigeo}" />
 
@@ -96,10 +96,10 @@
 
 					<p:column>
 						<p:selectOneMenu id="distrito"
-							value="#{usuarioMBean.usuarioModelSelect.codDistrito}"
+							value="#{servicioMBean.usuarioModelSelect.codDistrito}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione el distrito " />
-							<f:selectItems value="#{usuarioMBean.usuarioModel.listDistrito}"
+							<f:selectItems value="#{servicioMBean.usuarioModel.listDistrito}"
 								var="distrito" itemLabel="#{distrito.distrito}"
 								itemValue="#{distrito.idUbigeo}" />
 						</p:selectOneMenu>

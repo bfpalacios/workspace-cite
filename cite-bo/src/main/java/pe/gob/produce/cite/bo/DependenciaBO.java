@@ -1,7 +1,7 @@
 package pe.gob.produce.cite.bo;
 
-public class MuestraBO {
-	
+
+public class DependenciaBO {
 	
 	private String codigo;
 	private String descripcion;
@@ -19,6 +19,4 @@ public class MuestraBO {
 	}
 	
 	
-	
-
 }

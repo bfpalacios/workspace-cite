@@ -12,8 +12,6 @@ import oracle.jdbc.OracleTypes;
 
 import org.springframework.stereotype.Component;
 
-import pe.gob.produce.cite.bo.EmpresaBO;
-import pe.gob.produce.cite.bo.MuestraBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
@@ -162,38 +160,7 @@ public class ComunDAOImpl extends BaseDAO implements ComunIDAO{
 		return listaUbigeos;
 	}
 
-	@Override
-	public List<MuestraBO> listarMuestra() throws Exception {
-		
-		Connection con = null;
-		
-		Statement statement = null;
-		ResultSet rs = null;
-		List<MuestraBO> listaMuestras = new ArrayList<MuestraBO>();
-		
-		try{
-			con = Conexion.obtenerConexion();
-			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarUnidadServicio}");
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){				
-				MuestraBO muestra = new MuestraBO();
-				muestra.setCodigo(rs.getString(1));
-				muestra.setDescripcion(rs.getString(2));
-				listaMuestras.add(muestra);
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		finally{
-			this.cerrarResultSet(rs);
-			this.cerrarSentenceStatement(statement);
-			this.cerrarConexion(con);
-		}		
-		return listaMuestras;
-	}
-
+	
 	public UsuarioBO buscarUsuario(String codUsuario) throws Exception{
 
 		Connection con = null;
@@ -213,11 +180,7 @@ public class ComunDAOImpl extends BaseDAO implements ComunIDAO{
 		        System.out.println("idusuario " + rs.getString("IDUSUARIO"));
 		        
 		        usuario.setIdUsuario(String.valueOf(rs.getInt("IDUSUARIO")));
-			    usuario.setEmpresa(new EmpresaBO());
-			    usuario.getEmpresa().setRazonSocial(rs.getString("RAZON_SOCIAL"));
-			    usuario.getEmpresa().setRuc(rs.getString("RUC"));
-			    usuario.getEmpresa().setRepresentante(rs.getString("REPRESENTANTE"));
-			    usuario.getEmpresa().setNombreCargo(rs.getString("NOMBRE_CARGO"));
+			    
 			    
 			    usuario.setDireccion(rs.getString("DIRECCION"));
 			    usuario.setNombres(rs.getString("NOMBRES"));
@@ -242,4 +205,5 @@ public class ComunDAOImpl extends BaseDAO implements ComunIDAO{
 			this.cerrarConexion(con);
 		}
 	}
+
 }

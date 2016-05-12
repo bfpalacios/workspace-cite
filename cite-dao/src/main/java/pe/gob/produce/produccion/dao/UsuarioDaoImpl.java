@@ -59,13 +59,13 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario,String> implements UsuarioID
 		//cstm.setString(8, usuarioNuevo.getTelefono());//en el managementbean adicionarlo
 		cstm.setInt(9, 1);//cambiar por el estado
 		cstm.setInt(10, Integer.parseInt(usuarioNuevo.getIdRol()));
-		cstm.setString(11, usuarioNuevo.getEmpresa().getRazonSocial());
+		/*cstm.setString(11, usuarioNuevo.getEmpresa().getRazonSocial());
 		cstm.setString(12, usuarioNuevo.getEmpresa().getRuc());
 		cstm.setString(13, usuarioNuevo.getRubro());
 		cstm.setString(14, usuarioNuevo.getEmpresa().getRepresentante());
 		cstm.setString(15, usuarioNuevo.getEmpresa().getPortalWeb());
 		cstm.setString(16, usuarioNuevo.getEmpresa().getNombreContacto());
-		cstm.setString(17, usuarioNuevo.getEmpresa().getNombreCargo());
+		cstm.setString(17, usuarioNuevo.getEmpresa().getNombreCargo());*/
 		cstm.setString(18, usuarioNuevo.getEmailAdmin());
 		cstm.registerOutParameter(19, java.sql.Types.INTEGER);
 		
@@ -75,7 +75,6 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario,String> implements UsuarioID
 		idUsuario = cstm.getInt(19);
 		System.out.println("id de usuario " + String.valueOf(idUsuario));
 		System.out.println("dni " + usuarioNuevo.getDni());
-		System.out.println("ruc " + usuarioNuevo.getEmpresa().getRuc());
 		
 		if(!usuarioNuevo.getDireccion().equals(""))
 		{
@@ -89,10 +88,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario,String> implements UsuarioID
 			numeroDocumento = usuarioNuevo.getDni();			
 		}
 		
-		if(!usuarioNuevo.getEmpresa().getRuc().equals(""))
-		{
-			numeroDocumento = usuarioNuevo.getEmpresa().getRuc();
-		}
+		
 		
 		if(!numeroDocumento.equals(""))
 		{

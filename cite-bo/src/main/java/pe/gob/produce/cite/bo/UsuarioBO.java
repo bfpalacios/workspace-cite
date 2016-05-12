@@ -25,7 +25,6 @@ public class UsuarioBO implements Serializable {
 	private String email1;
 	private String email2;
 	private String emailAdmin;	
-	private EmpresaBO Empresa;
 	private UbigeoBO ubigeo;
 	private List<UbigeoBO> listUbigeo;
 	private List<RolBO> listRol;
@@ -42,24 +41,6 @@ public class UsuarioBO implements Serializable {
 	public void setConfirmacionContrasenia(String confirmacionContrasenia) {
 		this.confirmacionContrasenia = confirmacionContrasenia;
 	}
-
-
-	/**
-	 * @return the empresa
-	 */
-	public EmpresaBO getEmpresa() {
-		return Empresa;
-	}
-
-
-
-	/**
-	 * @param empresa the empresa to set
-	 */
-	public void setEmpresa(EmpresaBO empresa) {
-		Empresa = empresa;
-	}
-
 
 
 	/**

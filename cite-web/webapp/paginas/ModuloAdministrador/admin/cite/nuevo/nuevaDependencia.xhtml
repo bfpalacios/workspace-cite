@@ -17,7 +17,7 @@
 			
 		</p:outputPanel>
 		
-		<p:panelGrid id="pnlGridNuevaPlantilla">
+		<p:panelGrid id="pnlGridNuevaDependencia">
 			<f:facet name="header">
 				<p:row>
 					<p:column colspan="6">Datos de la Nueva DEPENDENCIA</p:column>
@@ -35,7 +35,7 @@
 
 				<p:column colspan="2">
 					<p:inputText id="codigoDependencia" size="25" 
-						value="#{servicioMBean.servicioModel.nombre}" />
+						value="#{citesMBean.servicioModel.codigo}" />
 					
 				</p:column>
 
@@ -49,7 +49,7 @@
 
 				<p:column colspan="2">
 					<p:inputText id="nombreDependencia" size="40" 
-						value="#{servicioMBean.servicioModel.nombre}" />
+						value="#{citesMBean.servicioModel.nombre}" />
 					
 				</p:column>
 
@@ -64,13 +64,14 @@
 					</p:column>
 						
 					<p:column>
-							<p:selectOneMenu id="sede" 
-								value="#{servicioMBean.servicioModel.codigo}">
-								<f:selectItem itemLabel="Seleccione La Sede " />
-								<f:selectItem itemLabel="UTT HUALLAGA" itemValue="1" />
-								<f:selectItem itemLabel="UTT Pucallpa" itemValue="2" />					
+							<p:selectOneMenu id="sede"
+								value="#{citesMBean.usuarioModelSelect.codigoDependencia}"
+								styleClass="ui-column-label-spij styleAlignRightColumn">
+								<f:selectItem itemLabel="Seleccione la sede " />
+								<f:selectItems value="#{citesMBean.usuarioModel.listarSedes}"
+									var="sede" itemLabel="#{sede.descripcion}"
+									itemValue="#{sede.codigo}" />
 							</p:selectOneMenu>
-							
 							<p:message for="sede" />
 					</p:column>
 			</p:row>
@@ -83,17 +84,29 @@
 				<p:column colspan="2" styleClass="styleAlignLeftColumn">
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
 						value="Guardar Dependencia"
-						actionListener="#{servicioMBean.guardarNuevaDependencia}"
+						actionListener="#{citesMBean.guardarNuevaDependencia}"
 						update="nombreDependencia,codigoDependencia, sede"
 						ajax="false" />
 				</p:column>
 				
 				<p:column colspan="2" styleClass="styleAlignRightColumn">
 					<p:commandButton value="Cancelar" id="botonCamcelar"
-						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+						actionListener="#{citesMBean.cancelar}" ajax="false" />
 				</p:column>
 			</p:row>
 		</p:outputPanel>
+		
+		<p:dialog header="Informe del Sistema" modal="true" height="120"
+			width="380" appendTo="@(body)" style="z-index: 999 !important"
+			id="dialogNuevaDependencia" widgetVar="dialogNuevaDependencia">
+
+			<h4 style="font-size: 16px">¡La Nueva dependencia se creo correctamente!</h4>
+			
+			<input type="button" value="Aceptar"
+					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaDependencia.xhtml';" />
+						
+		</p:dialog>
+		
 	</ui:define>
 </ui:composition>
 </html>

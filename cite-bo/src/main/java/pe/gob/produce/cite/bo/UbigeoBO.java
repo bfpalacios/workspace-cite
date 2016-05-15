@@ -1,7 +1,13 @@
 package pe.gob.produce.cite.bo;
 
-public class UbigeoBO {
+import java.io.Serializable;
+
+public class UbigeoBO implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String idUbigeo;
 	private String departamento;
 	private String provincia;

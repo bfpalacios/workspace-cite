@@ -7,6 +7,8 @@ import javax.faces.bean.RequestScoped;
 import org.springframework.stereotype.Component;
 
 import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
+import pe.gob.produce.cite.bo.SedeBO;
 
 @Component("serviceModel")
 @RequestScoped
@@ -16,21 +18,78 @@ public class ServicioModel {
 	private String sede;
 	private String nombre;
 	private String descripcion;
+	private String descripcionCorta;
 	private String nombreSolicitante;
 	private String cargo;
 	private String telefono;
 	private String email;
 	private String descripcionCITE;
 	private String codigoCITE;
+	private String codigoDependencia;
 	private String unidad;
 	private String requisito;
 	private String valorDeVenta;
 	private String precioDeVenta;
 	private String totalPrecioDeVenta;
+	private String tituloInformativo;
 
 	private List<CITEBO> listarCITE;
+	private List<DependenciaBO> listarDependencia;
+	private List<SedeBO> listarSedes;
 	
 	
+	
+	
+	public String getDescripcionCorta() {
+		return descripcionCorta;
+	}
+
+
+	public void setDescripcionCorta(String descripcionCorta) {
+		this.descripcionCorta = descripcionCorta;
+	}
+
+
+	public String getTituloInformativo() {
+		return tituloInformativo;
+	}
+
+
+	public void setTituloInformativo(String tituloInformativo) {
+		this.tituloInformativo = tituloInformativo;
+	}
+
+
+	public List<SedeBO> getListarSedes() {
+		return listarSedes;
+	}
+
+
+	public void setListarSedes(List<SedeBO> listarSedes) {
+		this.listarSedes = listarSedes;
+	}
+
+
+	public List<DependenciaBO> getListarDependencia() {
+		return listarDependencia;
+	}
+
+
+	public void setListarDependencia(List<DependenciaBO> listarDependencia) {
+		this.listarDependencia = listarDependencia;
+	}
+
+
+	public String getCodigoDependencia() {
+		return codigoDependencia;
+	}
+
+
+	public void setCodigoDependencia(String codigoDependencia) {
+		this.codigoDependencia = codigoDependencia;
+	}
+
+
 	public String getSede() {
 		return sede;
 	}

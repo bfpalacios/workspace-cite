@@ -23,7 +23,18 @@
 					<p:column colspan="6">Datos del Servicio Informativo</p:column>
 				</p:row>
 			</f:facet>
-
+			
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblFecha"
+						value="Fecha" />
+				</p:column>
+				<p:column colspan="5">
+					<p:calendar value="#{servicioMBean.date}" id="fechaServicio"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+				</p:column>
+			</p:row>
 
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -32,7 +43,19 @@
 
 				<p:column>
 					<p:inputText id="titulo" size="25"
-						value="#{servicioMBean.servicioModel.codigo}" />
+						value="#{servicioMBean.servicioModel.tituloInformativo}" />
+
+				</p:column>
+
+			</p:row>
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDescripcionCorta" value="Descripcion corta del Titulo" />
+				</p:column>
+
+				<p:column >
+					<p:inputText id="descripcionCorta" size="20" 
+						value="#{servicioMBean.servicioModel.descripcionCorta}" />
 
 				</p:column>
 
@@ -56,7 +79,7 @@
 				</p:column>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
 					<p:growl id="messagesInformativo" showDetail="true" />
-					<p:fileUpload label="Cargar documento ..."
+					<p:fileUpload label="Cargar documento ..."  id="docInformativo"
 						uploadLabel="Cargar documento" cancelLabel="Cancelar"
 						fileUploadListener="#{servicioMBean.handleFileUpload}"
 						mode="advanced" dragDropSupport="false" update="messages"
@@ -74,8 +97,8 @@
 				<p:column colspan="2" styleClass="styleAlignLeftColumn">
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
 						value="Guardar Informativo"
-						actionListener="#{servicioMBean.guardarNuevoServicio}"
-						update="titulo,descripcion" ajax="false" />
+						actionListener="#{servicioMBean.guardarNuevoServicioInformativo}"
+						update="titulo,descripcionCorta,descripcion, docInformativo" ajax="false" />
 				</p:column>
 
 				<p:column colspan="2" styleClass="styleAlignRightColumn">
@@ -84,6 +107,17 @@
 				</p:column>
 			</p:row>
 		</p:outputPanel>
+		<p:dialog header="Informe del Sistema" modal="true" height="120"
+			width="380" appendTo="@(body)" style="z-index: 999 !important"
+			id="dialogNuevoInformativo" widgetVar="dialogNuevoInformativo">
+
+			<h4 style="font-size: 16px">¡El nuevo informativo se creo correctamente!</h4>
+			
+			<input type="button" value="Aceptar"
+					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioInformativo.xhtml';" />
+						
+		</p:dialog>
+		
 	</ui:define>
 </ui:composition>
 </html>

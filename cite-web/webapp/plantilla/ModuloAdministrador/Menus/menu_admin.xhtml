@@ -12,14 +12,16 @@
 			transient="true" >
 			<p:submenu label="Modulo - Registro de Datos de las CITES">
 				<p:menuitem 
-					value="Nuevo CITE" 			action="#{servicioMBean.selectorNuevoServicio(4)}"
+					value="Nueva Sede" 			action="#{citesMBean.selectorNuevoSede(2)}"
+					icon="ui-icon-arrowrefresh-1-w" />					
+				
+				<p:menuitem 
+					value="Nueva Dependencia" 	action="#{citesMBean.selectorNuevoDependencia(2)}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
-					value="Nueva Sede" 			action="#{usuarioMBean.selectorNuevoSede(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />
-				<p:menuitem 
-					value="Nueva Dependencia" 	action="#{servicioMBean.selectorNuevoDependencia(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />
+					value="Nuevo CITE" 			action="#{citesMBean.selectorNuevoServicio(4)}"
+					icon="ui-icon-arrowrefresh-1-w" />			
+				
 			</p:submenu> 
 			<p:submenu label="Modulo - Carga de Servicios Informativos">
 				<p:menuitem 

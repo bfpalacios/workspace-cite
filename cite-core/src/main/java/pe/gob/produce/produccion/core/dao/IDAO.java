@@ -12,4 +12,5 @@ public interface IDAO<Entidad, Id> {
 	public Entidad obtenerEntidadPorId(Class<Entidad> clase, Serializable id) throws Exception;
 	public List<Entidad> obtenerListEntidadPorParametro(Class<Entidad> clase, Map<String,Object> parametro) throws Exception;
 	public List<Entidad> listarTodos(Class<Entidad> clase) throws Exception;
+	
 }

@@ -47,19 +47,11 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		return getComunDAO().obtenerRoles(proceso);
 	}
 
-	public void grabarUsuarioObservados(UsuarioBO usuarioNuevo) throws Exception{
-		usuarioDao.grabarUsuarioObservados(usuarioNuevo);
-	}
 	
 	public void grabarUsuario(UsuarioBO usuarioNuevo) throws Exception{
 		usuarioDao.grabarUsuario(usuarioNuevo);
 	}
 	
-
-
-	public void grabarUsuarioRegulares(UsuarioBO usuarioNuevo) throws Exception{
-		usuarioDao.grabarUsuarioRegulares(usuarioNuevo);
-	}
 	
 	public String buscarUsuario(String codUsuario) throws Exception{
 		return usuarioDao.buscarUsuario(codUsuario);

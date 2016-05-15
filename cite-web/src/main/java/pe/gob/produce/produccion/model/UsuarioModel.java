@@ -6,6 +6,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.springframework.stereotype.Component;
 
+import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
 import pe.gob.produce.cite.bo.UsuarioRolBO;
 
@@ -38,22 +39,49 @@ public class UsuarioModel {
 	private String rol;
 	private String perfil;
 	private String emailAdmin;	
-	private EmpresaModel empresaModel;
 	private UbigeoModel ubigeo;
 	private List<UbigeoModel> listUbigeo;
 	private List<UbigeoModel> listProvincia;
 	private List<UbigeoModel> listDistrito;
+	private List<SedeBO> listarSedes;
 	private UsuarioBO usuario;
 	private String codAlumno;
 	private int planAlumno;
 	private UsuarioRolBO usuarioRol;
 	private List<UsuarioBO> rolesUsuario;
+	private String codigoDependencia;
 	
-	
+	public List<SedeBO> getListarSedes() {
+		return listarSedes;
+	}
+
+
+
+
+	public String getCodigoDependencia() {
+		return codigoDependencia;
+	}
+
+
+
+
+	public void setCodigoDependencia(String codigoDependencia) {
+		this.codigoDependencia = codigoDependencia;
+	}
+
+
+
+
+	public void setListarSedes(List<SedeBO> listarSedes) {
+		this.listarSedes = listarSedes;
+	}
+
+
+
+
 	public UsuarioModel () {
 		this.idUsuario = null;
 		this.clave = null;
-		this.empresaModel = new EmpresaModel();
 	}
 	
 	
@@ -458,22 +486,7 @@ public class UsuarioModel {
 		this.emailAdmin = emailAdmin;
 	}	
 	
-	/**
-	 * @return the empresaModel
-	 */
-	public EmpresaModel getEmpresaModel() {
-		return empresaModel;
-	}
-
-
-	/**
-	 * @param empresaModel the empresaModel to set
-	 */
-	public void setEmpresaModel(EmpresaModel empresaModel) {
-		this.empresaModel = empresaModel;
-	}
-
-
+	
 	/**
 	 * @return the ubigeo
 	 */

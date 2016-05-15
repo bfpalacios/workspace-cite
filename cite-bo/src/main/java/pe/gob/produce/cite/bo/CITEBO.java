@@ -1,8 +1,14 @@
 package pe.gob.produce.cite.bo;
 
-public class CITEBO {
+import java.io.Serializable;
+
+public class CITEBO implements Serializable {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String codigo;
 	private String descripcion;
 	public String getCodigo() {

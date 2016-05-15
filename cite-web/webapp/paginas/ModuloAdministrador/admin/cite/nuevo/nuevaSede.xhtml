@@ -17,7 +17,7 @@
 			
 		</p:outputPanel>
 		
-		<p:panelGrid id="pnlGridNuevoServicio">
+		<p:panelGrid id="pnlGridNuevaSede">
 			<f:facet name="header">
 				<p:row>
 					<p:column colspan="6">Datos de la Nueva Sede</p:column>
@@ -33,7 +33,7 @@
 
 				<p:column colspan="2">
 					<p:inputText id="nombreSede" size="40" 
-						value="#{servicioMBean.usuarioModel.idUsuario}" />
+						value="#{citesMBean.servicioModel.nombre}" />
 					
 				</p:column>
 				
@@ -44,7 +44,7 @@
 
 				<p:column colspan="2">
 					<p:inputText id="codigoSede" size="20" 
-						value="#{servicioMBean.usuarioModel.idUsuario}" />
+						value="#{citesMBean.servicioModel.codigo}" />
 					
 				</p:column>
 
@@ -57,11 +57,11 @@
 					</p:column>
 					<p:column>
 						<p:selectOneMenu id="dpto"
-							value="#{servicioMBean.usuarioModelSelect.codDepartamento}"
-							valueChangeListener="#{servicioMBean.actualizarlistProvincia}"
+							value="#{citesMBean.usuarioModelSelect.codDepartamento}"
+							valueChangeListener="#{citesMBean.actualizarlistProvincia}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione el departamento:" />
-							<f:selectItems value="#{servicioMBean.usuarioModel.listUbigeo}"
+							<f:selectItems value="#{citesMBean.usuarioModel.listUbigeo}"
 								var="dpto" itemLabel="#{dpto.departamento}"
 								itemValue="#{dpto.idUbigeo}" />
 							<f:ajax event="change" execute="@this" render="provincia" />
@@ -76,11 +76,11 @@
 
 					<p:column>
 						<p:selectOneMenu id="provincia"
-							value="#{servicioMBean.usuarioModelSelect.codProvincia}"
-							valueChangeListener="#{servicioMBean.actualizarlistDistrito}"
+							value="#{citesMBean.usuarioModelSelect.codProvincia}"
+							valueChangeListener="#{citesMBean.actualizarlistDistrito}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione la provincia " />
-							<f:selectItems value="#{servicioMBean.usuarioModel.listProvincia}"
+							<f:selectItems value="#{citesMBean.usuarioModel.listProvincia}"
 								var="prov" itemLabel="#{prov.provincia}"
 								itemValue="#{prov.idUbigeo}" />
 
@@ -96,10 +96,10 @@
 
 					<p:column>
 						<p:selectOneMenu id="distrito"
-							value="#{servicioMBean.usuarioModelSelect.codDistrito}"
+							value="#{citesMBean.usuarioModelSelect.codDistrito}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione el distrito " />
-							<f:selectItems value="#{servicioMBean.usuarioModel.listDistrito}"
+							<f:selectItems value="#{citesMBean.usuarioModel.listDistrito}"
 								var="distrito" itemLabel="#{distrito.distrito}"
 								itemValue="#{distrito.idUbigeo}" />
 						</p:selectOneMenu>
@@ -117,17 +117,28 @@
 				<p:column colspan="2" styleClass="styleAlignLeftColumn">
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
 						value="Guardar SEDE"
-						actionListener="#{servicioMBean.guardarNuevoServicio}"
+						actionListener="#{citesMBean.guardarNuevaSede}"
 						update="nombreSede,codigoSede,dpto, provincia, distrito"
 						ajax="false" />
 				</p:column>
 				
 				<p:column colspan="2" styleClass="styleAlignRightColumn">
 					<p:commandButton value="Cancelar" id="botonCamcelar"
-						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+						actionListener="#{citesMBean.cancelar}" ajax="false" />
 				</p:column>
 			</p:row>
 		</p:outputPanel>
+		
+		<p:dialog header="Informe del Sistema" modal="true" height="120"
+			width="380" appendTo="@(body)" style="z-index: 999 !important"
+			id="dialogNuevaSede" widgetVar="dialogNuevaSede">
+
+			<h4 style="font-size: 16px">¡La Nueva sede se creo correctamente!</h4>
+			
+			<input type="button" value="Aceptar"
+					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaSede.xhtml';" />
+						
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 </html>

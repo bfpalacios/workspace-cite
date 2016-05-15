@@ -15,13 +15,17 @@ import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FilenameUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
+import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioBO;
+import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.produccion.core.util.Convertidor;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
@@ -425,6 +429,36 @@ public class ServicioMBean {
 	
 
 
+	
+	
+	
+	
+	public void guardarNuevoServicioInformativo() {
+		String pagina = "";
+		try{
+				Date fecha = getDate();
+				String titulo = getServicioModel().getTituloInformativo()==null?"":getServicioModel().getTituloInformativo();
+				String descripcionCorta = getServicioModel().getDescripcionCorta()==null?"":getServicioModel().getDescripcionCorta();;
+				String descrcipcion = getServicioModel().getDescripcion();
+				
+				ServicioInformativoBO servicio = new ServicioInformativoBO();
+				
+				
+				
+							
+				//citeServices.grabarNuevaDependencia(dependencia);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			mostrarMensaje(9);				
+		}	
+		limpiarObjetos();
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogNuevoInformativo.show()");
+		
+		
+	}
+	
 	public void guardarNuevoServicio(int opcion) {
 		String pagina = "";
 		ObtenerNumeroAleatorio numero = new ObtenerNumeroAleatorio();

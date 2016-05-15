@@ -43,7 +43,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario,String> implements UsuarioID
 		CallableStatement cstm = null;
 		
 		con = Conexion.obtenerConexion();
-		cstm = con.prepareCall("{call SP_Nuevo_Usuario(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");		
+		cstm = con.prepareCall("{call SP_Nuevo_Usuario(?,?,?,?,?,?,?,?,?,?,?)}");		
 		cstm.setQueryTimeout(3);
 		cstm.setString(1, usuarioNuevo.getIdUsuario());		
 		cstm.setString(2, usuarioNuevo.getContrasenia());
@@ -54,34 +54,24 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario,String> implements UsuarioID
 		cstm.setInt(6, Integer.parseInt(usuarioNuevo.getIdRol()));
 		cstm.setString(7, usuarioNuevo.getTelefono());
 		cstm.setString(8, usuarioNuevo.getTelefono());
-		//cstm.setString(6, usuarioNuevo.getCorreo());
-		//cstm.setString(7, usuarioNuevo.getDireccion());
-		//cstm.setString(8, usuarioNuevo.getTelefono());//en el managementbean adicionarlo
 		cstm.setInt(9, 1);//cambiar por el estado
 		cstm.setInt(10, Integer.parseInt(usuarioNuevo.getIdRol()));
-		/*cstm.setString(11, usuarioNuevo.getEmpresa().getRazonSocial());
-		cstm.setString(12, usuarioNuevo.getEmpresa().getRuc());
-		cstm.setString(13, usuarioNuevo.getRubro());
-		cstm.setString(14, usuarioNuevo.getEmpresa().getRepresentante());
-		cstm.setString(15, usuarioNuevo.getEmpresa().getPortalWeb());
-		cstm.setString(16, usuarioNuevo.getEmpresa().getNombreContacto());
-		cstm.setString(17, usuarioNuevo.getEmpresa().getNombreCargo());*/
-		cstm.setString(18, usuarioNuevo.getEmailAdmin());
-		cstm.registerOutParameter(19, java.sql.Types.INTEGER);
+		
+		cstm.registerOutParameter(11, java.sql.Types.INTEGER);
 		
 		cstm.execute();
 		
 
-		idUsuario = cstm.getInt(19);
+		idUsuario = cstm.getInt(11);
 		System.out.println("id de usuario " + String.valueOf(idUsuario));
 		System.out.println("dni " + usuarioNuevo.getDni());
 		
-		if(!usuarioNuevo.getDireccion().equals(""))
+		/*if(!usuarioNuevo.getDireccion().equals(""))
 		{
 			
 			grabarUsuarioDirecciones(idUsuario,usuarioNuevo.getUbigeo().getIdUbigeo(), usuarioNuevo.getDireccion());
 			
-		}
+		}*/
 		
 		if(!usuarioNuevo.getDni().equals(""))
 		{			
@@ -111,6 +101,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario,String> implements UsuarioID
 		cstm.setInt(1, idUsuario);		
 		cstm.setString(2, ubigeo);
 		cstm.setString(3, direccion);	
+	
 		cstm.execute();
 		
 	}
@@ -131,45 +122,7 @@ public void grabarUsuarioDocumentos(int idUsuario, String numeroDocumento, Strin
 		
 	}
 
-	public void grabarUsuarioObservados(UsuarioBO usuarioNuevo) throws SQLException{
-		Connection con = null;
-		CallableStatement cstm = null;
-		
-		con = Conexion.obtenerConexion();
-		cstm = con.prepareCall("{call SP_Nuevo_Usuario(?,?,?,?,?,?,?,?,?)}");		
-		cstm.setQueryTimeout(3);
-		cstm.setString(1, usuarioNuevo.getIdUsuario());		
-		cstm.setString(2, usuarioNuevo.getContrasenia());
-		cstm.setString(3, usuarioNuevo.getApellidoPaterno());
-		cstm.setString(4, usuarioNuevo.getApellidoMaterno());
-		cstm.setString(5, usuarioNuevo.getNombres());
-		cstm.setString(6, usuarioNuevo.getCorreo());
-		cstm.setString(7, usuarioNuevo.getDireccion());
-		cstm.setString(8, usuarioNuevo.getTelefono());
-		cstm.setInt(9, Integer.parseInt(usuarioNuevo.getIdRol()));
-		cstm.execute();
-	}
 	
-	public void grabarUsuarioRegulares(UsuarioBO usuarioNuevo) throws SQLException{
-		Connection con = null;
-		CallableStatement cstm = null;
-		
-		con = Conexion.obtenerConexion();
-		cstm = con.prepareCall("{call CREAR_USUARIO_REGULARES(?,?,?,?,?,?,?,?,?,?,?)}");		
-		cstm.setQueryTimeout(3);
-		cstm.setString(1, usuarioNuevo.getIdUsuario());		
-		cstm.setString(2, usuarioNuevo.getContrasenia());
-		cstm.setString(3, usuarioNuevo.getApellidoPaterno());
-		cstm.setString(4, usuarioNuevo.getApellidoMaterno());
-		cstm.setString(5, usuarioNuevo.getNombres());
-		cstm.setString(6, usuarioNuevo.getCorreo());
-		cstm.setString(7, usuarioNuevo.getDireccion());
-		cstm.setString(8, usuarioNuevo.getTelefono());		
-		cstm.setInt(9, Integer.parseInt(usuarioNuevo.getIdRol()));
-		cstm.setString(10, usuarioNuevo.getCodAlumno()==null?"0":usuarioNuevo.getCodAlumno());
-		//cstm.setInt(11, usuarioNuevo.getPlanAlumno()==0?0:usuarioNuevo.getPlanAlumno());
-		cstm.execute();
-	}
 	
 	public String buscarUsuario(String codUsuario) throws Exception{
 		Connection con = null;

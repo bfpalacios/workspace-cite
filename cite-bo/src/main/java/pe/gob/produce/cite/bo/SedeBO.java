@@ -2,16 +2,15 @@ package pe.gob.produce.cite.bo;
 
 import java.io.Serializable;
 
+public class SedeBO implements Serializable {
 
-public class DependenciaBO implements Serializable{
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String codigo;
 	private String descripcion;
-	private SedeBO sede;
+	private UbigeoBO ubigeo;
 	public String getCodigo() {
 		return codigo;
 	}
@@ -24,14 +23,11 @@ public class DependenciaBO implements Serializable{
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public SedeBO getSede() {
-		return sede;
+	public UbigeoBO getUbigeo() {
+		return ubigeo;
 	}
-	public void setSede(SedeBO sede) {
-		this.sede = sede;
+	public void setUbigeo(UbigeoBO ubigeo) {
+		this.ubigeo = ubigeo;
 	}
-	
-	
-	
 	
 }

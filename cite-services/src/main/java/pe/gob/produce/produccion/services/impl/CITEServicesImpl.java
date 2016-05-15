@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
+import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.produccion.dao.CITEIDAO;
 import pe.gob.produce.produccion.services.CITEServices;
 
@@ -21,6 +23,28 @@ public class CITEServicesImpl implements CITEServices{
 	public List<CITEBO> listarCITES() throws Exception {
 
 		return citeDAO.listarCites();
+	}
+
+
+	@Override
+	public void grabarNuevaSede(SedeBO sede) throws Exception {
+		citeDAO.grabarNuevaSede(sede);
+		
+	}
+
+
+	@Override
+	public void grabarNuevaDependencia(DependenciaBO dependencia)
+			throws Exception {
+		citeDAO.grabarNuevaDependencia(dependencia);
+		
+	}
+
+
+	@Override
+	public List<SedeBO> listarSedes() throws Exception {
+		// TODO Auto-generated method stub
+		return citeDAO.listarSedes();
 	}
 	
 	

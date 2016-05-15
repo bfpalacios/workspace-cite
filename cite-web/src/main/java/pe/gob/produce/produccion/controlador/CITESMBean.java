@@ -15,12 +15,15 @@ import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FilenameUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
+import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.produccion.core.util.Convertidor;
@@ -134,7 +137,9 @@ public class CITESMBean {
 		String pagina = "";
 			
 		 inicializarClases();
-
+		 
+		 listarSedes();
+		 
 		 switch(modo){ 
 		
 		 /*@@ESTE ES EL CASO PARA PERFIL CITE */
@@ -148,9 +153,6 @@ public class CITESMBean {
 			
 		 	pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaDependencia.xhtml"; break;
 			
-		 case 3:  									
-				
-			 pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaSede.xhtml"; break;
 			
 		 }
 		return pagina;		
@@ -179,8 +181,6 @@ public class CITESMBean {
 				UbigeoModel ubigeo = new UbigeoModel();
 				ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
 				ubigeo.setDepartamento(ubigeoBO.getDepartamento());
-				// ubigeo.setProvincia(ubigeoBO.getProvincia());
-				// ubigeo.setDistrito(ubigeoBO.getDistrito());
 				listaUbigeoModel.add(ubigeo);
 			}
 
@@ -505,16 +505,91 @@ public class CITESMBean {
 	}
 	
 	
+	public void guardarNuevaSede() {
+		String pagina = "";
+		try{
+				String nombreSede = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
+				String codigoSede = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();;
+				String codigoUbigeo = getUsuarioModelSelect().getCodDepartamento() + getUsuarioModelSelect().getCodProvincia() + getUsuarioModelSelect().getCodDistrito()  ;
+				
+				SedeBO sede = new SedeBO();
+				sede.setCodigo(codigoSede);
+				sede.setDescripcion(nombreSede);
+				sede.setUbigeo(new UbigeoBO());
+				sede.getUbigeo().setIdUbigeo(codigoUbigeo);
+				
+							
+				citeServices.grabarNuevaSede(sede);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			mostrarMensaje(9);				
+		}	
+		limpiarObjetos();
+		
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogNuevaSede.show()");
+		
+		
+	}
+	
+	
+	public void guardarNuevaDependencia() {
+		String pagina = "";
+		try{
+				String nombreDependencia = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
+				String codigoDependencia = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();;
+				String codigoUTT = getUsuarioModelSelect().getCodigoDependencia();
+				
+				DependenciaBO dependencia = new DependenciaBO();
+				dependencia.setCodigo(codigoDependencia);
+				dependencia.setDescripcion(nombreDependencia);
+				dependencia.setSede(new SedeBO());
+				dependencia.getSede().setCodigo(codigoUTT);
+				
+							
+				citeServices.grabarNuevaDependencia(dependencia);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			mostrarMensaje(9);				
+		}	
+		limpiarObjetos();
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogNuevaDependencia.show()");
+		
+		
+	}
+	
+	
 	private void limpiarObjetos(){
 		setServicioModelbi(null);
 		setServicioModelbi(new ServicioModel());
+		setUsuarioModelSelect(new UsuarioModel());
+		//reset();
 	}
-
+	
+	public void reset() {
+		RequestContext.getCurrentInstance().reset("formPrincipal:pnlGridNuevaSede");
+		
+	}
+	
 	private void listarCITE(){
 		try{
 			
 		
 			getServicioModel().setListarCITE(citeServices.listarCITES());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void listarSedes(){
+		try{
+			
+		
+			getUsuarioModel().setListarSedes(citeServices.listarSedes());
 		}
 		catch(Exception e){
 			e.printStackTrace();

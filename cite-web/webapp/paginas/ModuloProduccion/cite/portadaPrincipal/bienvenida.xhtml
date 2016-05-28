@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+		<div style="width: 50%; float: left;">
+			<p:panel id="noticia"
+				header="PPK ratifica sus frases sobre Keiko, pero luego se disculpa"
+				footer="Ver más" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:graphicImage value="/Imagenes/news1.jpg" />
+					<h:outputText
+						value="Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó..." />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="noticia2"
+				header="Mercedes Aráoz: Keiko Fujimori es una malagradecida"
+				footer="Ver más" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:graphicImage value="/Imagenes/news2.jpg" />
+					<h:outputText
+						value="Mercedes Aráoz, candidata a la primera vicepresidencia de Peruanos por el Kambio, cumplió hoy en Trujillo actividades proselitistas con miras a la segunda vuelta que se llevará a cabo el 5 de junio..." />
+				</h:panelGrid>
+			</p:panel>
+			
+		</div>
+		<div style="width: 50%; float: right;">
+			<!--  
+			<div style="padding-left: 15px;">
+			<p style="border-bottom-color: black;border-bottom-width: 1px;border-bottom-style: solid;"><span  style="float: left;font-size: 200%">Eventos</span> <SPAN style="float: right;"><A href="#" >ver todos></A></SPAN>
+			</p>		
+			</div>
+			-->
+			<div style="padding-left: 15px;">
+				<p
+					style="border-bottom-color: #35465c; color: #35465c; border-bottom-width: 2px; border-bottom-style: solid; text-align: left; font-size: 200%">Eventos
+				</p>
+
+				<div
+					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">31
+					MAY</div>
+				<div style="width: 75%; float: right; text-align: left;">
+					<h2 style="color: #375eca;">MBA en Arequipa</h2>
+					<p>
+						<span>Hotel Libertador - Arequipa</span> 
+						<span style="color: #375eca">19:30</span>
+					</p>
+				</div>
+				<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</p>
+				<div
+					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">08
+					JUN</div>
+				<div style="width: 75%; float: right; text-align: left;">
+					<h2 style="color: #375eca;">Reunión sobre Aspectos Sanitarios</h2>
+					<p>
+						<span>Lima - Perú</span> 
+						<span style="color: #375eca">19:30</span>
+					</p>
+				</div>
+				<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</p>
+				<div
+					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">10
+					JUN</div>
+				<div style="width: 75%; float: right; text-align: left;">
+					<h2 style="color: #375eca;">Taller de Promoción del Cultivo</h2>
+					<p>
+						<span>Hotel Libertador - Arequipa</span> 
+						<span style="color: #375eca">19:30</span>
+					</p>
+				</div>
+			</div>
+
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

@@ -20,7 +20,7 @@
 		<p:panelGrid id="pnlGridNuevaSede">
 			<f:facet name="header">
 				<p:row>
-					<p:column colspan="6">Datos de la Nueva Sede</p:column>
+					<p:column colspan="6">Datos de la Nueva Sede - UTT</p:column>
 				</p:row>
 			</f:facet>
 
@@ -28,13 +28,14 @@
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lblNombreSede"
-						value="Nombre de la Sede" />
+						value="Nombre de la Sede - UTT" />
 				</p:column>
 
 				<p:column colspan="2">
 					<p:inputText id="nombreSede" size="40" 
 						value="#{citesMBean.servicioModel.nombre}" />
 					
+					<p:message for="nombreSede" />
 				</p:column>
 				
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -45,12 +46,53 @@
 				<p:column colspan="2">
 					<p:inputText id="codigoSede" size="20" 
 						value="#{citesMBean.servicioModel.codigo}" />
-					
+					<p:message for="codigoSede" />
 				</p:column>
 
 			</p:row>
+			
 			<p:row>
-
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblJefeSede"
+						value="Jefe de la Sede - UTT" />
+				</p:column>
+				<p:column colspan="2">
+					<p:inputText id="jefaturaSede" size="40" 
+						value="#{citesMBean.servicioModel.jefaturaSede}" />					
+					<p:message for="jefaturaSede" />
+				</p:column>				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCorreo"
+						value="Email de la Sede" />
+				</p:column>
+				<p:column colspan="2">
+					<p:inputText id="emailSede" size="20" 
+						value="#{citesMBean.servicioModel.emailSede}" />
+					<p:message for="emailSede" />
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblTelefono"
+						value="Telefono de la Sede - UTT" />
+				</p:column>
+				<p:column colspan="2">
+					<p:inputMask id="telefonoSede" size="10" maxlength="7"  mask="999 99-99"
+						value="#{citesMBean.servicioModel.telefono}" />					
+					<p:message for="telefonoSede" />
+				</p:column>				
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblCelular"
+						value="Celular de la Jefatura" />
+				</p:column>
+				<p:column colspan="2">
+					<p:inputMask id="celularSede" size="10" maxlength="9" mask="999 999-999"
+						value="#{citesMBean.servicioModel.celular}"   />
+					<p:message for="celularSede" />
+				</p:column>
+			</p:row>
+			<p:row>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblDpto"
 							value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
@@ -118,7 +160,7 @@
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
 						value="Guardar SEDE"
 						actionListener="#{citesMBean.guardarNuevaSede}"
-						update="nombreSede,codigoSede,dpto, provincia, distrito"
+						update="nombreSede,codigoSede,dpto, provincia, distrito, telefonoSede, celularSede, emailSede, jefaturaSede"
 						ajax="false" />
 				</p:column>
 				

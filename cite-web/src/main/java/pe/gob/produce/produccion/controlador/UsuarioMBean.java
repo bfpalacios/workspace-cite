@@ -4,16 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+
 import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
+import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
+import pe.gob.produce.produccion.model.CITESModel;
 import pe.gob.produce.produccion.model.UbigeoModel;
 import pe.gob.produce.produccion.model.UsuarioModel;
 import pe.gob.produce.produccion.services.ComunServices;
@@ -34,14 +41,7 @@ public class UsuarioMBean extends GenericoController {
 
 	private UIComponent btnGuardar;
 	private UsuarioModel usuarioModelSelect;
-
-	private int MODO_USUARIO;
-	private static int MODO_ADMIN = 1;
-	private static int MODO_OCAA = 2;
-	private int PROCESO;
-	private static int PROCESO_OBSERVADOS = 1;
-	private static int PROCESO_REGULARES = 2;
-	private static int ROL_ALUMNO_REGULAR = 11;
+ 
 
 	private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -133,7 +133,33 @@ public class UsuarioMBean extends GenericoController {
 
 		return pagina;
 	}
+	
+	public void actualizarlistSedes(ValueChangeEvent e) throws Exception {
+		String codCite = (String) (e.getNewValue() == null ? "" : e
+				.getNewValue());
+ 
+		System.out.println("codigo de cite " + codCite);
+		List<SedeBO> listarSede = new ArrayList<SedeBO>();
+		//List<CITESModel> listaCITESModel = new ArrayList<CITESModel>();
 
+		listarSede = comunServices.listarSedes(codCite); 
+
+		getUsuarioModel().setListSedes(listarSede);
+	}
+	
+	
+	public void actualizarlistDependencias(ValueChangeEvent e) throws Exception {
+		String codSede = (String) (e.getNewValue() == null ? "" : e
+				.getNewValue());
+ 
+		System.out.println("codigo de sede " + codSede);
+		List<DependenciaBO> listarDepedencias = new ArrayList<DependenciaBO>();
+		
+		listarDepedencias = comunServices.listarDependencias(codSede);
+ 
+
+		getUsuarioModel().setListDependencia(listarDepedencias);
+	}
 	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
 		String codDepartamento = (String) (e.getNewValue() == null ? "" : e
 				.getNewValue());
@@ -148,10 +174,8 @@ public class UsuarioMBean extends GenericoController {
 		for (UbigeoBO ubigeoBO : listarProvincia) {
 
 			UbigeoModel ubigeo = new UbigeoModel();
-			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
-			// ubigeo.setDepartamento(ubigeoBO.getDepartamento());
-			ubigeo.setProvincia(ubigeoBO.getProvincia());
-			// ubigeo.setDistrito(ubigeoBO.getDistrito());
+			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo()); 
+			ubigeo.setProvincia(ubigeoBO.getProvincia()); 
 			listaUbigeoModel.add(ubigeo);
 		}
 
@@ -192,28 +216,8 @@ public class UsuarioMBean extends GenericoController {
 	public String registraNuevoCliente(int modo) {
 
 		String pagina = "";
-		List<UbigeoBO> listarUbigeo = new ArrayList<UbigeoBO>();
-
-		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
-
-		try {
-			// se llama para cargar al combo de departamento
-			listarUbigeo = comunServices.listUbigeo();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		for (UbigeoBO ubigeoBO : listarUbigeo) {
-
-			UbigeoModel ubigeo = new UbigeoModel();
-			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
-			ubigeo.setDepartamento(ubigeoBO.getDepartamento());
-			listaUbigeoModel.add(ubigeo);
-		}
-
-		getUsuarioModel().setListUbigeo(listaUbigeoModel);
-
+		cargarUbigeo();
+		cargarCITES();
 		switch (modo) {
 
 		/* @@ESTE ES EL CASO PARA PERFIL CITE */
@@ -266,27 +270,7 @@ public class UsuarioMBean extends GenericoController {
 	private void inicializarClases() {
 		this.usuarioModel = new UsuarioModel();
 
-	}
-
-	private void llenarRolesObservados() {
-		List<UsuarioBO> usuarioRoles = new ArrayList<UsuarioBO>();
-		try {
-			usuarioRoles = usuarioServices.obtenerRoles(PROCESO_OBSERVADOS);
-			getUsuarioModel().setRolesUsuario(usuarioRoles);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void llenarRolesRegulares() {
-		List<UsuarioBO> usuarioRoles = new ArrayList<UsuarioBO>();
-		try {
-			usuarioRoles = usuarioServices.obtenerRoles(PROCESO_REGULARES);
-			getUsuarioModel().setRolesUsuario(usuarioRoles);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	}  
 
 	public boolean validaNumero(String valor) {
 		boolean esNumerico = false;
@@ -322,17 +306,7 @@ public class UsuarioMBean extends GenericoController {
 		}
 		return correoValido;
 	}
-
-	public void activarAlumno(ValueChangeEvent e) throws Exception {
-		int rolUsuario = Integer
-				.parseInt((String) (e.getNewValue() == null ? "0" : e
-						.getNewValue()));
-		if (rolUsuario == ROL_ALUMNO_REGULAR) {
-			setEsAlumno(false);
-		} else {
-			setEsAlumno(true);
-		}
-	}
+ 
 
 	private String buscarUsuario(String usuario) {
 		String codUsuario = "";
@@ -349,29 +323,15 @@ public class UsuarioMBean extends GenericoController {
 
 		switch (modo) {
 		case 1:
-			MODO_USUARIO = MODO_ADMIN;
-			inicializarClases();
-
-			// listarCITE();
+			 
+			inicializarClases(); 
 			pagina = "";
 			break;
 
 		case 2:
-			inicializarClases();
-
-			// listarCITE();
+			inicializarClases(); 
 			pagina = "/paginas/ModuloProduccion/cite/registro/buscarClienteEmpresa.xhtml";
-			break;
-
-		/*
-		 * @@ESTE ES EL CASO PARA PERFIL EMPLEADO case 2: MODO_USUARIO =
-		 * MODO_OCAA; inicializarClases(); if(getDatosAlumnoExcelModelGrid() !=
-		 * null){
-		 * getDatosAlumnoExcelModelGrid().removeAll(getDatosAlumnoExcelModelGrid
-		 * ()); } pagina =
-		 * "/paginas/ModuloObservados/ocaa/cargar/cargarDatosAlumnosObs.xhtml";
-		 * break;
-		 */
+			break; 
 		}
 		return pagina;
 	}
@@ -380,30 +340,15 @@ public class UsuarioMBean extends GenericoController {
 		String pagina = "";
 
 		switch (modo) {
-		case 1:
-			MODO_USUARIO = MODO_ADMIN;
-			inicializarClases();
-
-			// listarCITE();
+		case 1: 
+			inicializarClases(); 
 			pagina = "";
 			break;
 
 		case 2:
-			inicializarClases();
-
-			// listarCITE();
+			inicializarClases(); 
 			pagina = "/paginas/ModuloProduccion/cite/registro/buscarClientePersona.xhtml";
-			break;
-
-		/*
-		 * @@ESTE ES EL CASO PARA PERFIL EMPLEADO case 2: MODO_USUARIO =
-		 * MODO_OCAA; inicializarClases(); if(getDatosAlumnoExcelModelGrid() !=
-		 * null){
-		 * getDatosAlumnoExcelModelGrid().removeAll(getDatosAlumnoExcelModelGrid
-		 * ()); } pagina =
-		 * "/paginas/ModuloObservados/ocaa/cargar/cargarDatosAlumnosObs.xhtml";
-		 * break;
-		 */
+			break; 
 		}
 		return pagina;
 	}
@@ -506,73 +451,63 @@ public class UsuarioMBean extends GenericoController {
 			int idRol = Integer
 					.parseInt(usuarioModelSelect.getRol() == null ? "0"
 							: usuarioModelSelect.getRol());
+			String codCite = usuarioModelSelect.getCodCite() == null ? "0"
+					: usuarioModelSelect.getCodCite();
+			String codSede = usuarioModelSelect.getCodSede() == null ? "0"
+					: usuarioModelSelect.getCodSede();
+			String codDependencia = usuarioModelSelect.getCodDependencia() == null ? "0"
+					: usuarioModelSelect.getCodDependencia();
+	 
 			String nombres = getUsuarioModel().getNombres() == null ? ""
 					: validaCadena(getUsuarioModel().getNombres()) == true ? getUsuarioModel()
-							.getNombres() : "invalido";
-			String apellidoMaterno = getUsuarioModel().getPaterno() == null ? ""
-					: validaCadena(getUsuarioModel().getPaterno()) == true ? getUsuarioModel()
-							.getPaterno() : "invalido";
-			
-							String apellidoPaterno = getUsuarioModel().getPaterno() == null ? ""
-									: validaCadena(getUsuarioModel().getPaterno()) == true ? getUsuarioModel()
-											.getPaterno() : "invalido";
+							.getNombres() : "invalido"; 
 											
+			String cargo = getUsuarioModel().getCargo() == null ? ""
+									: validaCadena(getUsuarioModel().getCargo()) == true ? getUsuarioModel()
+											.getCargo() : "invalido"; 
+															
+											
+			String emailItp = getUsuarioModel().getEmailAdmin() == null ? ""
+					: validaCorreo(getUsuarioModel().getEmailAdmin()) == true ? getUsuarioModel()
+							.getEmailAdmin() : "invalido"; 
+			
+			String emailpersonal = getUsuarioModel().getEmail1() == null ? ""
+									: validaCorreo(getUsuarioModel().getEmail1()) == true ? getUsuarioModel()
+								.getEmail1() : "invalido"; 
 							
-			String correo = getUsuarioModel().getCorreo() == null ? ""
-					: validaCorreo(getUsuarioModel().getCorreo()) == true ? getUsuarioModel()
-							.getCorreo() : "invalido";
-			String direccion = getUsuarioModel().getDireccion() == null ? ""
-					: getUsuarioModel().getDireccion();
-			String telefono = getUsuarioModel().getTelefono();// ==null?"";validaNumero(getUsuarioModel().getTelefono())==true?getUsuarioModel().getTelefono():"invalido";
-						String rubro = getUsuarioModel().getRubro() == null ? ""
-					: validaCadena(getUsuarioModel().getRubro()) == true ? getUsuarioModel()
-							.getRubro() : "invalido";
+			String telefonoITP = getUsuarioModel().getTelefono();
+			String telefonoPersonal = getUsuarioModel().getTelefono2();
 
 			String dni = getUsuarioModel().getDni() == null ? ""
 					: validaNumero(getUsuarioModel().getDni()) == true ? getUsuarioModel()
-							.getDni() : "invalido";
-
-			String ubigeo = getUsuarioModelSelect().getCodDistrito();
-
-			String email1 = getUsuarioModel().getEmail1() == null ? ""
-					: validaCorreo(getUsuarioModel().getEmail1()) == true ? getUsuarioModel()
-							.getEmail1() : "invalido";
-			String email2 = getUsuarioModel().getEmail2() == null ? ""
-					: validaCorreo(getUsuarioModel().getEmail2()) == true ? getUsuarioModel()
-							.getEmail2() : "invalido";
-			String emailAdmin = getUsuarioModel().getEmailAdmin() == null ? ""
-					: validaCorreo(getUsuarioModel().getEmailAdmin()) == true ? getUsuarioModel()
-							.getEmailAdmin() : "invalido";
+							.getDni() : "invalido"; 
+ 
 
 			
 			String idUsuario = getUsuarioModel().getIdUsuario() == null ? ""
 					: validaCadena(getUsuarioModel().getIdUsuario()) == true ? getUsuarioModel()
 							.getIdUsuario() : "invalido";
 
-			if (validarCampos(nombres, apellidoPaterno, apellidoMaterno,
-					correo, telefono, "", 0) == true) {
+			if (validarCamposUsuarioCite(nombres) == true) {
 				UsuarioBO usuarioNuevo = new UsuarioBO();
 				usuarioNuevo.setIdUsuario(idUsuario);
 				usuarioNuevo.setContrasenia(contrasenia);
-				usuarioNuevo.setNombres(nombres);
-				usuarioNuevo.setApellidoPaterno(apellidoPaterno);
-				usuarioNuevo.setApellidoMaterno(apellidoMaterno);
-				usuarioNuevo.setCorreo(correo);
-				usuarioNuevo.setDireccion(direccion);
-				usuarioNuevo.setTelefono(telefono);
-				usuarioNuevo.setEmail1(email1);
-				usuarioNuevo.setEmail2(email2);
-				usuarioNuevo.setEmailAdmin(emailAdmin);
+				usuarioNuevo.setNombres(nombres);  
+				usuarioNuevo.setTelefono(telefonoITP);
+				usuarioNuevo.setTelefono2(telefonoPersonal); 
+				usuarioNuevo.setCodCITE(codCite);
+				usuarioNuevo.setCodSede(codSede); 
+				usuarioNuevo.setCodDependencia(codDependencia); 
+				//falta telefono personal
+				usuarioNuevo.setEmail1(emailpersonal); 
+				usuarioNuevo.setEmailAdmin(emailItp);
 				usuarioNuevo.setDni(dni);
-				usuarioNuevo.setIdRol(String.valueOf(idRol));
-
-				System.out.println("Ubigeo " + ubigeo);
-				usuarioNuevo.setUbigeo(new UbigeoBO());
-				usuarioNuevo.getUbigeo().setIdUbigeo(ubigeo);
+				usuarioNuevo.setCargo(cargo);
+				usuarioNuevo.setIdRol(String.valueOf(idRol)); 
 
 				usuarioServices.grabarUsuario(usuarioNuevo);
-				//limpiarCampos();
-				//mostrarMensaje(8);
+				limpiarCampos();
+				mostrarMensaje(8);
 			}
 			// }
 			/*
@@ -617,15 +552,24 @@ public class UsuarioMBean extends GenericoController {
 			apto = false;
 		}
 
-		if (idRol == ROL_ALUMNO_REGULAR) {
-			if (codAlumno == "invalido") {
-				mostrarMensaje(6);
-				apto = false;
-			}
-		}
+		 
 		setEsAlumno(true);
 		return apto;
 	}
+	
+	private boolean validarCamposUsuarioCite(String nombres) {
+		boolean apto = true;
+
+		if (nombres == "invalido") {
+			mostrarMensaje(1);
+			apto = false;
+		} 
+
+		 
+		setEsAlumno(true);
+		return apto;
+	}
+
 
 	private void mostrarMensaje(int opcionMensaje) {
 		FacesMessage message = null;
@@ -733,52 +677,58 @@ public class UsuarioMBean extends GenericoController {
 		}
 		return pagina;
 	}
+	
+	public void cargarCITES(){
+		
+		
+		List<CITEBO> listarCITE = new ArrayList<CITEBO>();
 
-	public String selectorRegistroUsuarios(int proceso, int modo)
-			throws Exception {
-		String pagina = "";
-		limpiarCampos();
-		setUsuarioModelSelect(new UsuarioModel());
-		switch (proceso) {
-		case 1:
-			switch (modo) {
-			case 1:
-				PROCESO = PROCESO_OBSERVADOS;
-				MODO_USUARIO = MODO_ADMIN;
-				llenarRolesObservados();
-				pagina = "/paginas/ModuloObservados/admin/mantenimiento/usuario/nuevoUsuarioMO.xhtml";
-				break;
+		List<CITESModel> listaCiteModel = new ArrayList<CITESModel>();
 
-			case 2:
-				PROCESO = PROCESO_OBSERVADOS;
-				MODO_USUARIO = MODO_OCAA;
-				llenarRolesObservados();
-				pagina = "/paginas/ModuloObservados/ocaa/mantenimiento/usuario/nuevoUsuarioMO.xhtml";
-				break;
-			}
-			break;
-		case 2:
-			switch (modo) {
-			case 1:
-				PROCESO = PROCESO_REGULARES;
-				MODO_USUARIO = MODO_ADMIN;
-				llenarRolesRegulares();
-				// listarPlanes();
-				setEsAlumno(true);
-				pagina = "/paginas/ModuloRegulares/admin/mantenimiento/usuario/nuevoUsuarioMR.xhtml";
-				break;
-
-			case 2:
-				MODO_USUARIO = MODO_OCAA;
-				llenarRolesRegulares();
-				// listarPlanes();
-				setEsAlumno(true);
-				pagina = "/paginas/ModuloRegulares/ocaa/mantenimiento/usuario/nuevoUsuarioMR.xhtml";
-				break;
-			}
-			break;
+		try {
+			// se llama para cargar al combo de cites
+			listarCITE = comunServices.listCITE();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return pagina;
+
+		for (CITEBO citeBO : listarCITE) {
+
+			CITESModel cites = new CITESModel();
+			cites.setCodigoCite(citeBO.getCodigo()); 
+			cites.setDescripcion(citeBO.getDescripcion()); 
+			listaCiteModel.add(cites);
+		}
+
+		getUsuarioModel().setListCite(listaCiteModel);
+	}
+	 
+	
+	public void cargarUbigeo(){
+		
+		
+		List<UbigeoBO> listarUbigeo = new ArrayList<UbigeoBO>();
+
+		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
+
+		try {
+			// se llama para cargar al combo de departamento
+			listarUbigeo = comunServices.listUbigeo();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (UbigeoBO ubigeoBO : listarUbigeo) {
+
+			UbigeoModel ubigeo = new UbigeoModel();
+			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
+			ubigeo.setDepartamento(ubigeoBO.getDepartamento());
+			listaUbigeoModel.add(ubigeo);
+		}
+
+		getUsuarioModel().setListUbigeo(listaUbigeoModel);
 	}
 
 	public UsuarioModel getUsuarioModel() {

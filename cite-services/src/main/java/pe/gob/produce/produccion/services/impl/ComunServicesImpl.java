@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
+import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
 import pe.gob.produce.produccion.dao.ComunIDAO;
@@ -41,6 +45,28 @@ public class ComunServicesImpl implements ComunServices{
 	public UsuarioBO buscarUsuario(String codUsuario) throws Exception {
 		// TODO Auto-generated method stub
 		return comunDAO.buscarUsuario(codUsuario);
+	}
+
+
+	@Override
+	public List<CITEBO> listCITE() throws Exception {
+		// TODO Auto-generated method stub
+		return comunDAO.listCITE();
+	}
+
+
+	@Override
+	public List<SedeBO> listarSedes(String codCite) throws Exception {
+		// TODO Auto-generated method stub
+		return comunDAO.listarSedes(codCite);
+	}
+
+
+	@Override
+	public List<DependenciaBO> listarDependencias(String codigoSede)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return comunDAO.listarDependencias(codigoSede);
 	}
 	
 	

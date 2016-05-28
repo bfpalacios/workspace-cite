@@ -2,6 +2,7 @@ package pe.gob.produce.produccion.dao.jdbc;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -63,12 +64,16 @@ public class CITEDAO extends BaseDAO implements CITEIDAO  {
 			CallableStatement cstm = null;
 			
 			con = Conexion.obtenerConexion();
-			cstm = con.prepareCall("{call SP_Nueva_Sede(?,?,?)}");		
+			cstm = con.prepareCall("{call SP_Nueva_Sede(?,?,?,?,?,?,?)}");		
 			cstm.setQueryTimeout(3);
 			cstm.setString(1, sede.getCodigo());		
 			cstm.setString(2, sede.getDescripcion());
 			cstm.setString(3, sede.getUbigeo().getIdUbigeo());
-		
+			cstm.setString(4, sede.getJefatura());
+			cstm.setString(5, sede.getEmail());
+			cstm.setString(6, sede.getTelefono());
+			cstm.setString(7, sede.getCelular());
+			
 			cstm.execute();
 			
 	}
@@ -123,7 +128,26 @@ Connection con = null;
 		}		
 		return listaSedes;
 	}
+
+	@Override
+	public void grabarNuevaCite(CITEBO cite) throws Exception {
+
+		Connection con = null;
+		CallableStatement cstm = null;
+		Date dateCite = new Date(cite.getFecha().getTime());
+		
+		con = Conexion.obtenerConexion();
+		cstm = con.prepareCall("{call SP_Nueva_Cite(?,?,?,?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, cite.getCodigo());		
+		cstm.setString(2, cite.getDescripcion());
+		cstm.setString(3, cite.getEstado());
+		cstm.setDate(4, dateCite);
+		cstm.setString(5, cite.getSede().getCodigo());
 	
+		cstm.execute();
+	
+	}
 	
 
 }

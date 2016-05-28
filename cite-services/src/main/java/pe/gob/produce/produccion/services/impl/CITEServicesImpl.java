@@ -46,6 +46,13 @@ public class CITEServicesImpl implements CITEServices{
 		// TODO Auto-generated method stub
 		return citeDAO.listarSedes();
 	}
+
+
+	@Override
+	public void grabarNuevaCite(CITEBO cite) throws Exception {
+		citeDAO.grabarNuevaCite(cite);
+		
+	}
 	
 	
 

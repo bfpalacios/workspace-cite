@@ -6,6 +6,7 @@ public class RolBO implements Serializable {
 
 	private static final long serialVersionUID = -5011765534397588828L;
 	
+	
 	private Integer id;
 	private String nombre;
 	private String descripcion;

@@ -15,15 +15,15 @@ public class ServicioInformativoBO implements Serializable{
 	private String tituloInformativo;
 	private String descInformativo;
 	private String descCortaInformativo;
-	private Blob ArchivoInformativo;
+	//private Blob archivoInformativo;
+	private byte[] archivoInformativo;
+	 
 	
-	
-	
-	public Blob getArchivoInformativo() {
-		return ArchivoInformativo;
+	public byte[] getArchivoInformativo() {
+		return archivoInformativo;
 	}
-	public void setArchivoInformativo(Blob archivoInformativo) {
-		ArchivoInformativo = archivoInformativo;
+	public void setArchivoInformativo(byte[] archivoInformativo) {
+		this.archivoInformativo = archivoInformativo;
 	}
 	public Date getFecha() {
 		return fecha;

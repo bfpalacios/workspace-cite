@@ -13,17 +13,22 @@ public class UsuarioBO implements Serializable {
 	private String contrasenia;
 	private String confirmacionContrasenia;
 	private String nombres;
+	private String cargo;
 	private String apellidoPaterno;
 	private String apellidoMaterno;
 	private String correo;
 	private String direccion;
 	private String telefono;
+	private String telefono2;
 	private String codAlumno;
 	private String dni;
 	private String tipoDoc;
 	private String rubro;
 	private String email1;
 	private String email2;
+	private String codCITE;	
+	private String codSede;	
+	private String codDependencia;	
 	private String emailAdmin;	
 	private UbigeoBO ubigeo;
 	private List<UbigeoBO> listUbigeo;
@@ -330,6 +335,56 @@ public class UsuarioBO implements Serializable {
 	 */
 	public void setListRol(List<RolBO> listRol) {
 		this.listRol = listRol;
+	}
+
+
+	public String getCargo() {
+		return cargo;
+	}
+
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+
+	public String getCodCITE() {
+		return codCITE;
+	}
+
+
+	public void setCodCITE(String codCITE) {
+		this.codCITE = codCITE;
+	}
+
+
+	public String getCodSede() {
+		return codSede;
+	}
+
+
+	public void setCodSede(String codSede) {
+		this.codSede = codSede;
+	}
+
+
+	public String getCodDependencia() {
+		return codDependencia;
+	}
+
+
+	public void setCodDependencia(String codDependencia) {
+		this.codDependencia = codDependencia;
+	}
+
+
+	public String getTelefono2() {
+		return telefono2;
+	}
+
+
+	public void setTelefono2(String telefono2) {
+		this.telefono2 = telefono2;
 	}
 
 	

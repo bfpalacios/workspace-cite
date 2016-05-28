@@ -11,6 +11,7 @@ public class DependenciaBO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String codigo;
 	private String descripcion;
+	private String estado;
 	private SedeBO sede;
 	public String getCodigo() {
 		return codigo;
@@ -29,6 +30,12 @@ public class DependenciaBO implements Serializable{
 	}
 	public void setSede(SedeBO sede) {
 		this.sede = sede;
+	}
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 	

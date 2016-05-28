@@ -12,6 +12,9 @@ import oracle.jdbc.OracleTypes;
 
 import org.springframework.stereotype.Component;
 
+import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
+import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
@@ -204,6 +207,100 @@ public class ComunDAOImpl extends BaseDAO implements ComunIDAO{
 			this.cerrarStatement(cstm);
 			this.cerrarConexion(con);
 		}
+	}
+
+	@Override
+	public List<CITEBO> listCITE() throws Exception {
+		Connection con = null;
+		
+		Statement statement = null;
+		ResultSet rs = null;
+		List<CITEBO> listaCITES = new ArrayList<CITEBO>();
+		
+		try{
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarCites}");
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){				
+				CITEBO cite = new CITEBO();
+				cite.setCodigo(rs.getString(1));
+				cite.setDescripcion(rs.getString(2)); 
+				listaCITES.add(cite);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}		
+		return listaCITES;
+	}
+
+	@Override
+	public List<SedeBO> listarSedes(String codCite) throws Exception {
+		Connection con = null;
+		
+		Statement statement = null;
+		ResultSet rs = null;
+		List<SedeBO> listaSedes = new ArrayList<SedeBO>();
+		
+		try{
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarSedes(?)}");
+			pstmt.setString(1, codCite);
+		    rs = pstmt.executeQuery();
+			while(rs.next()){				
+				SedeBO sede = new SedeBO();
+				sede.setCodigo(rs.getString(1)); 
+				sede.setDescripcion(rs.getString(2)); 
+				listaSedes.add(sede);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}		
+		return listaSedes;
+	}
+	
+	
+	@Override
+	public List<DependenciaBO> listarDependencias(String codigoSede) throws Exception {
+		Connection con = null;
+		
+		Statement statement = null;
+		ResultSet rs = null;
+		List<DependenciaBO> listaDependencias = new ArrayList<DependenciaBO>();
+		
+		try{
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarDependencias(?)}");
+			pstmt.setString(1, codigoSede);
+		    rs = pstmt.executeQuery();
+			while(rs.next()){				
+				DependenciaBO dependencia = new DependenciaBO();
+				dependencia.setCodigo(rs.getString(1)); 
+				dependencia.setDescripcion(rs.getString(2)); 
+				listaDependencias.add(dependencia);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}		
+		return listaDependencias;
 	}
 
 }

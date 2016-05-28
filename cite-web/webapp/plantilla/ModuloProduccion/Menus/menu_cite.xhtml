@@ -10,65 +10,56 @@
 		<p:panelMenu 
 			style="font-size:10px;"
 			transient="true" >
+			<p:submenu label="Portada Principal">
+				<p:menuitem 
+					value="Bienvenida" action="#{portadaMBean.cargarBienvenida}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Red de Noticias" action="#{portadaMBean.cargarRedNoticias}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Calendario de Eventos" action="#{portadaMBean.cargarCalendarioEventos}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Publicaciones informativas" action="#{portadaMBean.cargarPublicacionesInformativas}"
+					icon="ui-icon-arrowrefresh-1-w" />
+			</p:submenu> 
 			<p:submenu label="Directorio CITE">
 				<p:menuitem 
-					value="Lista de los CITES" action="#{servicioMBean.selectorBuscarServicio(2)}"
+					value="Lista de los CITES" action="#{servicioMBean.buscarCite}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
-					value="Directorio de Dependencias" action="#{servicioMBean.selectorNuevoServicio(2)}"
+					value="Directorio de Dependencias" action="#{servicioMBean.buscarDependencias}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
-					value="Directorio de Personal" action="#{servicioMBean.selectorNuevoServicio(2)}"
+					value="Directorio de Personal" action="#{servicioMBean.buscaroDePersonal}"
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu> 
 			<p:submenu label="Panel de Documentos">
 				<p:menuitem 
-					value="Nuevo Cliente Empresa" action="#{usuarioMBean.registraNuevaEmpresa(2)}"
+					value="Listado de Carpetas" action="#{usuarioMBean.registraNuevaEmpresa(2)}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
-					value="Buscar Cliente Empresa" action="#{usuarioMBean.selectorBuscarClienteEmpresa(2)}"
+					value="Listado de Archivos" action="#{usuarioMBean.selectorBuscarClienteEmpresa(2)}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
-					value="Nuevo Cliente  Persona" action="#{usuarioMBean.registraNuevoCliente(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />
-				<p:menuitem 
-					value="Buscar Cliente  Persona" action="#{usuarioMBean.selectorBuscarClientePersona(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />  
-				
+					value="Unidad de Almacenamiento" action="#{usuarioMBean.registraNuevoCliente(2)}"
+					icon="ui-icon-arrowrefresh-1-w" />				
 			</p:submenu>
-			<p:submenu label="Panel de Usuario">
-				<!-- <p:menuitem 
-					value="Nueva Cotizacion" action="#{cotizacionMBean.selectorNuevaCotizacion(2)}"
-					icon="ui-icon-arrowrefresh-1-w"  />	 -->
-				<p:menuitem 
-					value="Buscar Cotizaciones" action="#{cotizacionMBean.selectorBuscarCotizacionServicio(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />			 
-			</p:submenu>
+			 
 			<p:submenu label="Reporte de Gestion">
 				<p:menuitem 
-					value="Nueva Orden de Pago" action="#{ordenPagoMBean.selectorNuevaOrdenPago(2)}"
+					value="Reporte de CITES " action="#{ordenPagoMBean.selectorNuevaOrdenPago(2)}"
 					icon="ui-icon-arrowrefresh-1-w"  />	
 				<p:menuitem 
-					value="Buscar Orden de Pago" action="#{ordenPagoMBean.selectorBuscarOrdenPago(2)}"
+					value="Reporte de Dependencias" action="#{ordenPagoMBean.selectorBuscarOrdenPago(2)}"
 					icon="ui-icon-arrowrefresh-1-w"  />	
 			</p:submenu>
-			 <p:submenu label="Gestion de Contenido">
-				<p:menuitem 
-					value="facturación" action="#"
-					icon="ui-icon-arrowrefresh-1-w" />			
-			</p:submenu> 				
-			<p:submenu label="Gestion del Sistema">
-				<p:menuitem 
-					value="Estado Orden de Servicio" action="#{ordenServicioMBean.selectorEstadoOrdenServicio(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />	
-				<p:menuitem 
-					value="Consultar Orden de Servicio" action="#{ordenServicioMBean.selectorBuscarOrdenServicio(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />		
-			</p:submenu>
+			  
 			
 			<p:submenu label="Ayuda del Sistema">
 				<p:menuitem 
-					value="Estadísticas" action="#"
+					value="Ingresar a ver un tutorial" action="#"
 					icon="ui-icon-arrowrefresh-1-w" />		
 			</p:submenu>				 
 			<p:submenu label="Cerrar Sesion">

@@ -6,6 +6,8 @@ import javax.faces.bean.ViewScoped;
 
 import org.springframework.stereotype.Component;
 
+import pe.gob.produce.cite.bo.CITEBO;
+import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
 import pe.gob.produce.cite.bo.UsuarioRolBO;
@@ -24,10 +26,14 @@ public class UsuarioModel {
 	private String correo;
 	private String direccion;
 	private String telefono;
+	private String codCite;
+	private String codSede;
+	private String codDependencia;
 	private String codDepartamento;
 	private String codProvincia;
 	private String codDistrito;
 	private String telefono2;
+	private String cargo;
 	
 	private String portal;
 	private String dni;
@@ -40,19 +46,105 @@ public class UsuarioModel {
 	private String perfil;
 	private String emailAdmin;	
 	private UbigeoModel ubigeo;
+	private List<CITESModel> listCite; 
+	private List<DependenciaBO> listDependencia;
 	private List<UbigeoModel> listUbigeo;
 	private List<UbigeoModel> listProvincia;
 	private List<UbigeoModel> listDistrito;
 	private List<SedeBO> listarSedes;
+	private List<SedeBO> listSedes;
 	private UsuarioBO usuario;
 	private String codAlumno;
 	private int planAlumno;
 	private UsuarioRolBO usuarioRol;
 	private List<UsuarioBO> rolesUsuario;
 	private String codigoDependencia;
+	private CITEBO cite;	
+	private DependenciaBO dependencia;
+	private SedeBO sede;	
+	private int dni1;
 	
-	public List<SedeBO> getListarSedes() {
-		return listarSedes;
+	public String getCodCite() {
+		return codCite;
+	}
+
+	public void setCodCite(String codCite) {
+		this.codCite = codCite;
+	}
+
+	public String getCodSede() {
+		return codSede;
+	}
+
+	public void setCodSede(String codSede) {
+		this.codSede = codSede;
+	}
+
+	public String getCodDependencia() {
+		return codDependencia;
+	}
+
+	public void setCodDependencia(String codDependencia) {
+		this.codDependencia = codDependencia;
+	}
+ 
+
+	public int getDni1() {
+		return dni1;
+	}
+
+	public String getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+	public CITEBO getCite() {
+		return cite;
+	}
+
+
+
+
+	public void setCite(CITEBO cite) {
+		this.cite = cite;
+	}
+
+
+
+
+	public DependenciaBO getDependencia() {
+		return dependencia;
+	}
+
+
+
+
+	public void setDependencia(DependenciaBO dependencia) {
+		this.dependencia = dependencia;
+	}
+
+
+
+
+	public SedeBO getSede() {
+		return sede;
+	}
+
+
+
+
+	public void setSede(SedeBO sede) {
+		this.sede = sede;
+	}
+
+
+
+
+	public void setDni1(int dni1) {
+		this.dni1 = dni1;
 	}
 
 
@@ -70,11 +162,7 @@ public class UsuarioModel {
 	}
 
 
-
-
-	public void setListarSedes(List<SedeBO> listarSedes) {
-		this.listarSedes = listarSedes;
-	}
+ 
 
 
 
@@ -596,6 +684,39 @@ public class UsuarioModel {
 	 */
 	public void setRolesUsuario(List<UsuarioBO> rolesUsuario) {
 		this.rolesUsuario = rolesUsuario;
+	}
+
+	public List<CITESModel> getListCite() {
+		return listCite;
+	}
+
+	public void setListCite(List<CITESModel> listCite) {
+		this.listCite = listCite;
+	}
+ 
+
+	public List<DependenciaBO> getListDependencia() {
+		return listDependencia;
+	}
+
+	public void setListDependencia(List<DependenciaBO> listDependencia) {
+		this.listDependencia = listDependencia;
+	}
+
+	public List<SedeBO> getListSedes() {
+		return listSedes;
+	}
+
+	public void setListSedes(List<SedeBO> listSedes) {
+		this.listSedes = listSedes;
+	}
+
+	public List<SedeBO> getListarSedes() {
+		return listarSedes;
+	}
+
+	public void setListarSedes(List<SedeBO> listarSedes) {
+		this.listarSedes = listarSedes;
 	}
 	
 	

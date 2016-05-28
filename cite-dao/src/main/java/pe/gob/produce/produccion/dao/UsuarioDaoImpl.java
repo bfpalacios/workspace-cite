@@ -43,43 +43,34 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario,String> implements UsuarioID
 		CallableStatement cstm = null;
 		
 		con = Conexion.obtenerConexion();
-		cstm = con.prepareCall("{call SP_Nuevo_Usuario(?,?,?,?,?,?,?,?,?,?,?)}");		
+		cstm = con.prepareCall("{call SP_Nuevo_Usuario(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");		
 		cstm.setQueryTimeout(3);
 		cstm.setString(1, usuarioNuevo.getIdUsuario());		
 		cstm.setString(2, usuarioNuevo.getContrasenia());
 		cstm.setString(3, usuarioNuevo.getNombres());
-		cstm.setString(4, usuarioNuevo.getApellidoPaterno());
-		cstm.setString(5, usuarioNuevo.getApellidoMaterno());
+		cstm.setString(4, usuarioNuevo.getCargo());
+		cstm.setString(5, usuarioNuevo.getCodCITE());
+		cstm.setString(6, usuarioNuevo.getCodSede());
+		cstm.setString(7, usuarioNuevo.getCodDependencia());
 
-		cstm.setInt(6, Integer.parseInt(usuarioNuevo.getIdRol()));
-		cstm.setString(7, usuarioNuevo.getTelefono());
-		cstm.setString(8, usuarioNuevo.getTelefono());
-		cstm.setInt(9, 1);//cambiar por el estado
-		cstm.setInt(10, Integer.parseInt(usuarioNuevo.getIdRol()));
+		cstm.setInt(8, Integer.parseInt(usuarioNuevo.getIdRol()));
+		cstm.setString(9, usuarioNuevo.getTelefono());
+		cstm.setString(10, usuarioNuevo.getTelefono2());
+		cstm.setString(11, usuarioNuevo.getEmailAdmin());
+		cstm.setString(12, usuarioNuevo.getEmail1());
+		cstm.setInt(13, 1);//cambiar por el estado
+		cstm.setInt(14, Integer.parseInt(usuarioNuevo.getIdRol()));
 		
-		cstm.registerOutParameter(11, java.sql.Types.INTEGER);
+		cstm.registerOutParameter(15, java.sql.Types.INTEGER);
 		
 		cstm.execute();
 		
 
-		idUsuario = cstm.getInt(11);
+		idUsuario = cstm.getInt(15);
 		System.out.println("id de usuario " + String.valueOf(idUsuario));
 		System.out.println("dni " + usuarioNuevo.getDni());
 		
-		/*if(!usuarioNuevo.getDireccion().equals(""))
-		{
-			
-			grabarUsuarioDirecciones(idUsuario,usuarioNuevo.getUbigeo().getIdUbigeo(), usuarioNuevo.getDireccion());
-			
-		}*/
-		
-		if(!usuarioNuevo.getDni().equals(""))
-		{			
-			numeroDocumento = usuarioNuevo.getDni();			
-		}
-		
-		
-		
+		 
 		if(!numeroDocumento.equals(""))
 		{
 			//1 activo

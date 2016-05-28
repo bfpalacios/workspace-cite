@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+		<div style="width: 50%; float: left;">
+			<p:panel id="noticia"
+				header="PPK ratifica sus frases sobre Keiko, pero luego se disculpa"
+				footer="Ver más" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:graphicImage value="/Imagenes/news1.jpg" />
+					<h:outputText
+						value="Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó..." />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="noticia2"
+				header="Mercedes Aráoz: Keiko Fujimori es una malagradecida"
+				footer="Ver más" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:graphicImage value="/Imagenes/news2.jpg" />
+					<h:outputText
+						value="Mercedes Aráoz, candidata a la primera vicepresidencia de Peruanos por el Kambio, cumplió hoy en Trujillo actividades proselitistas con miras a la segunda vuelta que se llevará a cabo el 5 de junio..." />
+				</h:panelGrid>
+			</p:panel>
+			
+		</div>
+		<div style="width: 50%; float: right;">
+			<p:panel id="noticia3"
+				header="PPK ratifica sus frases sobre Keiko, pero luego se disculpa"
+				footer="Ver más" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:graphicImage value="/Imagenes/news11.jpg" />
+					<h:outputText
+						value="Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó..." />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel id="noticia4"
+				header="Mercedes Aráoz: Keiko Fujimori es una malagradecida"
+				footer="Ver más" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:graphicImage value="/Imagenes/news21.jpg" />
+					<h:outputText
+						value="Mercedes Aráoz, candidata a la primera vicepresidencia de Peruanos por el Kambio, cumplió hoy en Trujillo actividades proselitistas con miras a la segunda vuelta que se llevará a cabo el 5 de junio..." />
+				</h:panelGrid>
+			</p:panel>
+			
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

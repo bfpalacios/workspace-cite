@@ -11,6 +11,7 @@ public interface CITEServices {
 	
 	public List<CITEBO> listarCITES() throws Exception;
 	public List<SedeBO>   listarSedes()  throws Exception;
+	public void grabarNuevaCite(CITEBO cite) throws Exception;
 	public void grabarNuevaSede(SedeBO sede) throws Exception;
 	public void grabarNuevaDependencia(DependenciaBO dependencia) throws Exception;
 	

@@ -22,6 +22,7 @@ public class ServicioModel {
 	private String nombreSolicitante;
 	private String cargo;
 	private String telefono;
+	private String celular;
 	private String email;
 	private String descripcionCITE;
 	private String codigoCITE;
@@ -32,6 +33,9 @@ public class ServicioModel {
 	private String precioDeVenta;
 	private String totalPrecioDeVenta;
 	private String tituloInformativo;
+	private String emailSede;
+	private String jefaturaSede;
+	private String direccion;
 
 	private List<CITEBO> listarCITE;
 	private List<DependenciaBO> listarDependencia;
@@ -39,7 +43,26 @@ public class ServicioModel {
 	
 	
 	
-	
+	public String getCelular() {
+		return celular;
+	}
+
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+
 	public String getDescripcionCorta() {
 		return descripcionCorta;
 	}
@@ -219,5 +242,27 @@ public class ServicioModel {
 	public void setListarCITE(List<CITEBO> listarCITE) {
 		this.listarCITE = listarCITE;
 	}
+
+
+	public String getEmailSede() {
+		return emailSede;
+	}
+
+
+	public void setEmailSede(String emailSede) {
+		this.emailSede = emailSede;
+	}
+
+
+	public String getJefaturaSede() {
+		return jefaturaSede;
+	}
+
+
+	public void setJefaturaSede(String jefaturaSede) {
+		this.jefaturaSede = jefaturaSede;
+	}
+	
+	
 
 }

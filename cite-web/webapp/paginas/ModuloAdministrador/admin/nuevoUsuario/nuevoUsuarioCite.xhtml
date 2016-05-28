@@ -21,7 +21,7 @@
 
 		<p:spacer width="5px" />
 		<p:panel id="panelRegistroUsuario"
-			header="Registro de Usuario CITE"
+			header="Registro de Usuario RED - CITE"
 			style="width: 100%;">
 			<p:panelGrid id="pnlGridLoginAcceso">
 				<p:row>
@@ -67,35 +67,40 @@
 							value="#{mensaje['produccion.nuevo.cliente.nrodoc']}" />
 					</p:column>
 
-					<p:column>
-						<p:inputText id="dni" size="10"
-							value="#{usuarioMBean.usuarioModel.dni}" />
+					<p:column> 
+						
+						<p:inputMask id="dni" value="#{usuarioMBean.usuarioModel.dni}" size="10"  maxlength="8" mask="99999999"/>
 						<p:message for="dni" />
-					</p:column>
-
+					</p:column> 
 				</p:row>
 
 				<p:row>
-
+					
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblDireccion"
-							value="#{mensaje['produccion.nuevo.cliente.direccion']}" />
+						<h:outputText id="lblCargo"
+							value="Cargo :" />
 					</p:column>
 
-
-
-					<p:column colspan="3">
-						<p:inputText id="direccionUsuario" size="40"
-							value="#{usuarioMBean.usuarioModel.direccion}" />
+					<p:column colspan="2">
+						<p:inputText id="cargo" size="25"  
+							value="#{usuarioMBean.usuarioModel.cargo}"  />
+								<p:message for="cargo" />	
 					</p:column>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblTelefonoUsuario"
 							value="#{mensaje['produccion.nuevo.cliente.telefono']}" />
 					</p:column>
 
-					<p:column colspan="3">
-						<p:inputText id="telefonoUsuario" size="10"
-							value="#{usuarioMBean.usuarioModel.telefono}" />
+					<p:column>
+						<p:inputMask id="telefonoUsuario" size="10" maxlength="9"  
+							value="#{usuarioMBean.usuarioModel.telefono}" mask="999-999-999" />
+								<p:message for="telefonoUsuario" />	
+					</p:column>
+					
+					<p:column>
+						<p:inputMask id="telefonoUsuario2" size="10" maxlength="9"  
+							value="#{usuarioMBean.usuarioModel.telefono2}" mask="999-999-999" />
+								<p:message for="telefonoUsuario2" />	
 					</p:column>
 
 				</p:row>
@@ -106,84 +111,59 @@
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblDpto"
-							value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
+							value="CITE: " />
 					</p:column>
 					<p:column>
-						<p:selectOneMenu id="dpto"
-							value="#{usuarioMBean.usuarioModelSelect.codDepartamento}"
-							valueChangeListener="#{usuarioMBean.actualizarlistProvincia}"
+						<p:selectOneMenu id="cite"
+							value="#{usuarioMBean.usuarioModelSelect.codCite}"
+							valueChangeListener="#{usuarioMBean.actualizarlistSedes}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<f:selectItem itemLabel="Seleccione el departamento:" />
-							<f:selectItems value="#{usuarioMBean.usuarioModel.listUbigeo}"
-								var="dpto" itemLabel="#{dpto.departamento}"
-								itemValue="#{dpto.idUbigeo}" />
-							<f:ajax event="change" execute="@this" render="provincia" />
+							<f:selectItem itemLabel="Seleccione la cite:" />
+							<f:selectItems value="#{usuarioMBean.usuarioModel.listCite}"
+								var="cite" itemLabel="#{cite.descripcion}"
+								itemValue="#{cite.codigoCite}" />
+							<f:ajax event="change" execute="@this" render="sede" />
 						</p:selectOneMenu>
 
 					</p:column>
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblProvincia"
-							value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
+							value="Sede :" />
 					</p:column>
 
 					<p:column>
-						<p:selectOneMenu id="provincia"
-							value="#{usuarioMBean.usuarioModelSelect.codProvincia}"
-							valueChangeListener="#{usuarioMBean.actualizarlistDistrito}"
+						<p:selectOneMenu id="sede"
+							value="#{usuarioMBean.usuarioModelSelect.codSede}"
+							valueChangeListener="#{usuarioMBean.actualizarlistDependencias}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<f:selectItem itemLabel="Seleccione la provincia " />
-							<f:selectItems value="#{usuarioMBean.usuarioModel.listProvincia}"
-								var="prov" itemLabel="#{prov.provincia}"
-								itemValue="#{prov.idUbigeo}" />
+							<f:selectItem itemLabel="Seleccione la sede " />
+							<f:selectItems value="#{usuarioMBean.usuarioModel.listSedes}"
+								var="sedes" itemLabel="#{sedes.descripcion}"
+								itemValue="#{sedes.codigo}" />
 
-							<f:ajax event="change" execute="@this" render="distrito" />
+							<f:ajax event="change" execute="@this" render="dependencia" />
 						</p:selectOneMenu>
 					</p:column>
 
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblDistrito"
-							value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
+							value="Dependencia :" />
 					</p:column>
 
 					<p:column>
-						<p:selectOneMenu id="distrito"
-							value="#{usuarioMBean.usuarioModelSelect.codDistrito}"
+						<p:selectOneMenu id="dependencia"
+							value="#{usuarioMBean.usuarioModelSelect.codDependencia}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<f:selectItem itemLabel="Seleccione el distrito " />
-							<f:selectItems value="#{usuarioMBean.usuarioModel.listDistrito}"
-								var="distrito" itemLabel="#{distrito.distrito}"
-								itemValue="#{distrito.idUbigeo}" />
+							<f:selectItem itemLabel="Seleccione la dependencia " />
+							<f:selectItems value="#{usuarioMBean.usuarioModel.listDependencia}"
+								var="dependencia" itemLabel="#{dependencia.descripcion}"
+								itemValue="#{dependencia.codigo}" />
 						</p:selectOneMenu>
 					</p:column>
 
-				</p:row>
-
-
-				<p:row>
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblEmail1"
-							value="#{mensaje['produccion.nuevo.cliente.email1']}" />
-					</p:column>
-
-					<p:column>
-						<p:inputText id="email1" size="25"
-							value="#{usuarioMBean.usuarioModel.email1}" />
-					</p:column>
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblEmail2"
-							value="#{mensaje['produccion.nuevo.cliente.email2']}" />
-					</p:column>
-
-					<p:column colspan="3">
-						<p:inputText id="email2" size="25"
-							value="#{usuarioMBean.usuarioModel.email2}" />
-					</p:column>
-
-
-
-				</p:row>
+				</p:row> 
 				<p:separator />
 				<p:spacer width="5px" />
 
@@ -208,12 +188,14 @@
 					</p:column>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblEmaiiadmin"
-							value="#{mensaje['produccion.nuevo.cliente.emaiiadmin']}" />
+							value="Email ITP : " />
 					</p:column>
 
 					<p:column colspan="3">
 						<p:inputText id="emailAdmin" size="20"
-							value="#{usuarioMBean.usuarioModel.emailAdmin}" />
+							value="#{usuarioMBean.usuarioModel.emailAdmin}" validatorMessage="#{usuarioMBean.usuarioModel.emailAdmin} is not valid">
+    						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+    					</p:inputText>
 					</p:column>
 				</p:row>
 				<p:row>
@@ -223,11 +205,35 @@
 					</p:column>
 
 					<p:column styleClass="styleAlignLeftColumn">
-						<p:password id="clave" size="25"
-							value="#{usuarioMBean.usuarioModel.clave}" />
+						<p:password id="clave" size="25"  
+							value="
+" />
 						<p:message for="clave" />
+					</p:column> 
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblEmaiiadmin2"
+							value="Email Personal:" />
 					</p:column>
 
+					<p:column colspan="3">
+						<p:inputText id="emailPersonal" size="20"
+							value="#{usuarioMBean.usuarioModel.email1}" validatorMessage="#{usuarioMBean.usuarioModel.email1} is not valid">
+    						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+    					</p:inputText>
+					</p:column>
+
+				</p:row>
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblLoginConfirmarPassword"
+							value="#{mensaje['demo.mantenimiento.usuario.confirmaclave']}" />
+					</p:column>
+
+					<p:column styleClass="styleAlignLeftColumn">
+						<p:password id="confirmarclave" size="25"
+							value="#{usuarioMBean.usuarioModel.confirmarClave}"  />
+						<p:message for="confirmarclave" />
+					</p:column>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblPerfil"
 							value="#{mensaje['produccion.nuevo.cliente.perfil']}" />
@@ -240,27 +246,6 @@
 							<f:selectItem itemLabel="Rol Usuario CITE " itemValue="1" />
 							<f:selectItem itemLabel="Rol Admin " itemValue="2" />
 						</p:selectOneMenu>
-					</p:column>
-
-
-				</p:row>
-				<p:row>
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblLoginConfirmarPassword"
-							value="#{mensaje['demo.mantenimiento.usuario.confirmaclave']}" />
-					</p:column>
-
-					<p:column styleClass="styleAlignLeftColumn">
-						<p:password id="confirmarclave" size="25"
-							value="#{usuarioMBean.usuarioModel.clave}" />
-						<p:message for="confirmarclave" />
-					</p:column>
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-
-					</p:column>
-					<p:column colspan="3"
-						styleClass="ui-column-label-spij styleAlignRightColumn">
-
 					</p:column>
 
 
@@ -278,7 +263,7 @@
 						styleClass="buttonMarginNormal"
 						actionListener="#{usuarioMBean.guardarNuevoUsuario}"
 						action="#{usuarioMBean.guardarNuevoUsuario}"
-						update="dpto, provincia, distrito, idUsuario, emailAdmin, clave, email1,email2, direccionUsuario, telefonoUsuario, rol"
+						update="pnlGridLoginAcceso,nombre, tipoDoc, dni, cargo, cite, sede, dependencia, idUsuario, emailPersonal , emailAdmin, clave,confirmarclave, telefonoUsuario2, telefonoUsuario, rol"
 						ajax="true" />
 				</p:column>
 

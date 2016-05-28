@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -63,9 +65,10 @@ public class CITESMBean {
 	private String rutaComprobante;
 	
 	//constantes
-	private int MODO_USUARIO;
-	private static int MODO_ADMIN = 1;
-	private static int MODO_EMPLEADO = 2;
+	private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	private static final String PATTERN_STRING = "([a-z]|[A-Z]|\\s)+";
+
 	
 	
 	//para la lista de servicios se declara una variable list de tipo ServicioModel
@@ -92,7 +95,9 @@ public class CITESMBean {
 	
 	
 	private void inicializarClases(){
-		this.servicioModel = new ServicioModel();		
+		this.servicioModel = new ServicioModel();	
+		this.usuarioModel = new UsuarioModel();
+		this.usuarioModelSelect = new UsuarioModel();
 		
 	}
 	
@@ -103,6 +108,7 @@ public class CITESMBean {
 		 inicializarClases();
 
 		 listarCITE();
+		 listarSedes();
 
 		 //listarServicios();
 		 switch(modo){ 
@@ -161,30 +167,12 @@ public class CITESMBean {
 	
 	public String selectorNuevoSede(int modo) throws Exception{
 		 String pagina = "";
-			
+		
+		 //inicializacion de clases
 		 inicializarClases();
 		 
-			List<UbigeoBO> listarUbigeo = new ArrayList<UbigeoBO>();
-
-			List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
-
-			try {
-				// se llama para cargar al combo de departamento
-				listarUbigeo = comunServices.listUbigeo();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			for (UbigeoBO ubigeoBO : listarUbigeo) {
-
-				UbigeoModel ubigeo = new UbigeoModel();
-				ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
-				ubigeo.setDepartamento(ubigeoBO.getDepartamento());
-				listaUbigeoModel.add(ubigeo);
-			}
-
-		getUsuarioModel().setListUbigeo(listaUbigeoModel);
+		 //carga el combo para los departamentos, provincia y distrito
+		 cargarUbigeo();
 
 		 switch(modo){ 
 		
@@ -202,6 +190,32 @@ public class CITESMBean {
 		 
 		}
 		return pagina;		
+	}
+	
+	public void cargarUbigeo(){
+		
+		inicializarClases();
+			 
+		List<UbigeoBO> listarUbigeo = new ArrayList<UbigeoBO>();
+
+		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
+
+		try {
+				// se llama para cargar al combo de departamento
+				listarUbigeo = comunServices.listUbigeo();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		for (UbigeoBO ubigeoBO : listarUbigeo) {
+				UbigeoModel ubigeo = new UbigeoModel();
+					ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
+					ubigeo.setDepartamento(ubigeoBO.getDepartamento());
+					listaUbigeoModel.add(ubigeo);
+			}
+
+			getUsuarioModel().setListUbigeo(listaUbigeoModel);
 	}
 	
 	public String nuevoServicioInformativo() throws Exception{
@@ -482,64 +496,137 @@ public class CITESMBean {
 			mostrarMensaje(9);				
 		}		
 		limpiarObjetos();
-		mostrarMensaje(8);	
-		//llenarRolesObservados();
+		mostrarMensaje(8);	 
 		
-		switch(opcion){
-			case 1: switch(MODO_USUARIO){
-						case 1: pagina = "/paginas/ModuloObservados/admin/mantenimiento/usuario/nuevoUsuarioMO.xhtml"; break;
-						case 2: pagina = "/paginas/ModuloObservados/ocaa/mantenimiento/usuario/nuevoUsuarioMO.xhtml"; break;
-					}
-			
-			case 2: 
-			try {
-				selectorNuevoServicio(opcion);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} break;
-						
-									
-		}	
+		 
 		
 	}
 	
 	
 	public void guardarNuevaSede() {
-		String pagina = "";
 		try{
-				String nombreSede = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
-				String codigoSede = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();;
-				String codigoUbigeo = getUsuarioModelSelect().getCodDepartamento() + getUsuarioModelSelect().getCodProvincia() + getUsuarioModelSelect().getCodDistrito()  ;
+			String codigoSede 		= getServicioModel().getCodigo()==null?"invalido":getServicioModel().getCodigo();
+			String jefaturaSede 	= getServicioModel().getJefaturaSede()==null?"invalido":getServicioModel().getJefaturaSede();
+			String emailSede = getServicioModel().getEmailSede() == null ? ""
+					: validaCorreo(getServicioModel().getEmailSede()) == true ? getServicioModel()
+							.getEmailSede() : "invalido";
+			String nombreSede 		= getServicioModel().getNombre()==null?"invalido":getServicioModel().getNombre();
+			String telefonoSede 	= getServicioModel().getTelefono()==null?"invalido":getServicioModel().getTelefono();
+			String celularSede 		= getServicioModel().getCelular()==null?"invalido":getServicioModel().getNombre();
+			String codigoDpto 		= getUsuarioModelSelect().getCodDepartamento()==null?"invalido":getUsuarioModelSelect().getCodDepartamento();
+			String codigoProvincia 	= getUsuarioModelSelect().getCodProvincia()==null?"invalido":getUsuarioModelSelect().getCodProvincia() ;
+			String codigoDistrito 	= getUsuarioModelSelect().getCodDistrito()==null?"invalido":getUsuarioModelSelect().getCodDistrito();
+			String codigoUbigeo =  codigoDpto + codigoProvincia + codigoDistrito;
 				
+			codigoUbigeo = codigoUbigeo.equals("")?"0":codigoUbigeo;
+				
+				
+			System.out.println("codigoSede" + codigoSede);
+			System.out.println("nombreSede" + nombreSede);
+			System.out.println("jefaturaSede" + jefaturaSede);
+			System.out.println("emailSede" + emailSede);
+			System.out.println("telefonoSede" + telefonoSede);
+			System.out.println("celularSede" + celularSede);
+				
+			System.out.println("Codigo dpto" + codigoDpto);
+			System.out.println("Codigo prov" + codigoProvincia);
+			System.out.println("Codigo distrito" + codigoDistrito);
+			System.out.println("Codigo ubigeo" + codigoUbigeo);
+				
+				
+			if(validarCampos(codigoSede, nombreSede,  codigoDpto,  codigoProvincia,  codigoDistrito, "00",jefaturaSede, emailSede))
+				
+			{
 				SedeBO sede = new SedeBO();
-				sede.setCodigo(codigoSede);
-				sede.setDescripcion(nombreSede);
-				sede.setUbigeo(new UbigeoBO());
-				sede.getUbigeo().setIdUbigeo(codigoUbigeo);
 				
-							
-				citeServices.grabarNuevaSede(sede);
+					sede.setCodigo(codigoSede);
+					sede.setDescripcion(nombreSede);
+					sede.setUbigeo(new UbigeoBO());
+					sede.getUbigeo().setIdUbigeo(codigoUbigeo);					
+					sede.setEmail(emailSede);			
+					sede.setTelefono(telefonoSede);			
+					sede.setJefatura(jefaturaSede);			
+					sede.setCelular(celularSede);			
+					
+					citeServices.grabarNuevaSede(sede);
+				
+				limpiarObjetos();
+				cargarUbigeo();
+				RequestContext rc = RequestContext.getCurrentInstance();
+				rc.execute("dialogNuevaSede.show()");
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			mostrarMensaje(9);				
+		}	 
+		
+		
+	}
+	
+	 
+	
+	public void guardarNuevaCite() {
+		try{
+			 
+			
+			String codigoCite = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();
+			String nombreCite = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
+			String codigoSede = getUsuarioModelSelect().getCodigoDependencia()==null?"invalido":getUsuarioModelSelect().getCodigoDependencia();
+			Date fechaCite = getDate();
+			
+			System.out.println("codigoCite " + codigoCite);
+			System.out.println("nombreCite " + nombreCite);
+			System.out.println("codigoSede UTT" + codigoSede);
+			System.out.println("fechaCite"  + fechaCite);
+
+			if(validarCampos(codigoCite, nombreCite,  "00",  "00",  "00", codigoSede,"00","00"))
+			
+			{
+					
+				
+				CITEBO cite = new CITEBO();
+					cite.setCodigo(codigoCite);
+					cite.setDescripcion(nombreCite);
+					cite.setSede(new SedeBO());
+					cite.getSede().setCodigo(codigoSede); 
+					cite.setFecha(fechaCite);
+					cite.setEstado("A");
+								
+					citeServices.grabarNuevaCite(cite);
+				
+				limpiarObjetos(); 
+				listarSedes();
+				RequestContext rc = RequestContext.getCurrentInstance();
+				rc.execute("dialogNuevaCite.show()");
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			mostrarMensaje(9);				
 		}	
-		limpiarObjetos();
 		
-		RequestContext rc = RequestContext.getCurrentInstance();
-		rc.execute("dialogNuevaSede.show()");
 		
 		
 	}
 	
 	
 	public void guardarNuevaDependencia() {
-		String pagina = "";
 		try{
-				String nombreDependencia = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
-				String codigoDependencia = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();;
-				String codigoUTT = getUsuarioModelSelect().getCodigoDependencia();
+			 
+			
+			String codigoDependencia = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();
+			String nombreDependencia = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
+			String codigoUTT = getUsuarioModelSelect().getCodigoDependencia()==null?"invalido":getUsuarioModelSelect().getCodigoDependencia();
+			
+			System.out.println("codigoDependencia " + codigoDependencia);
+			System.out.println("nombreDependencia " + nombreDependencia);
+			System.out.println("Codigo UTT" + codigoUTT);
+
+			if(validarCampos(codigoDependencia, nombreDependencia,  "00",  "00",  "00", codigoUTT,"00","00"))
+			
+			{
+					
 				
 				DependenciaBO dependencia = new DependenciaBO();
 				dependencia.setCodigo(codigoDependencia);
@@ -549,14 +636,18 @@ public class CITESMBean {
 				
 							
 				citeServices.grabarNuevaDependencia(dependencia);
+				
+				limpiarObjetos(); 
+				listarSedes();
+				RequestContext rc = RequestContext.getCurrentInstance();
+				rc.execute("dialogNuevaDependencia.show()");
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			mostrarMensaje(9);				
 		}	
-		limpiarObjetos();
-		RequestContext rc = RequestContext.getCurrentInstance();
-		rc.execute("dialogNuevaDependencia.show()");
+		
 		
 		
 	}
@@ -585,6 +676,60 @@ public class CITESMBean {
 		}
 	}
 	
+
+	public boolean validaCorreo(String correo) {
+		boolean correoValido = false;
+		try {
+			Pattern pattern = Pattern.compile(PATTERN_EMAIL);
+			Matcher matcher = pattern.matcher(correo);
+			correoValido = matcher.matches();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return correoValido;
+	}
+ 
+	private boolean validarCampos(String codigo, String descripcion, String codigoDepartamento, String codigoProvincia, 
+					String codigoDistrito, String codigoUTT, String jefaturaSede, String emailSede ) {
+		boolean apto = true;
+
+		if (codigo == "invalido" || codigo.equals("")) {
+			mostrarMensaje(1);
+			apto = false;
+		}
+
+		if (descripcion == "invalido" || descripcion.equals("")) {
+			mostrarMensaje(2);
+			apto = false;
+		} 
+		if (codigoDepartamento == "invalido" || codigoDepartamento.equals("")) {
+			mostrarMensaje(3);
+			apto = false;
+		} 
+		if (codigoProvincia == "invalido" || codigoProvincia.equals("")) {
+			mostrarMensaje(4);
+			apto = false;
+		} 
+		if (codigoDistrito == "invalido" || codigoDistrito.equals("")) {
+			mostrarMensaje(5);
+			apto = false;
+		} 
+		if (codigoUTT == "invalido" || codigoUTT.equals("")) {
+			mostrarMensaje(6);
+			apto = false;
+		} 
+		if (jefaturaSede == "invalido" || jefaturaSede.equals("")) {
+			mostrarMensaje(7);
+			apto = false;
+		}
+		if (emailSede == "invalido" || emailSede.equals("")) {
+			mostrarMensaje(8);
+			apto = false;
+		}
+		 
+		return apto;
+	}
+
 	private void listarSedes(){
 		try{
 			
@@ -595,17 +740,9 @@ public class CITESMBean {
 			e.printStackTrace();
 		}
 	}
-		
-	private void listarServicios(){
-		
-		try{
-				
-			getServicioModel().setListarCITE(citeServices.listarCITES());
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+	
+	
+	 
 	
 	public String cancelar() throws Exception{
 		 String pagina = "";
@@ -622,23 +759,25 @@ public class CITESMBean {
 		FacesMessage message = null;		
 		
 		switch(opcionMensaje){
-			case 1: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar sólo caracteres en el campo - " + "Nombres");
+			case 1: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar los caracteres en el campo - " + "Codigo");
 	        		FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 2: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar sólo caracteres en el campo - " + "Apellido Paterno");
+			case 2: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar los caracteres en el campo - " + "Descripcion");
 	        		FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 3: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar sólo caracteres en el campo - " + "Apellido Materno");
+			case 3: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Departamento");
     				FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 4: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar un correo válido en el campo - " + "Correo");
+			case 4: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Provincia");
     				FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 5: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar sólo números en el campo - " + "Teléfono");
+			case 5: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Distrito");
 					FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 6: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar sólo números en el campo - " + "Código del alumno");
+			case 6: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Sede");
 					FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 7: message = new FacesMessage(FacesMessage.SEVERITY_WARN,"", "El usuario ingresado ya ha sido registrado");
+
+			
+			case 7: message = new FacesMessage(FacesMessage.SEVERITY_WARN,"", "Debe ingresar en el campo - " + "Jefatura");
 					FacesContext.getCurrentInstance().addMessage(null, message); break;	
-			case 8: message = new FacesMessage(FacesMessage.SEVERITY_INFO,"", "El servicio se guardo correctamente");
+			case 8:message = new FacesMessage(FacesMessage.SEVERITY_INFO,"", "El email no tiene el formato correcto");
 					FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 9: message = new FacesMessage(FacesMessage.SEVERITY_FATAL,"", "Hubo un error al guardar el usuario");
+			case 9:message = new FacesMessage(FacesMessage.SEVERITY_FATAL,"", "Hubo un error al guardar en la base de datos");
 					FacesContext.getCurrentInstance().addMessage(null, message); break;
 		}
 	}

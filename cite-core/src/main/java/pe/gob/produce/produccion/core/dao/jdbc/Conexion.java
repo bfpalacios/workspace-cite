@@ -12,7 +12,7 @@ public class Conexion {
 	            "jdbc:sqlserver://BFPALACIOS\\SQLEXPRESS:1433;"
 	            + "database=DBCITE;"
 	            + "user=GERARDITO;"
-	            + "password=GERARDITO1;"
+	            + "password=GERARDITO2;"
 	            + "loginTimeout=30;";
 		
 		

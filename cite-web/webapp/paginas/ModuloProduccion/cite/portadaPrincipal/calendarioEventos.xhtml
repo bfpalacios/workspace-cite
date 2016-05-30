@@ -18,11 +18,13 @@
 				</p:column>
 			</p:row>
 		</p:outputPanel>
+		
+		<h:form>
 		<p:growl id="messages" showDetail="true" />
  
     <h:panelGrid columnClasses="value">
         <h3 style="margin-top: 0">Calendario de Eventos</h3>
-        <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2" locale="pe">
+        <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="PET" locale="pe">
  
             <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
             <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
@@ -30,56 +32,54 @@
             <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
  
         </p:schedule>
- <!--  
-        <h3>Locale Support ( Example: Turkish )</h3>
-        <p:schedule id="scheduleLocale" value="#{scheduleView.eventModel}" locale="tr" />
  
-        <h3>Lazy Schedule</h3>
-        <p:schedule value="#{scheduleView.lazyEventModel}" />
-        -->
     </h:panelGrid>
  
-    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+    <p:dialog widgetVar="eventDialog" header="Detalles del evento" showEffect="clip" hideEffect="clip">
         <h:panelGrid id="eventDetails" columns="2">
-            <p:outputLabel for="title" value="Titles:" />
+            <p:outputLabel for="title" value="Título:" />
             <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
+            
+            <p:outputLabel for="desc" value="Descripción:" />
+            <p:inputTextarea id="desc" value="#{scheduleView.event.description}"/>
  
-            <p:outputLabel for="from" value="From:" />
+            <p:outputLabel for="from" value="Desde:" />
             <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
  
-            <p:outputLabel for="to" value="To:" />
+            <p:outputLabel for="to" value="Hasta:" />
             <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
  
-            <p:outputLabel for="allDay" value="All Day:" />
+            <p:outputLabel for="allDay" value="Todo el día:" />
             <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
  
-            <p:commandButton type="reset" value="Reset" />
-            <p:commandButton id="addButton" value="Save" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+            <p:commandButton type="reset" value="Limpiar" />
+            <p:commandButton id="addButton" value="Guardar" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
         </h:panelGrid>
     </p:dialog> 
-	</ui:define>
-	<script type="text/javascript">
+    </h:form>
+ 
+<script type="text/javascript">
     PrimeFaces.locales['pe'] = {
-        closeText: 'kapat',
-        prevText: 'geri',
-        nextText: 'ileri',
-        currentText: 'bugün',
-        monthNames: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
-            'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
-        monthNamesShort: ['Oca','Şub','Mar','Nis','May','Haz',
-            'Tem','Ağu','Eyl','Eki','Kas','Ara'],
-        dayNames: ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
-        dayNamesShort: ['Pz','Pt','Sa','Ça','Pe','Cu','Ct'],
-        dayNamesMin: ['Pz','Pt','Sa','Ça','Pe','Cu','Ct'],
-        weekHeader: 'Hf',
+        closeText: 'Cerrar',
+        prevText: 'Anterior',
+        nextText: 'Siguiente',
+        currentText: 'Hoy',
+        monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+            'Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+            'Jul','Ago','Set','Oct','Nov','Dic'],
+        dayNames: ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],
+        dayNamesMin: ['D','L','M','M','J','V','S'],
+        weekHeader: 'Semana',
         firstDay: 1,
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: '',
-        month: 'mes',
-        week: 'semana',
-        day: 'dia',
-        allDayText : 'Tüm Gün'
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Día',
+        allDayText : 'Todo el día'
     };
 </script>
 <style type="text/css">
@@ -87,5 +87,7 @@
         width: 1000px;
     }
 </style>
+	</ui:define>
+	
 </ui:composition>
 </html>

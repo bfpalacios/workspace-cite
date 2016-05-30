@@ -1,0 +1,45 @@
+@CHARSET "ISO-8859-1";
+.fondoInformativo{
+	background-color: #f3f4f2;
+	text-align: left;
+	overflow: auto;
+	width: 100%;
+	float:both;
+}
+.tituloinformativo{
+	border-radius: 30px 30px 30px 30px;
+-moz-border-radius: 30px 30px 30px 30px;
+-webkit-border-radius: 30px 30px 30px 30px;
+border: 1px solid #2b0057;
+background-color: white;
+padding-left: 10px;
+margin: 0px;
+}
+.imagenInformativo{
+	padding-left: 4%;
+	width: 30%;
+	height: 200px;
+	background-color: #f3f4f2;
+float: left;
+}
+.descripcionInformativo{
+	width: 60%;
+	background-color: #f3f4f2;
+float: right;
+}
+
+
+.leerMas a {
+text-align: center;
+text-decoration: none;
+padding: 3px;
+color: white;
+background: blue;
+border: 2px solid darkblue;
+-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
+}
+.leerMas a:hover {
+color: blue;
+background: lightcyan;
+border-color: blue;
+}

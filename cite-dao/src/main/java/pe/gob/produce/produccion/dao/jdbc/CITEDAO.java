@@ -143,7 +143,7 @@ Connection con = null;
 		cstm.setString(2, cite.getDescripcion());
 		cstm.setString(3, cite.getEstado());
 		cstm.setDate(4, dateCite);
-		cstm.setString(5, cite.getSede().getCodigo());
+		cstm.setString(5, cite.getCodigoUbigeo());
 	
 		cstm.execute();
 	

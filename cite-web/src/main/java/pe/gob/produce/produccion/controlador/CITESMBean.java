@@ -102,38 +102,18 @@ public class CITESMBean {
 	}
 	
 	
-	public String selectorNuevoServicio(int modo) throws Exception{
+	public String selectorNuevoServicio() throws Exception{
 		 String pagina = "";
 			
 		 inicializarClases();
-
-		 listarCITE();
-		 listarSedes();
-
-		 //listarServicios();
-		 switch(modo){ 
-		 case 1: 	
-			
-			pagina = "/paginas/ModuloProduccion/cliente/servicio/nuevo/nuevoServicio.xhtml"; break;
-		
-		 /*@@ESTE ES EL CASO PARA PERFIL CITE */
-		 case 2:  						
-			 
-			//listarMuestras(); 
-			pagina = "/paginas/ModuloProduccion/cite/servicio/nuevo/nuevoServicio.xhtml"; break;
+		//carga el combo para los departamentos, provincia y distrito
+		 cargarUbigeo();
+		 //listarCITE();
+		 //listarSedes();
 		 
-		/*@@ESTE ES EL CASO PARA PERFIL EMPRESA */
-		 case 3:  									
-			
-		 	pagina = "/paginas/ModuloProduccion/empresa/servicio/nuevo/nuevoServicio.xhtml"; break;
-	 
-		 	/*@@ESTE ES EL CASO PARA PERFIL EMPRESA */
-		 case 4:  									
-			
-		 	pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoCite.xhtml"; break;
-	 
 		 
-		 }
+		 pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoCite.xhtml";  
+		 
 		return pagina;		
 	}
 	
@@ -534,7 +514,7 @@ public class CITESMBean {
 			System.out.println("Codigo ubigeo" + codigoUbigeo);
 				
 				
-			if(validarCampos(codigoSede, nombreSede,  codigoDpto,  codigoProvincia,  codigoDistrito, "00",jefaturaSede, emailSede))
+			if(validarCampos(codigoSede, nombreSede,  codigoDpto,  codigoProvincia,  codigoDistrito, "00",jefaturaSede, emailSede, "00"))
 				
 			{
 				SedeBO sede = new SedeBO();
@@ -572,27 +552,32 @@ public class CITESMBean {
 			
 			String codigoCite = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();
 			String nombreCite = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
-			String codigoSede = getUsuarioModelSelect().getCodigoDependencia()==null?"invalido":getUsuarioModelSelect().getCodigoDependencia();
+			//String codigoSede = getUsuarioModelSelect().getCodigoDependencia()==null?"invalido":getUsuarioModelSelect().getCodigoDependencia();
 			Date fechaCite = getDate();
+			
+			String codigoDpto 		= getUsuarioModelSelect().getCodDepartamento()==null?"invalido":getUsuarioModelSelect().getCodDepartamento();
+			String codigoProvincia 	= getUsuarioModelSelect().getCodProvincia()==null?"invalido":getUsuarioModelSelect().getCodProvincia() ;
+			String codigoDistrito 	= getUsuarioModelSelect().getCodDistrito()==null?"invalido":getUsuarioModelSelect().getCodDistrito();
+			String codigoUbigeo =  codigoDpto + codigoProvincia + codigoDistrito;
+				
+			codigoUbigeo = codigoUbigeo.equals("")?"0":codigoUbigeo;
 			
 			System.out.println("codigoCite " + codigoCite);
 			System.out.println("nombreCite " + nombreCite);
-			System.out.println("codigoSede UTT" + codigoSede);
+			System.out.println("codigo ubigeo " + codigoUbigeo);
 			System.out.println("fechaCite"  + fechaCite);
 
-			if(validarCampos(codigoCite, nombreCite,  "00",  "00",  "00", codigoSede,"00","00"))
+			if(validarCampos(codigoCite, nombreCite,  "00",  "00",  "00", "00","00","00",codigoUbigeo))
 			
 			{
 					
 				
 				CITEBO cite = new CITEBO();
 					cite.setCodigo(codigoCite);
-					cite.setDescripcion(nombreCite);
-					cite.setSede(new SedeBO());
-					cite.getSede().setCodigo(codigoSede); 
+					cite.setDescripcion(nombreCite);  
 					cite.setFecha(fechaCite);
 					cite.setEstado("A");
-								
+					cite.setCodigoUbigeo(codigoUbigeo);			
 					citeServices.grabarNuevaCite(cite);
 				
 				limpiarObjetos(); 
@@ -623,7 +608,7 @@ public class CITESMBean {
 			System.out.println("nombreDependencia " + nombreDependencia);
 			System.out.println("Codigo UTT" + codigoUTT);
 
-			if(validarCampos(codigoDependencia, nombreDependencia,  "00",  "00",  "00", codigoUTT,"00","00"))
+			if(validarCampos(codigoDependencia, nombreDependencia,  "00",  "00",  "00", codigoUTT,"00","00", "00"))
 			
 			{
 					
@@ -690,7 +675,7 @@ public class CITESMBean {
 	}
  
 	private boolean validarCampos(String codigo, String descripcion, String codigoDepartamento, String codigoProvincia, 
-					String codigoDistrito, String codigoUTT, String jefaturaSede, String emailSede ) {
+					String codigoDistrito, String codigoUTT, String jefaturaSede, String emailSede, String codigoUbigeo ) {
 		boolean apto = true;
 
 		if (codigo == "invalido" || codigo.equals("")) {
@@ -724,6 +709,10 @@ public class CITESMBean {
 		}
 		if (emailSede == "invalido" || emailSede.equals("")) {
 			mostrarMensaje(8);
+			apto = false;
+		}
+		if (codigoUbigeo == "invalido" || codigoUbigeo.equals("")) {
+			mostrarMensaje(10);
 			apto = false;
 		}
 		 
@@ -778,7 +767,10 @@ public class CITESMBean {
 			case 8:message = new FacesMessage(FacesMessage.SEVERITY_INFO,"", "El email no tiene el formato correcto");
 					FacesContext.getCurrentInstance().addMessage(null, message); break;
 			case 9:message = new FacesMessage(FacesMessage.SEVERITY_FATAL,"", "Hubo un error al guardar en la base de datos");
-					FacesContext.getCurrentInstance().addMessage(null, message); break;
+			FacesContext.getCurrentInstance().addMessage(null, message); break;
+			
+			case 10:message = new FacesMessage(FacesMessage.SEVERITY_FATAL,"", "Debe ingresar el codigo de Ubigeo ");
+			FacesContext.getCurrentInstance().addMessage(null, message); break;
 		}
 	}
 	

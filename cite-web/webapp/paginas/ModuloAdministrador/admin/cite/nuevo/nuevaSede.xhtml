@@ -93,61 +93,23 @@
 				</p:column>
 			</p:row>
 			<p:row>
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblDpto"
-							value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
-					</p:column>
-					<p:column>
-						<p:selectOneMenu id="dpto"
-							value="#{citesMBean.usuarioModelSelect.codDepartamento}"
-							valueChangeListener="#{citesMBean.actualizarlistProvincia}"
-							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<f:selectItem itemLabel="Seleccione el departamento:" />
-							<f:selectItems value="#{citesMBean.usuarioModel.listUbigeo}"
-								var="dpto" itemLabel="#{dpto.departamento}"
-								itemValue="#{dpto.idUbigeo}" />
-							<f:ajax event="change" execute="@this" render="provincia" />
-						</p:selectOneMenu>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblTSede" value="CIte :" />
+				</p:column>
 
-					</p:column>
-
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblProvincia"
-							value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
-					</p:column>
-
-					<p:column>
-						<p:selectOneMenu id="provincia"
-							value="#{citesMBean.usuarioModelSelect.codProvincia}"
-							valueChangeListener="#{citesMBean.actualizarlistDistrito}"
-							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<f:selectItem itemLabel="Seleccione la provincia " />
-							<f:selectItems value="#{citesMBean.usuarioModel.listProvincia}"
-								var="prov" itemLabel="#{prov.provincia}"
-								itemValue="#{prov.idUbigeo}" />
-
-							<f:ajax event="change" execute="@this" render="distrito" />
-						</p:selectOneMenu>
-					</p:column>
-
-
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblDistrito"
-							value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
-					</p:column>
-
-					<p:column>
-						<p:selectOneMenu id="distrito"
-							value="#{citesMBean.usuarioModelSelect.codDistrito}"
-							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<f:selectItem itemLabel="Seleccione el distrito " />
-							<f:selectItems value="#{citesMBean.usuarioModel.listDistrito}"
-								var="distrito" itemLabel="#{distrito.distrito}"
-								itemValue="#{distrito.idUbigeo}" />
-						</p:selectOneMenu>
-					</p:column>
-
-				</p:row>
+				<p:column>
+					<p:selectOneMenu id="sede"
+						value="#{citesMBean.usuarioModelSelect.codigoDependencia}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione la sede " />
+						<f:selectItems value="#{citesMBean.usuarioModel.listarSedes}"
+							var="sede" itemLabel="#{sede.descripcion}"
+							itemValue="#{sede.codigo}" />
+					</p:selectOneMenu>
+					<p:message for="sede" />
+				</p:column>
+			</p:row>
+			
 
 	
 

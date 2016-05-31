@@ -519,6 +519,7 @@ public class UsuarioMBean extends GenericoController {
 		}
 		RequestContext rc = RequestContext.getCurrentInstance();
 		rc.execute("dialogNuevoUsuarioCite.show()");
+		
 	}
 
 	

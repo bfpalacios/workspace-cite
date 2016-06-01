@@ -9,6 +9,7 @@ public class SedeBO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String codigo;
+	private String codigoCite;
 	private String descripcion;
 	private String telefono;
 	private String celular;
@@ -58,6 +59,12 @@ public class SedeBO implements Serializable {
 	}
 	public void setUbigeo(UbigeoBO ubigeo) {
 		this.ubigeo = ubigeo;
+	}
+	public String getCodigoCite() {
+		return codigoCite;
+	}
+	public void setCodigoCite(String codigoCite) {
+		this.codigoCite = codigoCite;
 	}
 	
 }

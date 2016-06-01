@@ -34,7 +34,7 @@ public class CITEDAO extends BaseDAO implements CITEIDAO  {
 		
 		try{
 			con = Conexion.obtenerConexion();
-			query = "SELECT * FROM dbo.CITE";
+			query = "SELECT ID_CITE, NOMBRE_CITE FROM dbo.CITE";
 			statement = con.createStatement();	
 			
 			rs = statement.executeQuery(query);
@@ -68,7 +68,7 @@ public class CITEDAO extends BaseDAO implements CITEIDAO  {
 			cstm.setQueryTimeout(3);
 			cstm.setString(1, sede.getCodigo());		
 			cstm.setString(2, sede.getDescripcion());
-			cstm.setString(3, sede.getUbigeo().getIdUbigeo());
+			cstm.setString(3, sede.getCodigoCite());
 			cstm.setString(4, sede.getJefatura());
 			cstm.setString(5, sede.getEmail());
 			cstm.setString(6, sede.getTelefono());

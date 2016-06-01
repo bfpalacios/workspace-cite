@@ -44,7 +44,7 @@
 				</p:column>
 
 				<p:column colspan="2">
-					<p:inputText id="codigoSede" size="20" 
+					<p:inputText id="codigoSede" size="8" maxlength="6" mask="999999"
 						value="#{citesMBean.servicioModel.codigo}" />
 					<p:message for="codigoSede" />
 				</p:column>
@@ -78,7 +78,7 @@
 						value="Telefono de la Sede - UTT" />
 				</p:column>
 				<p:column colspan="2">
-					<p:inputMask id="telefonoSede" size="10" maxlength="7"  mask="999 99-99"
+					<p:inputMask id="telefonoSede" size="12" maxlength="10"  mask="(99)-999 99-99"
 						value="#{citesMBean.servicioModel.telefono}" />					
 					<p:message for="telefonoSede" />
 				</p:column>				
@@ -94,19 +94,19 @@
 			</p:row>
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-					<h:outputText id="lblTSede" value="CIte :" />
+					<h:outputText id="lblTSede" value="CITE :" />
 				</p:column>
 
-				<p:column>
-					<p:selectOneMenu id="sede"
-						value="#{citesMBean.usuarioModelSelect.codigoDependencia}"
+				<p:column colspan="4">
+					<p:selectOneMenu id="cite"
+						value="#{citesMBean.usuarioModelSelect.codCite}"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
-						<f:selectItem itemLabel="Seleccione la sede " />
-						<f:selectItems value="#{citesMBean.usuarioModel.listarSedes}"
-							var="sede" itemLabel="#{sede.descripcion}"
-							itemValue="#{sede.codigo}" />
+						<f:selectItem itemLabel="Seleccione la CITE " />
+						<f:selectItems value="#{citesMBean.servicioModel.listarCITE}"
+							var="citeU" itemLabel="#{citeU.descripcion}"
+							itemValue="#{citeU.codigo}" />
 					</p:selectOneMenu>
-					<p:message for="sede" />
+					<p:message for="cite" />
 				</p:column>
 			</p:row>
 			
@@ -122,7 +122,7 @@
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
 						value="Guardar SEDE"
 						actionListener="#{citesMBean.guardarNuevaSede}"
-						update="nombreSede,codigoSede,dpto, provincia, distrito, telefonoSede, celularSede, emailSede, jefaturaSede"
+						update="nombreSede,codigoSede,cite,telefonoSede, celularSede, emailSede, jefaturaSede"
 						ajax="false" />
 				</p:column>
 				

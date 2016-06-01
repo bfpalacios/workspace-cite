@@ -32,6 +32,7 @@ public class UsuarioModel {
 	private String codDepartamento;
 	private String codProvincia;
 	private String codDistrito;
+	private String codigoCite;
 	private String telefono2;
 	private String cargo;
 	
@@ -717,6 +718,14 @@ public class UsuarioModel {
 
 	public void setListarSedes(List<SedeBO> listarSedes) {
 		this.listarSedes = listarSedes;
+	}
+
+	public String getCodigoCite() {
+		return codigoCite;
+	}
+
+	public void setCodigoCite(String codigoCite) {
+		this.codigoCite = codigoCite;
 	}
 	
 	

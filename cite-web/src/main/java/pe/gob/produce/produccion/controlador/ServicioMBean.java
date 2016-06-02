@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
@@ -22,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.CITEBO;
-import pe.gob.produce.cite.bo.DependenciaBO;
-import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioBO;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
@@ -222,6 +221,53 @@ public class ServicioMBean {
 	
 	}
 	
+	public String nuevosManuales() throws Exception{
+		 
+		System.out.println("nuevosManuales:INICIO");
+		String pagina = "";
+			
+		 inicializarClases();									
+			
+		 pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosManuales.xhtml"; 
+		 System.out.println("nuevosManuales:FIN");
+		 return pagina;		
+	
+	}
+	
+	public String documentosITP() throws Exception{
+		 
+		System.out.println("documentosITP:INICIO");
+		String pagina = "";
+			
+		 inicializarClases();									
+			
+		 pagina = "/paginas/ModuloAdministrador/admin/cite/documentos/downloadManualesITP.xhtml"; 
+		 System.out.println("documentosITP:FIN");
+		 return pagina;		
+	
+	}
+	
+	public void invocarServletDocumentos() throws Exception{
+		System.out.println("invocarServletDocumentos:INICIO");
+		
+		/*FacesContext context = FacesContext.getCurrentInstance();
+	    try {
+	       context.getExternalContext().dispatch("ListarDirectorios");
+	    }catch (Exception e) {
+	       e.printStackTrace();
+	    }
+	    finally{
+	       context.responseComplete();
+	    }	*/
+		
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	    ec.redirect(ec.getRequestContextPath() + "/ListarDirectorios");
+	    
+	    System.out.println("invocarServletDocumentos:FIN");
+		
+	}
+	
+	
 	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
 		String codDepartamento = (String) (e.getNewValue() == null ? "" : e
 				.getNewValue());
@@ -277,6 +323,37 @@ public class ServicioMBean {
 		getUsuarioModel().setListDistrito(listaUbigeoModel);
 	}
 	
+	
+	
+	public void handleFileUploadManuales(FileUploadEvent e) throws IOException {
+
+		System.out.println("RUTA DEL PROYECTO");
+		System.out.println (new File (".").getAbsolutePath ());
+		
+		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+		String deploymentDirectoryPath = servletContext.getRealPath("/");
+		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
+		System.out.println("RUTA: " + uploadDirectoryPath);
+		/*		
+		*/
+		UploadedFile uploadedPhoto = e.getFile();
+		String filePath = "C:/ITP/DOCUMENTOS_CITE/MANUALES/";
+		
+		//String filePath = uploadDirectoryPath;
+		byte[] bytes = null;
+
+		if (null != uploadedPhoto) {
+			bytes = uploadedPhoto.getContents();
+			String filename = FilenameUtils.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath + filename)));
+			stream.write(bytes);
+			stream.close();
+
+			rutaComprobante = filename;
+		}
+
+	}
+	
 	public void handleFileUpload(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
@@ -289,9 +366,9 @@ public class ServicioMBean {
 		/*		
 		*/
 		UploadedFile uploadedPhoto = e.getFile();
-		//String filePath = "D:/ITP/";
+		String filePath = "C:/ITP/";
 		
-		String filePath = uploadDirectoryPath;
+		//String filePath = uploadDirectoryPath;
 		byte[] bytes = null;
 
 		if (null != uploadedPhoto) {

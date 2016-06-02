@@ -28,6 +28,16 @@
 				<p:menuitem 
 					value="Nuevo Informativo" action="#{servicioMBean.nuevoServicioInformativo}"
 					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Nuevo Eventos" action="#{servicioMBean.nuevoServicioEventos}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Nuevos Manuales" action="#{servicioMBean.nuevosManuales}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Documentos ITP" action="#{servicioMBean.documentosITP}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				
 			</p:submenu>
 			<p:submenu label="Modulo - Gestion CITEs">
 				<p:menuitem 
@@ -37,10 +47,7 @@
 			<p:submenu label="Modulo - Gestion de usuarios">
 				<p:menuitem 
 					value="Nuevo Usuario CITE" action="#{usuarioMBean.registraNuevoCliente(1)}"
-					icon="ui-icon-arrowrefresh-1-w" />
-				<!--p:menuitem 
-					value="Buscar Cliente Empresa" action="#{usuarioMBean.selectorBuscarClienteEmpresa(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />--> 
+					icon="ui-icon-arrowrefresh-1-w" /> 
 			</p:submenu>
 			<p:submenu label="Cerrar Sesion">
             	<p:menuitem 

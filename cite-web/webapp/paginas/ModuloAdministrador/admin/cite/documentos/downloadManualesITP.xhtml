@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevosManuales"
+			style="width:500px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panelGrid id="pnlGridNuevosManuales">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="6">Download  Manuales  </p:column>
+				</p:row>
+			</f:facet> 
+    
+			<p:row>
+				<p:column colspan="6"> 
+				 	<p:commandLink value="Manuales" action="#{servicioMBean.invocarServletDocumentos}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		<!--p:panel styleClass="some_style">
+    				    	<h:graphicImage value="#{some_image}">
+    					</p:panel>
+    				</h:graphicImage -->
+				 <!--a href="http://localhost:8085/Directorios/ListarDirectorios" style="text-align: left; color:#084B8A; font-size:15px; font-family:Arial;">
+					<img src="img/folder.png" alt="Smiley face"></a -->
+				 </p:column>
+			</p:row>
+
+
+		</p:panelGrid> 
+		
+	</ui:define>
+</ui:composition>
+</html>

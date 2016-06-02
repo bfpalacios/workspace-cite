@@ -44,7 +44,13 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	}
 	
 	public List<UsuarioBO> obtenerRoles(int proceso){	
-		return getComunDAO().obtenerRoles(proceso);
+		try {
+			return getComunDAO().obtenerRoles(proceso);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	

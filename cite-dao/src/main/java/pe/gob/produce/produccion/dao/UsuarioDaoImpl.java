@@ -5,9 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import oracle.jdbc.OracleTypes;
+import java.util.Map; 
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,49 +111,17 @@ public void grabarUsuarioDocumentos(int idUsuario, String numeroDocumento, Strin
 		
 	}
 
-	
-	
-	public String buscarUsuario(String codUsuario) throws Exception{
-		Connection con = null;
-		CallableStatement cstm = null;
-		
-		String codigoUsuario = "";
-		
-		try{
-			con = Conexion.obtenerConexion();
-			cstm = con.prepareCall("{call VALIDAR_EXISTENCIA_USUARIO(?,?)}");
-			cstm.setString(1, codUsuario);						
-			cstm.registerOutParameter(2, OracleTypes.VARCHAR);			
-			cstm.execute();
-			
-			codigoUsuario = cstm.getString(2)==null?"":cstm.getString(2);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}	
-		return codigoUsuario;
-	}
-	
-	public String buscarUsuarioEquivalencia(String codUsuario) throws Exception{
-		Connection con = null;
-		CallableStatement cstm = null;
-		
-		String codigoUsuarioEquivalencia = "";
-		
-		try{
-			con = Conexion.obtenerConexion();
-			cstm = con.prepareCall("{call BUSCAR_USUARIO_EQUIVALENCIA(?,?)}");
-			cstm.setString(1, codUsuario);						
-			cstm.registerOutParameter(2, OracleTypes.VARCHAR);			
-			cstm.execute();
-			
-			codigoUsuarioEquivalencia = cstm.getString(2)==null?"":cstm.getString(2);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}	
-		return codigoUsuarioEquivalencia;
-	}
+@Override
+public String buscarUsuario(String codUsuario) throws Exception {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public String buscarUsuarioEquivalencia(String codUsuario) throws Exception {
+	// TODO Auto-generated method stub
+	return null;
+} 
 
 	
 }

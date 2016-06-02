@@ -9,10 +9,10 @@ public class Conexion {
 	public static Connection obtenerConexion() throws SQLException {
 		
 		String connectionString =
-	            "jdbc:sqlserver://BFPALACIOS\\SQLEXPRESS:1433;"
+	            "jdbc:sqlserver:/localhost:1433;"
 	            + "database=DBCITE;"
-	            + "user=GERARDITO;"
-	            + "password=GERARDITO2;"
+	            + "user=USERCITE;"
+	            + "password=USERCITE1;"
 	            + "loginTimeout=30;";
 		
 		

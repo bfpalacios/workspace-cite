@@ -2,6 +2,7 @@ package pe.gob.produce.produccion.controlador;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -33,6 +34,7 @@ public class DownloadFile extends HttpServlet {
 	    String doc = request.getParameter("doc");
 	    
 	    String url=Constantes.url+doc;
+	    
 	    txt(doc,url,response);
 //            if (doc.endsWith(".txt") || doc.endsWith(".TXT")){
 //        	txt(doc,url,response);

@@ -9,13 +9,16 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.empresa.proyecto.dao.CotizacionDAO;
 import com.empresa.proyecto.dto.CotizacionDTO;
 import com.empresa.proyecto.dto.ServicioDTO;
 import com.empresa.proyecto.dto.UsuarioDTO;
 
-@Repository
+
+@Repository("cotizacionDAO")
+@Transactional
 public class CotizacionDAOImpl implements CotizacionDAO {
 
 	// IoC
@@ -25,6 +28,7 @@ public class CotizacionDAOImpl implements CotizacionDAO {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<CotizacionDTO> lsCotizacionByUsuario(Integer idusuario) {
 
@@ -64,6 +68,7 @@ public class CotizacionDAOImpl implements CotizacionDAO {
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<ServicioDTO> lsServicioByCotizacion(Integer idcotizacion) {
 
@@ -96,6 +101,7 @@ public class CotizacionDAOImpl implements CotizacionDAO {
 		int ctos = jdbcTemplate.update(sql, idcotizacion, rutacomprobante);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public CotizacionDTO getCotizacion(Integer idcotizacion) {
 
@@ -117,6 +123,7 @@ public class CotizacionDAOImpl implements CotizacionDAO {
 		return cotizacion;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public UsuarioDTO getUsuario(String usuario) {
 

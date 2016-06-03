@@ -2,6 +2,8 @@ package pe.gob.produce.produccion.controlador;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -9,6 +11,14 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
  
+
+
+
+
+
+
+
+
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -17,34 +27,52 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import pe.gob.produce.cite.bo.EventoBO;
+import pe.gob.produce.produccion.services.EventoServices;
+import pe.gob.produce.produccion.services.impl.EventoServicesImpl;
  
-@ManagedBean
+@Controller("scheduleView")
 @ViewScoped
 public class ScheduleView implements Serializable {
  
     private ScheduleModel eventModel;
      
     private ScheduleModel lazyEventModel;
+    
+    @Autowired
+    private EventoServices eventoService;    
  
     private ScheduleEvent event = new DefaultScheduleEvent();
  
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+        List<EventoBO> eventos = null;
+        try {
+        	eventos = eventoService.listarEventos();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        for (EventoBO eventoDB : eventos) {
+        	DefaultScheduleEvent evento = new DefaultScheduleEvent(eventoDB.getTitulo(), eventoDB.getFechaInicio(), eventoDB.getFechaFin());
+        	evento.setId(eventoDB.getId().toString());
+        	evento.setDescription(eventoDB.getDescripcion());
+        	evento.setAllDay((eventoDB.getTodoElDia() == 1)?true:false);
+        	eventModel.addEvent(evento);
+		}
          
         lazyEventModel = new LazyScheduleModel() {
              
             @Override
             public void loadEvents(Date start, Date end) {
                 Date random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
+                addEvent(new DefaultScheduleEvent("Prueba 1", random, random));
                  
                 random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
+                addEvent(new DefaultScheduleEvent("Prueba 2", random, random));
             }   
         };
     }
@@ -158,9 +186,20 @@ public class ScheduleView implements Serializable {
     }
      
     public void addEvent(ActionEvent actionEvent) {
-        if(event.getId() == null)
+        if(event.getId() == null){
+        	EventoBO  nuevoEvento = new EventoBO();
+        	nuevoEvento.setTitulo(event.getTitle());
+        	nuevoEvento.setDescripcion(event.getDescription());
+        	nuevoEvento.setFechaInicio(event.getStartDate());
+        	nuevoEvento.setFechaFin(event.getEndDate());
+        	nuevoEvento.setTodoElDia((event.isAllDay()) ? 1 : 0);
+        	try {
+				eventoService.grabarEvento(nuevoEvento);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
             eventModel.addEvent(event);
-        else
+        }else
             eventModel.updateEvent(event);
          
         event = new DefaultScheduleEvent();

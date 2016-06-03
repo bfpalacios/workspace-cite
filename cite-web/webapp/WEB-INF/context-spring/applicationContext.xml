@@ -48,7 +48,7 @@
 		<property name="password" value="${hibernate.connection.password}" />
 	</bean>
 
-	<bean class="com.empresa.proyecto.dao.impl.CotizacionDAOImpl" id="cotizacionDAOImpl">
+	<bean class="com.empresa.proyecto.dao.impl.CotizacionDAOImpl" id="cotizacionDAO">
 		<property name="conexion" ref="dataSource"></property>
 	</bean>
 

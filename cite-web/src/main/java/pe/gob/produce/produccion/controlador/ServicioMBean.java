@@ -24,7 +24,7 @@ import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.ServicioBO;
-import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.cite.bo.InformativoBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.produccion.core.util.Convertidor;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
@@ -518,7 +518,7 @@ public class ServicioMBean {
 				String descripcionCorta = getServicioModel().getDescripcionCorta()==null?"":getServicioModel().getDescripcionCorta();;
 				String descrcipcion = getServicioModel().getDescripcion();
 				
-				ServicioInformativoBO servicio = new ServicioInformativoBO();
+				InformativoBO servicio = new InformativoBO();
 				
 				
 				

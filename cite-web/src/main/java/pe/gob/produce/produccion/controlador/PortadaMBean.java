@@ -10,13 +10,18 @@ import org.springframework.stereotype.Controller;
 import pe.gob.produce.cite.bo.UsuarioBO;
 import pe.gob.produce.produccion.model.PortadaModel;
 import pe.gob.produce.produccion.model.ServicioModel;
+import pe.gob.produce.produccion.services.EventoServices;
+import pe.gob.produce.produccion.services.InformativoServices;
 
 @Controller("portadaMBean")
 @ViewScoped
 public class PortadaMBean {
 	
-	//@Autowired
-	//private PortadaModel portadaModel;
+	@Autowired
+	private EventoServices eventoService;
+	
+	@Autowired
+	private InformativoServices informativoService;
 
 	//constructor
 		public PortadaMBean(){
@@ -38,7 +43,5 @@ public class PortadaMBean {
 		
 		public String cargarPublicacionesInformativas(){
 			return "/paginas/ModuloProduccion/cite/portadaPrincipal/publicacionesInformativas.xhtml";
-		}
-
-				
+		}				
 }

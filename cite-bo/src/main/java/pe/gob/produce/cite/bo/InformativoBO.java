@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Date;
 
-public class ServicioInformativoBO implements Serializable{
+public class InformativoBO implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Integer id;
 	private Date fecha;
 	private String tituloInformativo;
 	private String descInformativo;
@@ -19,6 +20,12 @@ public class ServicioInformativoBO implements Serializable{
 	private byte[] archivoInformativo;
 	 
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public byte[] getArchivoInformativo() {
 		return archivoInformativo;
 	}

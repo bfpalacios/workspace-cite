@@ -14,8 +14,7 @@ public class ServicioInformativoBO implements Serializable{
 	private Date fecha;
 	private String tituloInformativo;
 	private String descInformativo;
-	private String descCortaInformativo;
-	//private Blob archivoInformativo;
+	private String descCortaInformativo; 
 	private byte[] archivoInformativo;
 	 
 	

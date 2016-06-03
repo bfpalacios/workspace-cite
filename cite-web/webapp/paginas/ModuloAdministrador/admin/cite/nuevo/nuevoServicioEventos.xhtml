@@ -20,7 +20,7 @@
 		<p:panelGrid id="pnlGridNuevoServicioInformativo">
 			<f:facet name="header">
 				<p:row>
-					<p:column colspan="6">Datos del Servicio Informativo</p:column>
+					<p:column colspan="6">Datos de los Eventos </p:column>
 				</p:row>
 			</f:facet>
 			
@@ -80,10 +80,10 @@
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
 					<p:growl id="messagesInformativo" showDetail="true" />
 					<p:fileUpload label="Cargar documento ..."  id="docInformativo"
-						mode="simple" dragDropSupport="false" update="messages"
-						fileLimit="1" value="#{servicioMBean.file}"  
-						fileUploadListener="#{servicioMBean.handleUpload}"
-						previewWidth="300"
+						uploadLabel="Cargar documento" cancelLabel="Cancelar"
+						fileUploadListener="#{servicioMBean.handleFileUpload}"
+						mode="advanced" dragDropSupport="false" update="messages"
+						fileLimit="1" value="Adjuntar comprobante" previewWidth="300"
 						style="margin-left: 160px;" skinSimple="true" />
 				</p:column>
 			</p:row>

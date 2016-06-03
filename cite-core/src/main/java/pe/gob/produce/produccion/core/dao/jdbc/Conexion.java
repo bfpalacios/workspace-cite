@@ -9,7 +9,7 @@ public class Conexion {
 	public static Connection obtenerConexion() throws SQLException {
 		
 		String connectionString =
-	            "jdbc:sqlserver://localhost:1433;"
+	            "jdbc:sqlserver://BFPALACIOS\\SQLEXPRESS:1433;"
 	            + "database=DBCITE;"
 	            + "user=USERCITE;"
 	            + "password=USERCITE1;"

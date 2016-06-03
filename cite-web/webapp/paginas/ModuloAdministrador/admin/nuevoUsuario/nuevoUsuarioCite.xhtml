@@ -36,12 +36,12 @@
 				<p:row>
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblNombre"
+						<h:outputText id="lblNombre" 
 							value="#{mensaje['produccion.nuevo.cliente.nombre']}" />
 					</p:column>
 
 					<p:column>
-						<p:inputText id="nombre" size="25"
+						<p:inputText id="nombre" size="25"  
 							value="#{usuarioMBean.usuarioModel.nombres}" />
 						<p:message for="nombre" />
 					</p:column>
@@ -52,7 +52,7 @@
 					</p:column>
 
 					<p:column>
-						<p:selectOneMenu id="tipoDoc"
+						<p:selectOneMenu id="tipoDoc"  
 							value="#{usuarioMBean.usuarioModel.tipoDoc}">
 							<f:selectItem itemLabel="Seleccione Tipo Doc " />
 							<f:selectItem itemLabel="DNI" itemValue="1" />
@@ -69,7 +69,7 @@
 
 					<p:column> 
 						
-						<p:inputMask id="dni" value="#{usuarioMBean.usuarioModel.dni}" size="10"  maxlength="8" mask="99999999"/>
+						<p:inputMask id="dni" value="#{usuarioMBean.usuarioModel.dni}" size="10"  maxlength="8" mask="99999999"   />
 						<p:message for="dni" />
 					</p:column> 
 				</p:row>
@@ -114,7 +114,7 @@
 							value="CITE: " />
 					</p:column>
 					<p:column>
-						<p:selectOneMenu id="cite"
+						<p:selectOneMenu id="cite"  
 							value="#{usuarioMBean.usuarioModelSelect.codCite}"
 							valueChangeListener="#{usuarioMBean.actualizarlistSedes}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -124,7 +124,7 @@
 								itemValue="#{cite.codigoCite}" />
 							<f:ajax event="change" execute="@this" render="sede" />
 						</p:selectOneMenu>
-
+							<p:message for="cite" />
 					</p:column>
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -133,7 +133,7 @@
 					</p:column>
 
 					<p:column>
-						<p:selectOneMenu id="sede"
+						<p:selectOneMenu id="sede"  
 							value="#{usuarioMBean.usuarioModelSelect.codSede}"
 							valueChangeListener="#{usuarioMBean.actualizarlistDependencias}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -144,6 +144,7 @@
 
 							<f:ajax event="change" execute="@this" render="dependencia" />
 						</p:selectOneMenu>
+						<p:message for="sede" />
 					</p:column>
 
 
@@ -153,7 +154,7 @@
 					</p:column>
 
 					<p:column>
-						<p:selectOneMenu id="dependencia"
+						<p:selectOneMenu id="dependencia"  
 							value="#{usuarioMBean.usuarioModelSelect.codDependencia}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione la dependencia " />
@@ -161,6 +162,7 @@
 								var="dependencia" itemLabel="#{dependencia.descripcion}"
 								itemValue="#{dependencia.codigo}" />
 						</p:selectOneMenu>
+						<p:message for="dependencia" />
 					</p:column>
 
 				</p:row> 
@@ -183,8 +185,10 @@
 					</p:column>
 
 					<p:column>
-						<p:inputText id="idUsuario" size="25"
+						<p:inputText id="idUsuario" size="25"  
 							value="#{usuarioMBean.usuarioModel.idUsuario}" />
+							<p:message for="idUsuario" />
+							
 					</p:column>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblEmaiiadmin"
@@ -196,6 +200,7 @@
 							value="#{usuarioMBean.usuarioModel.emailAdmin}" validatorMessage="#{usuarioMBean.usuarioModel.emailAdmin} is not valid">
     						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
     					</p:inputText>
+    					
 					</p:column>
 				</p:row>
 				<p:row>
@@ -205,9 +210,8 @@
 					</p:column>
 
 					<p:column styleClass="styleAlignLeftColumn">
-						<p:password id="clave" size="25"  
-							value="
-" />
+						<p:password id="clave" size="25"    
+							value="#{usuarioMBean.usuarioModel.clave}" />
 						<p:message for="clave" />
 					</p:column> 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -230,7 +234,7 @@
 					</p:column>
 
 					<p:column styleClass="styleAlignLeftColumn">
-						<p:password id="confirmarclave" size="25"
+						<p:password id="confirmarclave" size="25"  
 							value="#{usuarioMBean.usuarioModel.confirmarClave}"  />
 						<p:message for="confirmarclave" />
 					</p:column>
@@ -240,12 +244,13 @@
 					</p:column>
 
 					<p:column colspan="4" styleClass="styleAlignLeftColumn">
-						<p:selectOneMenu id="rol"
+						<p:selectOneMenu id="rol"  
 							value="#{usuarioMBean.usuarioModelSelect.rol}">
 							<f:selectItem itemLabel="Seleccione el Perfil" />
 							<f:selectItem itemLabel="Rol Usuario CITE " itemValue="1" />
 							<f:selectItem itemLabel="Rol Admin " itemValue="2" />
 						</p:selectOneMenu>
+						<p:message for="rol" />
 					</p:column>
 
 
@@ -262,7 +267,6 @@
 					<p:commandButton id="botonGuardar" value="Registrar Usuario"
 						styleClass="buttonMarginNormal"
 						actionListener="#{usuarioMBean.guardarNuevoUsuario}"
-						action="#{usuarioMBean.guardarNuevoUsuario}"
 						update="pnlGridLoginAcceso,nombre, tipoDoc, dni, cargo, cite, sede, dependencia, idUsuario, emailPersonal , emailAdmin, clave,confirmarclave, telefonoUsuario2, telefonoUsuario, rol"
 						ajax="true" />
 				</p:column>
@@ -270,7 +274,7 @@
 
 				<p:column colspan="2" styleClass="styleAlignRightColumn">
 					<p:commandButton value="Cancelar" id="botonCamcelar"
-						action="#{usuarioMBean.cancelarRegistrarNuevoUsuario(2)}"
+						action="#{usuarioMBean.cancelarRegistrarNuevoUsuario}"
 						ajax="true" />
 				</p:column>
 			</p:row>

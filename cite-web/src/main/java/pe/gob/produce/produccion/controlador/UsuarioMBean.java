@@ -213,27 +213,14 @@ public class UsuarioMBean extends GenericoController {
 		getUsuarioModel().setListDistrito(listaUbigeoModel);
 	}
 
-	public String registraNuevoCliente(int modo) {
+	public String registraNuevoUsuarioCite() {
 
 		String pagina = "";
+		inicializarClases();
 		cargarUbigeo();
 		cargarCITES();
-		switch (modo) {
-
-		/* @@ESTE ES EL CASO PARA PERFIL CITE */
-		case 1:
-
-			pagina = "/paginas/ModuloAdministrador/admin/nuevoUsuario/nuevoUsuarioCite.xhtml";
-			break;
-
-
-		/* @@ESTE ES EL CASO PARA PERFIL ADMIN CITE */
-		case 2:
-			pagina = "/paginas/ModuloAdministrador/admin/nuevoUsuario/nuevoUsuarioAdmin.xhtml";
-			break;
-
-		}
-
+		pagina = "/paginas/ModuloAdministrador/admin/nuevoUsuario/nuevoUsuarioCite.xhtml";
+			
 		return pagina;
 	}
 
@@ -241,19 +228,21 @@ public class UsuarioMBean extends GenericoController {
 		String pagina = "";
 
 		inicializarClases();
-		switch (modo) {
-		/* @@ESTE ES EL CASO PARA PERFIL usuario nuevo */
+		/*switch (modo) {
+		//@@ESTE ES EL CASO PARA PERFIL usuario nuevo
 		case 1:
 			pagina = "/admin/nuevo/registrarNuevoUsuario.xhtml";
 			break;
 
-		/* @@ESTE ES EL CASO PARA PERFIL CITE */
+		//@@ESTE ES EL CASO PARA PERFIL CITE 
 		case 2:
 			pagina = "/paginas/ModuloProduccion/principal_cite.xhtml";
 			break;
 
-		}
-
+		}*/
+		
+		pagina = "/admin/nuevo/registrarNuevoUsuario.xhtml";
+		
 		return pagina;
 	}
 
@@ -444,18 +433,17 @@ public class UsuarioMBean extends GenericoController {
 	public void guardarNuevoUsuario() {
 		
 		try {
-			String contrasenia = getUsuarioModel().getClave() == null ? "0"
+			String contrasenia = getUsuarioModel().getClave() == null ? ""
 					: getUsuarioModel().getClave();
-			String confirmaClave = getUsuarioModel().getConfirmarClave() == null ? "0"
+			String confirmaClave = getUsuarioModel().getConfirmarClave() == null ? ""
 					: getUsuarioModel().getConfirmarClave();
-			int idRol = Integer
-					.parseInt(usuarioModelSelect.getRol() == null ? "0"
-							: usuarioModelSelect.getRol());
-			String codCite = usuarioModelSelect.getCodCite() == null ? "0"
+			String idRol = usuarioModelSelect.getRol() == null ? ""
+							: usuarioModelSelect.getRol();
+			String codCite = usuarioModelSelect.getCodCite() == null ? ""
 					: usuarioModelSelect.getCodCite();
-			String codSede = usuarioModelSelect.getCodSede() == null ? "0"
+			String codSede = usuarioModelSelect.getCodSede() == null ? ""
 					: usuarioModelSelect.getCodSede();
-			String codDependencia = usuarioModelSelect.getCodDependencia() == null ? "0"
+			String codDependencia = usuarioModelSelect.getCodDependencia() == null ? ""
 					: usuarioModelSelect.getCodDependencia();
 	 
 			String nombres = getUsuarioModel().getNombres() == null ? ""
@@ -487,8 +475,10 @@ public class UsuarioMBean extends GenericoController {
 			String idUsuario = getUsuarioModel().getIdUsuario() == null ? ""
 					: validaCadena(getUsuarioModel().getIdUsuario()) == true ? getUsuarioModel()
 							.getIdUsuario() : "invalido";
-
-			if (validarCamposUsuarioCite(nombres) == true) {
+			
+			System.out.println("Nombres " + nombres);
+							
+			if (validarCamposUsuarioCite(nombres, contrasenia, confirmaClave, idRol, codCite, codDependencia, dni, idUsuario, emailItp, codSede) == true) {
 				UsuarioBO usuarioNuevo = new UsuarioBO();
 				usuarioNuevo.setIdUsuario(idUsuario);
 				usuarioNuevo.setContrasenia(contrasenia);
@@ -503,11 +493,14 @@ public class UsuarioMBean extends GenericoController {
 				usuarioNuevo.setEmailAdmin(emailItp);
 				usuarioNuevo.setDni(dni);
 				usuarioNuevo.setCargo(cargo);
-				usuarioNuevo.setIdRol(String.valueOf(idRol)); 
+				usuarioNuevo.setIdRol(idRol); 
 
 				usuarioServices.grabarUsuario(usuarioNuevo);
 				limpiarCampos();
-				mostrarMensaje(8);
+				mostrarMensajeNuevoUsuario(13);
+				
+				RequestContext rc = RequestContext.getCurrentInstance();
+				rc.execute("dialogNuevoUsuarioCite.show()");
 			}
 			// }
 			/*
@@ -515,10 +508,9 @@ public class UsuarioMBean extends GenericoController {
 			 */
 		} catch (Exception e) {
 			e.printStackTrace();
-			mostrarMensaje(9);
+			mostrarMensajeNuevoUsuario(14);
 		}
-		RequestContext rc = RequestContext.getCurrentInstance();
-		rc.execute("dialogNuevoUsuarioCite.show()");
+		
 		
 	}
 
@@ -558,16 +550,63 @@ public class UsuarioMBean extends GenericoController {
 		return apto;
 	}
 	
-	private boolean validarCamposUsuarioCite(String nombres) {
+	private boolean validarCamposUsuarioCite(String nombres, String contrasenia, String confirmaClave, String idRol, String codCite, 
+			String codDependencia, String dni, String idUsuario, String emailItp, String codSede) {
 		boolean apto = true;
 
-		if (nombres == "invalido") {
-			mostrarMensaje(1);
+		if (nombres.equals("") || nombres.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(1);
+			apto = false;
+		}
+		
+		if (contrasenia.equals("") || contrasenia.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(2);
+			apto = false;
+		}
+		
+		if (confirmaClave.equals("") || confirmaClave.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(3);
+			apto = false;
+		}
+		
+		if (idRol.equals("") || idRol.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(4);
+			apto = false;
+		}
+		
+		if (codCite.equals("") || codCite.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(5);
+			apto = false;
+		}
+		if (codDependencia.equals("") || codDependencia.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(6);
+			apto = false;
+		}
+		if (dni.equals("") || dni.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(7);
+			apto = false;
+		}
+		
+		if (idUsuario.equals("") || idUsuario.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(8);
 			apto = false;
 		} 
-
-		 
-		setEsAlumno(true);
+		
+		if (emailItp.equals("") || emailItp.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(9);
+			apto = false;
+		}
+		
+		if (codSede.equals("") || codSede.equals("invalido") ) {
+			mostrarMensajeNuevoUsuario(11);
+			apto = false;
+		}
+		
+		if (!confirmaClave.equals(contrasenia) ) {
+			mostrarMensajeNuevoUsuario(12);
+			apto = false;
+		}
+		
 		return apto;
 	}
 
@@ -626,7 +665,92 @@ public class UsuarioMBean extends GenericoController {
 			break;
 		}
 	}
+	
+	
+	private void mostrarMensajeNuevoUsuario(int opcionMensaje) {
+		FacesMessage message = null;
 
+		switch (opcionMensaje) {
+		case 1:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar los caracteres en el campo - " + "Nombres");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 2:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar los caracteres en el campo - "
+							+ "contrasenia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 3:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar los caracteres en el campo - "
+							+ "confirmaClave");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 4:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar un correo valido en el campo - " + "Rol");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 5:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar el combo de la CITE");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 6:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar el combo dependencia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 7:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar el DNI");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 8:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar el ID USUARIO");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 9:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar un correo valido en el campo - " + "Email ITP");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 10:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"El usuario ingresado ya ha sido registrado");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 11:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar en el combo  - " + "Sede");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 12:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Los campos Password y Confirmar Password no coinciden");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+			
+		case 13:
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+					"El usuario se guardo correctamente");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 14:
+			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al guardar el usuario");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		}
+	}
+	
 	private void limpiarObjetos() {
 		setUsuarioModel(null);
 		setUsuarioModel(new UsuarioModel());

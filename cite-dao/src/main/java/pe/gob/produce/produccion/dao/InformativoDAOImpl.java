@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.gob.produce.cite.bo.InformativoBO;
+import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
 
@@ -21,18 +21,18 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 	private static int cantidadDeNoticias = 4;
 
 	@Override
-	public List<InformativoBO> listarNoticias() {
+	public List<ServicioInformativoBO> listarNoticias() {
 		Connection con = null;		
 		Statement statement = null;
 		ResultSet rs = null;
-		List<InformativoBO> listaNoticias = new ArrayList<InformativoBO>();		
+		List<ServicioInformativoBO> listaNoticias = new ArrayList<ServicioInformativoBO>();		
 		try{			
 			con = Conexion.obtenerConexion();
 			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarNoticias(?)}");
 			pstmt.setInt(1, cantidadDeNoticias);
 		    rs = pstmt.executeQuery();			
 			while(rs.next()){				
-				InformativoBO noticia = new InformativoBO();
+				ServicioInformativoBO noticia = new ServicioInformativoBO();
 				noticia.setId(rs.getInt(1));
 				noticia.setTituloInformativo(rs.getString(2));
 				noticia.setDescInformativo(rs.getString(3));

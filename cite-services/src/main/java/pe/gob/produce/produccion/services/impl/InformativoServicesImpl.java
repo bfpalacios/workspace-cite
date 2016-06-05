@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import pe.gob.produce.cite.bo.InformativoBO;
+import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.dao.InformativoDAO;
 import pe.gob.produce.produccion.services.InformativoServices;
 
@@ -16,7 +16,7 @@ public class InformativoServicesImpl implements InformativoServices {
 	private InformativoDAO informativoDao;
 	
 	@Override
-	public List<InformativoBO> listarNoticias() {
+	public List<ServicioInformativoBO> listarNoticias() {
 		return informativoDao.listarNoticias();
 	}
 

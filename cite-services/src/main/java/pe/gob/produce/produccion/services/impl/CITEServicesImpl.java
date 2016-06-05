@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
+import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.dao.CITEIDAO;
 import pe.gob.produce.produccion.services.CITEServices;
 
@@ -51,6 +52,14 @@ public class CITEServicesImpl implements CITEServices{
 	@Override
 	public void grabarNuevaCite(CITEBO cite) throws Exception {
 		citeDAO.grabarNuevaCite(cite);
+		
+	}
+
+
+	@Override
+	public void grabarInformativo(ServicioInformativoBO servicioInformativo)
+			throws Exception {
+		citeDAO.grabarInformativo(servicioInformativo);
 		
 	}
 	

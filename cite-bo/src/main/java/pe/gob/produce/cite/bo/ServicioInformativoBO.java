@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Date;
 
-public class InformativoBO implements Serializable{
+public class ServicioInformativoBO implements Serializable{
 
 	/**
 	 * 
@@ -15,11 +15,9 @@ public class InformativoBO implements Serializable{
 	private Date fecha;
 	private String tituloInformativo;
 	private String descInformativo;
-	private String descCortaInformativo;
-	//private Blob archivoInformativo;
+	private String descCortaInformativo; 
 	private byte[] archivoInformativo;
 	 
-	
 	public Integer getId() {
 		return id;
 	}

@@ -1,5 +1,7 @@
 package pe.gob.produce.produccion.dao.jdbc;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
+import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
 import pe.gob.produce.produccion.dao.CITEIDAO;
@@ -147,6 +150,28 @@ Connection con = null;
 	
 		cstm.execute();
 	
+	}
+
+	@Override
+	public void grabarInformativo(ServicioInformativoBO servicioInformativo)
+			throws Exception {
+		Connection con = null;
+		CallableStatement cstm = null;
+		Date dateCite = new Date(servicioInformativo.getFecha().getTime());
+		
+		InputStream informativo = new ByteArrayInputStream(servicioInformativo.getArchivoInformativo());
+		
+		con = Conexion.obtenerConexion();
+		cstm = con.prepareCall("{call SP_Insertar_Detalle_Infomativo(?,?,?,?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, servicioInformativo.getTituloInformativo());		
+		cstm.setString(2, servicioInformativo.getDescInformativo());
+		cstm.setString(3, servicioInformativo.getDescCortaInformativo());
+		cstm.setDate(4, dateCite);
+		cstm.setBlob(5, informativo, servicioInformativo.getArchivoInformativo().length);
+	
+		cstm.execute();
+		
 	}
 	
 

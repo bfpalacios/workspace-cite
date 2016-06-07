@@ -97,7 +97,7 @@
 				<p:column colspan="2" styleClass="styleAlignLeftColumn">
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
 						value="Guardar Informativo"
-						actionListener="#{servicioMBean.guardarNuevoServicioInformativo}"
+						actionListener="#{servicioMBean.guardarNuevoServicioEvento}"
 						update="titulo,descripcionCorta,descripcion, docInformativo" ajax="false" />
 				</p:column>
 
@@ -109,9 +109,9 @@
 		</p:outputPanel>
 		<p:dialog header="Informe del Sistema" modal="true" height="120"
 			width="380" appendTo="@(body)" style="z-index: 999 !important"
-			id="dialogNuevoInformativo" widgetVar="dialogNuevoInformativo">
+			id="dialogNuevoEvento" widgetVar="dialogNuevoEvento">
 
-			<h4 style="font-size: 16px">¡El nuevo informativo se creo correctamente!</h4>
+			<h4 style="font-size: 16px">¡El nuevo evento se creo correctamente!</h4>
 			
 			<input type="button" value="Aceptar"
 					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioInformativo.xhtml';" />

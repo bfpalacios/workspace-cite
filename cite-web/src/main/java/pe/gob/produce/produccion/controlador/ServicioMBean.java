@@ -60,6 +60,7 @@ public class ServicioMBean {
 	private Date date;
 	private UsuarioModel usuarioModelSelect;
 	private String rutaComprobante;
+	private String titulo;
 	private UploadedFile file;
 
 	// constantes
@@ -82,11 +83,17 @@ public class ServicioMBean {
 
 		this.usuarioModel = new UsuarioModel();
 		this.usuarioModelSelect = new UsuarioModel();
-
+		this.servicioModel = new ServicioModel();
+		this.setFile(null);
 	}
 
 	private void inicializarClases() {
+		if (getServicioModel() != null) {
+			setServicioModel(null);
+			setServicioModel(new ServicioModel());
+		}
 		this.servicioModel = new ServicioModel();
+		setServicioModel(new ServicioModel());
 
 	}
 
@@ -178,8 +185,6 @@ public class ServicioMBean {
 			UbigeoModel ubigeo = new UbigeoModel();
 			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
 			ubigeo.setDepartamento(ubigeoBO.getDepartamento());
-			// ubigeo.setProvincia(ubigeoBO.getProvincia());
-			// ubigeo.setDistrito(ubigeoBO.getDistrito());
 			listaUbigeoModel.add(ubigeo);
 		}
 
@@ -327,12 +332,111 @@ public class ServicioMBean {
 
 		getUsuarioModel().setListDistrito(listaUbigeoModel);
 	}
+
+	public void handleUpload(FileUploadEvent event) {
+		UploadedFile uploadedArchivo = event.getFile();
+
+		setFile(uploadedArchivo);
+	}
+
+	public void guardarNuevoServicioInformativo() throws IOException {
+		
+		
+		byte[] archivoInformativo = null ;
 	
-	 public void handleUpload(FileUploadEvent event) {
-		 UploadedFile uploadedArchivo = event.getFile();
-		 
-		 setFile(uploadedArchivo);
-	 }
+		try {
+			if(getFile() != null)
+			{	
+				UploadedFile archivoPDF = getFile();
+				archivoInformativo = IOUtils.toByteArray(archivoPDF
+						.getInputstream());
+				Date fecha = getDate();
+	
+				String titulo = getServicioModel().getTituloInformativo() == null
+				 ? "" : getServicioModel().getTituloInformativo();
+				 
+				String descripcionCorta = getServicioModel().getDescripcionCorta() == null ? ""
+						: getServicioModel().getDescripcionCorta();
+				;
+				String descripcion = getServicioModel().getDescripcion();
+	
+				System.out.println("Datos titulo" + titulo);
+				System.out.println("Datos descripcionCorta" + descripcionCorta);
+				System.out.println("Datos descripcion" + descripcion);
+				System.out.println("Datos archivoInformativo" + archivoInformativo);
+				
+				if (validarCampos(titulo, descripcionCorta, descripcion)){
+					ServicioInformativoBO servicio = new ServicioInformativoBO();
+		
+						servicio.setTituloInformativo(titulo);
+						servicio.setDescCortaInformativo(descripcionCorta);
+						servicio.setDescInformativo(descripcion);
+						servicio.setArchivoInformativo(archivoInformativo);
+						servicio.setFecha(fecha);
+					
+						citeServices.grabarInformativo(servicio);
+						limpiarObjetos();
+						RequestContext rc = RequestContext.getCurrentInstance();
+						rc.execute("dialogNuevoInformativo.show()");
+				}
+				
+			} else mostrarMensajeDocumento(4);
+		} catch (Exception ev) {
+			ev.printStackTrace();
+			mostrarMensajeDocumento(9);
+		}
+		
+
+	}
+	
+	public void guardarNuevoServicioEvento() {
+		byte[] archivoInformativo = null ;
+		
+		try {
+			if(getFile() != null)
+			{	
+				UploadedFile archivoPDF = getFile();
+				archivoInformativo = IOUtils.toByteArray(archivoPDF
+						.getInputstream());
+				Date fecha = getDate();
+	
+				String titulo = getServicioModel().getTituloInformativo() == null
+				 ? "" : getServicioModel().getTituloInformativo();
+				 
+				String descripcionCorta = getServicioModel().getDescripcionCorta() == null ? ""
+						: getServicioModel().getDescripcionCorta();
+				;
+				String descripcion = getServicioModel().getDescripcion();
+	
+				System.out.println("Datos titulo" + titulo);
+				System.out.println("Datos descripcionCorta" + descripcionCorta);
+				System.out.println("Datos descripcion" + descripcion);
+				System.out.println("Datos archivoInformativo" + archivoInformativo);
+				
+				if (validarCampos(titulo, descripcionCorta, descripcion)){
+					ServicioInformativoBO servicio = new ServicioInformativoBO();
+		
+						servicio.setTituloInformativo(titulo);
+						servicio.setDescCortaInformativo(descripcionCorta);
+						servicio.setDescInformativo(descripcion);
+						servicio.setArchivoInformativo(archivoInformativo);
+						servicio.setFecha(fecha);
+					
+						citeServices.grabarInformativo(servicio);
+						limpiarObjetos();
+						RequestContext rc = RequestContext.getCurrentInstance();
+						rc.execute("dialogNuevoInformativo.show()");
+				}
+				
+			} else mostrarMensajeDocumento(4);
+		} catch (Exception ev) {
+			ev.printStackTrace();
+			mostrarMensajeDocumento(9);
+		}
+		
+
+	}
+	 
 
 	public void handleFileUploadManuales(FileUploadEvent e) throws IOException {
 
@@ -366,7 +470,7 @@ public class ServicioMBean {
 
 	}
 
-	public void handleFileUpload(FileUploadEvent e) throws IOException {
+	public void handleFileUploadInformativo(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
 		System.out.println(new File(".").getAbsolutePath());
@@ -379,7 +483,8 @@ public class ServicioMBean {
 		/*		
 		*/
 		UploadedFile uploadedPhoto = e.getFile();
-		String filePath = "C:/ITP/";
+		setFile(e.getFile());
+		String filePath = "C:/ITP/TEMPINFORMATIVO/";
 
 		// String filePath = uploadDirectoryPath;
 		byte[] bytes = null;
@@ -397,16 +502,42 @@ public class ServicioMBean {
 		}
 
 	}
+	
+	
+	public void handleFileUpload(FileUploadEvent e) throws IOException {
 
+		System.out.println("RUTA DEL PROYECTO");
+		System.out.println(new File(".").getAbsolutePath());
+
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String deploymentDirectoryPath = servletContext.getRealPath("/");
+		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
+		System.out.println("RUTA: " + uploadDirectoryPath);
+		/*		
+		*/
+		UploadedFile uploadedPhoto = e.getFile();
+		setFile(e.getFile());
+		String filePath = "C:/ITP/TEMPEVENTOS/";
+
+		// String filePath = uploadDirectoryPath;
+		byte[] bytes = null;
+
+		if (null != uploadedPhoto) {
+			bytes = uploadedPhoto.getContents();
+			String filename = FilenameUtils
+					.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(filePath + filename)));
+			stream.write(bytes);
+			stream.close();
+
+			rutaComprobante = filename;
+		}
+
+	}
 	public void buscarServicio() throws Exception {
 
-		/*
-		 * FacesContext facesContext = FacesContext.getCurrentInstance();
-		 * LoginModel login = (LoginModel)
-		 * facesContext.getExternalContext().getSessionMap().get("user");
-		 * System.out.println("login user " + login.getUsuario() + "hola" +
-		 * getServicioModel().getCodigoCITE() + "que tal");
-		 */
 		String nombreServicio = getServicioModel().getNombre() == "" ? null
 				: getServicioModel().getNombre();
 		String codigoServicio = getServicioModel().getCodigo() == "" ? null
@@ -521,39 +652,7 @@ public class ServicioMBean {
 
 		}
 		return pagina;
-	}
-
-	public void guardarNuevoServicioInformativo() {
-		
-		try {
-			Date fecha = getDate();
-			UploadedFile archivo = getFile();			
-			byte[] archivoInformativo = IOUtils.toByteArray(archivo.getInputstream());
-			
-			String titulo = getServicioModel().getTituloInformativo() == null ? ""
-					: getServicioModel().getTituloInformativo();
-			String descripcionCorta = getServicioModel().getDescripcionCorta() == null ? ""
-					: getServicioModel().getDescripcionCorta();
-			;
-			String descrcipcion = getServicioModel().getDescripcion();
-
-			ServicioInformativoBO servicio = new ServicioInformativoBO();
-			
-				servicio.setTituloInformativo(titulo);
-				servicio.setDescCortaInformativo(descripcionCorta);	
-				servicio.setDescInformativo(descrcipcion);
-				servicio.setArchivoInformativo(archivoInformativo);
-				servicio.setFecha(fecha);
-				citeServices.grabarInformativo(servicio);
-		} catch (Exception e) {
-			e.printStackTrace();
-			mostrarMensaje(9);
-		}
-		limpiarObjetos();
-		RequestContext rc = RequestContext.getCurrentInstance();
-		rc.execute("dialogNuevoInformativo.show()");
-
-	}
+	} 
 
 	public void guardarNuevoServicio(int opcion) {
 		String pagina = "";
@@ -652,6 +751,27 @@ public class ServicioMBean {
 
 	}
 
+	private boolean validarCampos(String titulo, String descripcionCorta,
+			String descripcion) {
+		boolean apto = true;
+
+		if (titulo == "invalido" || titulo.equals("")) {
+			mostrarMensajeDocumento(1);
+			apto = false;
+		}
+
+		if (descripcionCorta == "invalido" || descripcionCorta.equals("")) {
+			mostrarMensajeDocumento(2);
+			apto = false;
+		}
+		
+		if (descripcion == "invalido" || descripcion.equals("")) {
+			mostrarMensajeDocumento(3);
+			apto = false;
+		} 
+		return apto;
+	}
+
 	private void limpiarObjetos() {
 		setServicioModelbi(null);
 		setServicioModelbi(new ServicioModel());
@@ -742,12 +862,58 @@ public class ServicioMBean {
 		}
 	}
 
+	private void mostrarMensajeDocumento(int opcionMensaje) {
+		FacesMessage message = null;
+
+		switch (opcionMensaje) {
+		case 1:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar los caracteres en el campo - " + "Titulo");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 2:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar los caracteres en el campo - "
+							+ "Descripcion corta");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 3:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe ingresar los caracteres en el campo - "
+							+ "Descripcion");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 4:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+					"Debe cargar el documento antes de guardar el informativo - "
+							+ "Documento informativo");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+
+		case 8:
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+					"El informativo se guardo correctamente");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 9:
+			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al guardar el informativo");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		}
+	}
+
 	public void setServicioModelbi(ServicioModel servicioModel) {
 		this.servicioModel = servicioModel;
 	}
 
 	public ServicioModel getServicioModel() {
 		return servicioModel;
+	}
+
+	public void setServicioModel(ServicioModel servicioModel) {
+		this.servicioModel = servicioModel;
 	}
 
 	public Date getDate() {
@@ -797,5 +963,14 @@ public class ServicioMBean {
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
-	} 
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
 }

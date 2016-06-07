@@ -3,6 +3,7 @@ package pe.gob.produce.produccion.model;
 import java.util.List;
 
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.springframework.stereotype.Component;
 
@@ -10,8 +11,8 @@ import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
 
-@Component("serviceModel")
-@RequestScoped
+@Component("servicioModel")
+@ViewScoped
 public class ServicioModel {
 
 	private String codigo;

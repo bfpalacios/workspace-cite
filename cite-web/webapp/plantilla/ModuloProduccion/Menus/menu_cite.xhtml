@@ -31,37 +31,37 @@
 				<p:menuitem 
 					value="Directorio de Dependencias" action="#{servicioMBean.buscarDependencias}"
 					icon="ui-icon-arrowrefresh-1-w" />
-				<p:menuitem 
+				<!--p:menuitem 
 					value="Directorio de Personal" action="#{servicioMBean.buscaroDePersonal}"
-					icon="ui-icon-arrowrefresh-1-w" />
+					icon="ui-icon-arrowrefresh-1-w" / -->
 			</p:submenu> 
 			<p:submenu label="Panel de Documentos">
 				<p:menuitem 
-					value="Listado de Carpetas" action="#{usuarioMBean.registraNuevaEmpresa(2)}"
+					value="Listado de Carpetas" action="#{servicioMBean.documentosITP}"
 					icon="ui-icon-arrowrefresh-1-w" />
-				<p:menuitem 
+				<!-- p:menuitem 
 					value="Listado de Archivos" action="#{usuarioMBean.selectorBuscarClienteEmpresa(2)}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
 					value="Unidad de Almacenamiento" action="#{usuarioMBean.registraNuevoCliente(2)}"
-					icon="ui-icon-arrowrefresh-1-w" />				
+					icon="ui-icon-arrowrefresh-1-w" / -->				
 			</p:submenu>
 			 
-			<p:submenu label="Reporte de Gestion">
+			<!--p:submenu label="Reporte de Gestion">
 				<p:menuitem 
 					value="Reporte de CITES " action="#{ordenPagoMBean.selectorNuevaOrdenPago(2)}"
 					icon="ui-icon-arrowrefresh-1-w"  />	
 				<p:menuitem 
 					value="Reporte de Dependencias" action="#{ordenPagoMBean.selectorBuscarOrdenPago(2)}"
 					icon="ui-icon-arrowrefresh-1-w"  />	
-			</p:submenu>
+			</p:submenu -->
 			  
 			
-			<p:submenu label="Ayuda del Sistema">
+			<!--p:submenu label="Ayuda del Sistema">
 				<p:menuitem 
 					value="Ingresar a ver un tutorial" action="#"
 					icon="ui-icon-arrowrefresh-1-w" />		
-			</p:submenu>				 
+			</p:submenu -->				 
 			<p:submenu label="Cerrar Sesion">
             	<p:menuitem 
             		value="Cerrar Sesion" url="#{request.contextPath}/j_spring_security_logout"

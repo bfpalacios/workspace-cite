@@ -31,14 +31,26 @@
 				<p:menuitem 
 					value="Nuevo Eventos" action="#{servicioMBean.nuevoServicioEventos}"
 					icon="ui-icon-arrowrefresh-1-w" />
+			</p:submenu>
+			<p:submenu label="Modulo - Gestion de Documentos">	
 				<p:menuitem 
 					value="Nuevos Manuales" action="#{servicioMBean.nuevosManuales}"
 					icon="ui-icon-arrowrefresh-1-w" />
-				<p:menuitem 
-					value="Documentos ITP" action="#{servicioMBean.documentosITP}"
+				 <p:menuitem 
+					value="Nuevos Formatos" action="#{servicioMBean.nuevosFormatos}"
 					icon="ui-icon-arrowrefresh-1-w" />
+				 <p:menuitem 
+					value="Nuevos Procedimientos" action="#{servicioMBean.nuevosProcedimientos}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				 <p:menuitem 
+					value="Nuevos Instructivos" action="#{servicioMBean.nuevosInstructivos}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				 <p:menuitem 
+					value="Nuevos Documentos" action="#{servicioMBean.nuevosDocumentos}"
+					icon="ui-icon-arrowrefresh-1-w" />				 
 				
 			</p:submenu>
+			
 			<p:submenu label="Modulo - Gestion CITEs">
 				<p:menuitem 
 					value="Buscar CITEs" tion="#{citesMBean.buscarCites()}"

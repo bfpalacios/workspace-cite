@@ -25,7 +25,7 @@
 			</f:facet> 
     
 			<p:row>
-				<p:column colspan="6"> 
+				<p:column colspan="2"> 
 				 	<p:commandLink value="Manuales" action="#{servicioMBean.invocarServletDocumentos}" icon="ui-icon-wrench"
      					style="border-width:0;background:none;"/>
 				 		<!--p:panel styleClass="some_style">
@@ -36,7 +36,38 @@
 					<img src="img/folder.png" alt="Smiley face"></a -->
 				 </p:column>
 			</p:row>
-
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Formatos" action="#{servicioMBean.invocarServletDocumentosFormatos}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Procedimientos" action="#{servicioMBean.invocarServletDocumentosProcedimientos}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Instructivos" action="#{servicioMBean.invocarServletDocumentosInstructivos}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Documentos" action="#{servicioMBean.invocarServletDocumentosGeneral}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
 
 		</p:panelGrid> 
 		

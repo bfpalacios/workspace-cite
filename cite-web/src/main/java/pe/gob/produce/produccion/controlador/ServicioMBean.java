@@ -246,6 +246,58 @@ public class ServicioMBean {
 		return pagina;
 
 	}
+	
+	public String nuevosFormatos() throws Exception {
+
+		System.out.println("nuevosFormatos:INICIO");
+		String pagina = "";
+
+		inicializarClases();
+
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosFormatos.xhtml";
+		System.out.println("nuevosFormatos:FIN");
+		return pagina;
+
+	}
+	
+	public String nuevosProcedimientos() throws Exception {
+
+		System.out.println("nuevosProcedimientos:INICIO");
+		String pagina = "";
+
+		inicializarClases();
+
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosProcedimientos.xhtml";
+		System.out.println("nuevosProcedimientos:FIN");
+		return pagina;
+
+	}
+	
+	public String nuevosInstructivos() throws Exception {
+
+		System.out.println("nuevosInstructivos:INICIO");
+		String pagina = "";
+
+		inicializarClases();
+
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosInstructivos.xhtml";
+		System.out.println("nuevosInstructivos:FIN");
+		return pagina;
+
+	}
+	
+	public String nuevosDocumentos() throws Exception {
+
+		System.out.println("nuevosDocumentos:INICIO");
+		String pagina = "";
+
+		inicializarClases();
+
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosDocumentos.xhtml";
+		System.out.println("nuevosDocumentos:FIN");
+		return pagina;
+
+	}
 
 	public String documentosITP() throws Exception {
 
@@ -262,13 +314,7 @@ public class ServicioMBean {
 
 	public void invocarServletDocumentos() throws Exception {
 		System.out.println("invocarServletDocumentos:INICIO");
-
-		/*
-		 * FacesContext context = FacesContext.getCurrentInstance(); try {
-		 * context.getExternalContext().dispatch("ListarDirectorios"); }catch
-		 * (Exception e) { e.printStackTrace(); } finally{
-		 * context.responseComplete(); }
-		 */
+ 
 
 		ExternalContext ec = FacesContext.getCurrentInstance()
 				.getExternalContext();
@@ -277,6 +323,55 @@ public class ServicioMBean {
 		System.out.println("invocarServletDocumentos:FIN");
 
 	}
+	
+	public void invocarServletDocumentosFormatos() throws Exception {
+		System.out.println("invocarServletDocumentos:INICIO");
+		
+
+		ExternalContext ec = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		ec.redirect(ec.getRequestContextPath() + "/ListarDirectoriosFormatos");
+
+		System.out.println("invocarServletDocumentos:FIN");
+
+	}
+	
+	public void invocarServletDocumentosProcedimientos() throws Exception {
+		System.out.println("invocarServletDocumentos:INICIO");
+ 
+
+		ExternalContext ec = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		ec.redirect(ec.getRequestContextPath() + "/ListarDirectoriosProcedimientos");
+
+		System.out.println("invocarServletDocumentos:FIN");
+
+	}
+	
+	public void invocarServletDocumentosInstructivos() throws Exception {
+		System.out.println("invocarServletDocumentos:INICIO");
+ 
+
+		ExternalContext ec = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		ec.redirect(ec.getRequestContextPath() + "/ListarDirectoriosInstructivos");
+
+		System.out.println("invocarServletDocumentos:FIN");
+
+	}
+	
+	public void invocarServletDocumentosGeneral() throws Exception {
+		System.out.println("invocarServletDocumentos:INICIO");
+ 
+
+		ExternalContext ec = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		ec.redirect(ec.getRequestContextPath() + "/ListarDirectoriosGeneral");
+
+		System.out.println("invocarServletDocumentos:FIN");
+
+	}
+	
 
 	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
 		String codDepartamento = (String) (e.getNewValue() == null ? "" : e
@@ -437,7 +532,148 @@ public class ServicioMBean {
 
 	}
 	 
+	
+	
+	
+	public void handleFileUploadFormatos(FileUploadEvent e) throws IOException {
 
+		System.out.println("RUTA DEL PROYECTO");
+		System.out.println(new File(".").getAbsolutePath());
+
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String deploymentDirectoryPath = servletContext.getRealPath("/");
+		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
+		System.out.println("RUTA: " + uploadDirectoryPath);
+		/*		
+		*/
+		UploadedFile uploadedPhoto = e.getFile();
+		String filePath = "C:/ITP/DOCUMENTOS_CITE/FORMATOS/";
+
+		// String filePath = uploadDirectoryPath;
+		byte[] bytes = null;
+
+		if (null != uploadedPhoto) {
+			bytes = uploadedPhoto.getContents();
+			String filename = FilenameUtils
+					.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(filePath + filename)));
+			stream.write(bytes);
+			stream.close();
+
+			rutaComprobante = filename;
+		}
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogFormatos.show()");
+	}
+
+	public void handleFileUploadInstructivos(FileUploadEvent e) throws IOException {
+
+		System.out.println("RUTA DEL PROYECTO");
+		System.out.println(new File(".").getAbsolutePath());
+
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String deploymentDirectoryPath = servletContext.getRealPath("/");
+		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
+		System.out.println("RUTA: " + uploadDirectoryPath);
+		/*		
+		*/
+		UploadedFile uploadedPhoto = e.getFile();
+		String filePath = "C:/ITP/DOCUMENTOS_CITE/INSTRUCTIVOS/";
+
+		// String filePath = uploadDirectoryPath;
+		byte[] bytes = null;
+
+		if (null != uploadedPhoto) {
+			bytes = uploadedPhoto.getContents();
+			String filename = FilenameUtils
+					.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(filePath + filename)));
+			stream.write(bytes);
+			stream.close();
+
+			rutaComprobante = filename;
+		}
+		
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogInstructivos.show()");
+
+	}
+	
+	public void handleFileUploadDocumentos(FileUploadEvent e) throws IOException {
+
+		System.out.println("RUTA DEL PROYECTO");
+		System.out.println(new File(".").getAbsolutePath());
+
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String deploymentDirectoryPath = servletContext.getRealPath("/");
+		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
+		System.out.println("RUTA: " + uploadDirectoryPath);
+		/*		
+		*/
+		UploadedFile uploadedPhoto = e.getFile();
+		String filePath = "C:/ITP/DOCUMENTOS_CITE/DOCUMENTOS/";
+
+		// String filePath = uploadDirectoryPath;
+		byte[] bytes = null;
+
+		if (null != uploadedPhoto) {
+			bytes = uploadedPhoto.getContents();
+			String filename = FilenameUtils
+					.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(filePath + filename)));
+			stream.write(bytes);
+			stream.close();
+
+			rutaComprobante = filename;
+		}
+		
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogDocumentos.show()");
+
+	}
+	
+	public void handleFileUploadProcedimientos(FileUploadEvent e) throws IOException {
+
+		System.out.println("RUTA DEL PROYECTO");
+		System.out.println(new File(".").getAbsolutePath());
+
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String deploymentDirectoryPath = servletContext.getRealPath("/");
+		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
+		System.out.println("RUTA: " + uploadDirectoryPath);
+		/*		
+		*/
+		UploadedFile uploadedPhoto = e.getFile();
+		String filePath = "C:/ITP/DOCUMENTOS_CITE/PROCEDIMIENTOS/";
+
+		// String filePath = uploadDirectoryPath;
+		byte[] bytes = null;
+
+		if (null != uploadedPhoto) {
+			bytes = uploadedPhoto.getContents();
+			String filename = FilenameUtils
+					.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(filePath + filename)));
+			stream.write(bytes);
+			stream.close();
+
+			rutaComprobante = filename;
+		}
+		
+
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogProcedimientos.show()");
+	}
+	
+	
 	public void handleFileUploadManuales(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
@@ -467,6 +703,9 @@ public class ServicioMBean {
 
 			rutaComprobante = filename;
 		}
+		
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogManuales.show()");
 
 	}
 
@@ -500,6 +739,9 @@ public class ServicioMBean {
 
 			rutaComprobante = filename;
 		}
+		
+		RequestContext rc = RequestContext.getCurrentInstance();
+		rc.execute("dialogInformativo.show()");
 
 	}
 	

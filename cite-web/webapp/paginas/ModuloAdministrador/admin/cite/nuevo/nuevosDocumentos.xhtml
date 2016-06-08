@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevosManuales"
+			style="width:500px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panelGrid id="pnlGridNuevosManuales">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="6">Ingresar Documentos en General </p:column>
+				</p:row>
+			</f:facet> 
+    
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lDocumentoManuales"
+						value="Ingrese el documento " />
+				</p:column>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
+					<p:growl id="messagesManuales" showDetail="true" />
+					<p:fileUpload label="Cargar documento ..."  
+						id="docManuales"
+						uploadLabel="Cargar documento" 
+						cancelLabel="Cancelar"
+						fileUploadListener="#{servicioMBean.handleFileUploadDocumentos}"
+						mode="advanced" 
+						dragDropSupport="false" 
+						update="messages"
+						sizeLimit="2097152"
+						fileLimit="3" 
+						value="Adjuntar documentos" 
+						previewWidth="300"
+						style="margin-left: 160px;" 
+						skinSimple="true" />
+				</p:column>
+			</p:row>
+
+
+		</p:panelGrid>
+
+		<p:spacer width="5px" />  
+		<p:dialog header="Informe del Sistema" modal="true" height="120"
+			width="380" appendTo="@(body)" style="z-index: 999 !important"
+			id="dialogDocumentos" widgetVar="dialogDocumentos">
+
+			<h4 style="font-size: 16px">¡Los documentos se cargaron correctamente!</h4>
+			
+			<input type="button" value="Aceptar"
+					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosDocumentos.xhtml';" />
+						
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>
+</html>

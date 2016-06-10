@@ -43,3 +43,10 @@ color: blue;
 background: lightcyan;
 border-color: blue;
 }
+
+#EVENTOS
+.dataList .ui-datalist-data{
+border: none;
+background: transparent;
+background-image: none;
+}

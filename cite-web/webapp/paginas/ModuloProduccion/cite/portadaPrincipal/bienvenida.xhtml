@@ -38,54 +38,40 @@
 						value="Mercedes Aráoz, candidata a la primera vicepresidencia de Peruanos por el Kambio, cumplió hoy en Trujillo actividades proselitistas con miras a la segunda vuelta que se llevará a cabo el 5 de junio..." />
 				</h:panelGrid>
 			</p:panel>
-			
+
 		</div>
-		<div style="width: 50%; float: right;">
+		<div style="width: 50%; float: right; overflow: auto;
+	float:both;">
 			<!--  
 			<div style="padding-left: 15px;">
 			<p style="border-bottom-color: black;border-bottom-width: 1px;border-bottom-style: solid;"><span  style="float: left;font-size: 200%">Eventos</span> <SPAN style="float: right;"><A href="#" >ver todos></A></SPAN>
 			</p>		
 			</div>
 			-->
-			<div style="padding-left: 15px;">
+			<div style="padding-left: 15px; overflow: auto;
+	float:both;">
 				<p
 					style="border-bottom-color: #35465c; color: #35465c; border-bottom-width: 2px; border-bottom-style: solid; text-align: left; font-size: 200%">Eventos
-				</p>
+				</p>	
+			
 
-				<div
-					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">31
-					MAY</div>
-				<div style="width: 75%; float: right; text-align: left;">
-					<h2 style="color: #375eca;">MBA en Arequipa</h2>
+			<p:dataList style="overflow: auto;
+	float:both; clear: both; border: none;" styleClass="dataList" value="#{portadaMBean.listaEventos}" var="evento" type="definition">
+				
+        <div
+					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">
+					#{evento.fecha}</div>
+        <div style="width: 75%; float: right; text-align: left;">
+					<h2 style="color: #375eca;">#{evento.titulo}</h2>
 					<p>
-						<span>Hotel Libertador - Arequipa</span> 
-						<span style="color: #375eca">19:30</span>
+						<span>#{evento.descripcion}</span> <span
+							style="color: #375eca">#{evento.hora}</span>
 					</p>
+					
 				</div>
 				<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</p>
-				<div
-					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">08
-					JUN</div>
-				<div style="width: 75%; float: right; text-align: left;">
-					<h2 style="color: #375eca;">Reunión sobre Aspectos Sanitarios</h2>
-					<p>
-						<span>Lima - Perú</span> 
-						<span style="color: #375eca">19:30</span>
-					</p>
-				</div>
-				<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</p>
-				<div
-					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">10
-					JUN</div>
-				<div style="width: 75%; float: right; text-align: left;">
-					<h2 style="color: #375eca;">Taller de Promoción del Cultivo</h2>
-					<p>
-						<span>Hotel Libertador - Arequipa</span> 
-						<span style="color: #375eca">19:30</span>
-					</p>
-				</div>
-			</div>
-
+			</p:dataList>
+	</div>
 		</div>
 	</ui:define>
 </ui:composition>

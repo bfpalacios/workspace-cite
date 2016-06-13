@@ -16,5 +16,6 @@ public interface CITEServices {
 	public void grabarNuevaSede(SedeBO sede) throws Exception;
 	public void grabarNuevaDependencia(DependenciaBO dependencia) throws Exception;
 	public void grabarInformativo(ServicioInformativoBO servicioInformativo) throws Exception;
+	public void grabarPublicaciones(ServicioInformativoBO servicioInformativo) throws Exception;
 	
 }

@@ -173,6 +173,28 @@ Connection con = null;
 		cstm.execute();
 		
 	}
+
+	@Override
+	public void grabarPublicaciones(ServicioInformativoBO servicioInformativo)
+			throws Exception {
+		Connection con = null;
+		CallableStatement cstm = null;
+		Date dateCite = new Date(servicioInformativo.getFecha().getTime());
+		
+		InputStream informativo = new ByteArrayInputStream(servicioInformativo.getArchivoInformativo());
+		
+		con = Conexion.obtenerConexion();
+		cstm = con.prepareCall("{call SP_Insertar_Publicaciones(?,?,?,?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, servicioInformativo.getTituloInformativo());		
+		cstm.setString(2, servicioInformativo.getDescInformativo());
+		cstm.setString(3, servicioInformativo.getDescCortaInformativo());
+		cstm.setDate(4, dateCite);
+		cstm.setBlob(5, informativo, servicioInformativo.getArchivoInformativo().length);
+	
+		cstm.execute();
+		
+	}
 	
 
 }

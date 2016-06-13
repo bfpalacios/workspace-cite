@@ -20,7 +20,7 @@
 		<p:panelGrid id="pnlGridNuevoServicioInformativo">
 			<f:facet name="header">
 				<p:row>
-					<p:column colspan="6">Datos del Servicio Informativo</p:column>
+					<p:column colspan="6">Datos del Servicio Noticias </p:column>
 				</p:row>
 			</f:facet>
 
@@ -37,7 +37,7 @@
 
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-					<h:outputText id="lblTitulo" value="Titulo del Informativo" />
+					<h:outputText id="lblTitulo" value="Titulo de La Noticia" />
 				</p:column>
 
 				<p:column>
@@ -50,7 +50,7 @@
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lblDescripcionCorta"
-						value="Descripcion corta del Titulo" />
+						value="Descripcion corta de La Noticia" />
 				</p:column>
 
 				<p:column>
@@ -62,7 +62,7 @@
 			</p:row>
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-					<h:outputText id="lblDescripcion" value="Descripcion del Titulo" />
+					<h:outputText id="lblDescripcion" value="Descripcion Larga de la Noticia" />
 				</p:column>
 
 				<p:column>
@@ -75,7 +75,7 @@
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lDocumentoInformativo"
-						value="Cargar Imagen del informativo" />
+						value="Cargar Imagen de La Noticia" />
 				</p:column> 
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
 					<p:growl id="messagesInformativo" showDetail="true" />
@@ -83,6 +83,7 @@
 						uploadLabel="Guardar imagen" cancelLabel="Cancelar"
 						fileUploadListener="#{servicioMBean.handleFileUploadInformativo}"
 						mode="advanced" dragDropSupport="false" update="messages"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 						fileLimit="1" value="Imagen" previewWidth="300"
 						style="margin-left: 160px;" skinSimple="true" />
 				</p:column>
@@ -97,7 +98,7 @@
 			<p:row>
 				<p:column colspan="2" styleClass="styleAlignLeftColumn">
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
-						value="Guardar Informativo"
+						value="Guardar Noticia"
 						actionListener="#{servicioMBean.guardarNuevoServicioInformativo}"
 						update="titulo,descripcionCorta,descripcion, docInformativo"
 						ajax="false" />
@@ -113,11 +114,11 @@
 			width="380" appendTo="@(body)" style="z-index: 999 !important"
 			id="dialogNuevoInformativo" widgetVar="dialogNuevoInformativo">
 
-			<h4 style="font-size: 16px">¡El nuevo informativo se creo
+			<h4 style="font-size: 16px">¡La nueva noticia se creo
 				correctamente!</h4>
 
 			<input type="button" value="Aceptar"
-				onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioInformativo.xhtml';" />
+				onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioNoticias.xhtml';" />
 
 		</p:dialog>
 

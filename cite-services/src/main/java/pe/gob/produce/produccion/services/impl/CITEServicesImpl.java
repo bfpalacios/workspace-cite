@@ -62,6 +62,14 @@ public class CITEServicesImpl implements CITEServices{
 		citeDAO.grabarInformativo(servicioInformativo);
 		
 	}
+
+
+	@Override
+	public void grabarPublicaciones(ServicioInformativoBO servicioInformativo)
+			throws Exception {
+		citeDAO.grabarPublicaciones(servicioInformativo);
+		
+	}
 	
 	
 

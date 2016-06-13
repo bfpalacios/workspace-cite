@@ -208,28 +208,28 @@ public class ServicioMBean {
 		return pagina;
 	}
 
-	public String nuevoServicioInformativo() throws Exception {
+	public String nuevoServicioNoticias() throws Exception {
 
 		System.out.println("nuevoServicioInformativo:INICIO");
 		String pagina = "";
 
 		inicializarClases();
 
-		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioInformativo.xhtml";
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioNoticias.xhtml";
 		System.out.println("nuevoServicioInformativo:FIN");
 		return pagina;
 
 	}
 
-	public String nuevoServicioEventos() throws Exception {
+	public String nuevoServicioPublicaciones() throws Exception {
 
-		System.out.println("nuevoServicioEventos:INICIO");
+		System.out.println("nuevoServicioPublicacioness:INICIO");
 		String pagina = "";
 
 		inicializarClases();
 
-		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioEventos.xhtml";
-		System.out.println("nuevoServicioEventos:FIN");
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioPublicaciones.xhtml";
+		System.out.println("nuevoServicioPublicaciones:FIN");
 		return pagina;
 
 	}
@@ -490,7 +490,7 @@ public class ServicioMBean {
 
 	}
 	
-	public void guardarNuevoServicioEvento() {
+	public void guardarNuevoServicioPublicaciones() {
 		byte[] archivoInformativo = null ;
 		
 		try {
@@ -523,16 +523,16 @@ public class ServicioMBean {
 						servicio.setArchivoInformativo(archivoInformativo);
 						servicio.setFecha(fecha);
 					
-						citeServices.grabarInformativo(servicio);
+						citeServices.grabarPublicaciones(servicio);
 						limpiarObjetos();
 						RequestContext rc = RequestContext.getCurrentInstance();
-						rc.execute("dialogNuevoInformativo.show()");
+						rc.execute("dialogNuevoPublicaciones.show()");
 				}
 				
-			} else mostrarMensajeDocumento(4);
+			} else mostrarMensajeDocumento(5);
 		} catch (Exception ev) {
 			ev.printStackTrace();
-			mostrarMensajeDocumento(9);
+			mostrarMensajeDocumento(10);
 		}
 		
 
@@ -752,7 +752,7 @@ public class ServicioMBean {
 	}
 	
 	
-	public void handleFileUpload(FileUploadEvent e) throws IOException {
+	public void handleFileUploadPublicaciones(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
 		System.out.println(new File(".").getAbsolutePath());
@@ -1133,9 +1133,16 @@ public class ServicioMBean {
 			break;
 		
 		case 4:
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
 					"Debe cargar la imagen  primero - "
 							+ "Ingrese la imagen");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+
+		case 5:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe cargar la publicacion primero - "
+							+ "Ingrese la publicacion");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
 
@@ -1146,7 +1153,13 @@ public class ServicioMBean {
 			break;
 		case 9:
 			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "",
-					"Hubo un error al guardar el informativo");
+					"Hubo un error al guardar la noticia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 10:
+			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al guardar la publicacion");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
 		}

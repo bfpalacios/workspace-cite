@@ -18,101 +18,68 @@
 				</p:column>
 			</p:row>
 		</p:outputPanel>
-		<div style="width: 50%; float: left;">
-			<div style="padding-left: 10px;">
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">Reunión sobre Aspectos Sanitarios</p>
-					<br />
-					<h:graphicImage class="imagenInformativo"
-						value="/Imagenes/news2.jpg" />
-					<div class="descripcionInformativo">
-						<span>01-May-2016</span> <br />
-						<p>Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó...</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
-					</div>
-					<P />
-				</div>
-			</div>			
-			<br />
-			<div style="padding-left: 10px;">
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">Reunión sobre Aspectos Sanitarios</p>
-					<br />
-					<h:graphicImage class="imagenInformativo"
-						value="/Imagenes/news2.jpg" />
-					<div class="descripcionInformativo">
-						<span>01-May-2016</span> <br />
-						<p>Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó...</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
-					</div>
-					<P />
-				</div>
-			</div>
-			<br />
-			<div style="padding-left: 10px;">
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">Reunión sobre Aspectos Sanitarios</p>
-					<br />
-					<h:graphicImage class="imagenInformativo"
-						value="/Imagenes/news2.jpg" />
-					<div class="descripcionInformativo">
-						<span>01-May-2016</span> <br />
-						<p>Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó...</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
-					</div>
-					<P />
-				</div>
-			</div>
+		<div style="background-color: #BDBDBD;text-align: right;padding-top: 5px;padding-bottom: 5px;">
+				<span style="text-align: left; float: left;font-size: 130%; padding-left: 10px;font-weight: bold;">Buscar boletines informativos por año y mes</span>
+				<p:selectOneMenu id="anio" value="#{publicInformativaMBean.anio}"
+					style="width:120px">
+					<p:ajax listener="#{publicInformativaMBean.guardarAnio}"/>
+					<f:selectItem itemLabel="Año" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{publicInformativaMBean.anios}" />
+				</p:selectOneMenu>
 
-			
+				<p:selectOneMenu id="mes" value="#{publicInformativaMBean.mes}"
+					style="width:120px">
+					<p:ajax listener="#{publicInformativaMBean.buscar}"/>
+					<f:selectItem itemLabel="Mes" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{publicInformativaMBean.meses}" />
+				</p:selectOneMenu>
 		</div>
-		<div style="width: 50%; float: right;">
-			<div style="padding-left: 10px;">
+		<br />
+		<div style="width: 50%; float: left;">
+		
+		<ui:repeat var="noticia" value="#{publicInformativaMBean.listaNoticiasIzquierda}" varStatus="status">
+			<div style="padding-left: 10px;">			
 				<div class="fondoInformativo">
-					<p class="tituloinformativo">Reunión sobre Aspectos Sanitarios</p>
+					<p class="tituloinformativo">#{noticia.titulo}</p>
 					<br />
-					<h:graphicImage class="imagenInformativo"
-						value="/Imagenes/news2.jpg" />
+					<p:graphicImage style="width: 200px; height: 150px;"
+								value="#{noticiaImagen.image}">
+								<f:param name="noticiaId" value="#{noticia.id}" />
+							</p:graphicImage>
 					<div class="descripcionInformativo">
-						<span>01-May-2016</span> <br />
-						<p>Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó...</p>
+						<span>#{noticia.fecha}</span> <br />
+						<p>#{noticia.descripcionCorta}</p>
 						<span class="leerMas"><a href="#">Leer más</a></span>
 					</div>
 					<P />
-				</div>
-			</div>			
-			<br />
-			<div style="padding-left: 10px;">
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">Reunión sobre Aspectos Sanitarios</p>
-					<br />
-					<h:graphicImage class="imagenInformativo"
-						value="/Imagenes/news2.jpg" />
-					<div class="descripcionInformativo">
-						<span>01-May-2016</span> <br />
-						<p>Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó...</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
-					</div>
-					<P />
-				</div>
+				</div>				
 			</div>
 			<br />
-			<div style="padding-left: 10px;">
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">Reunión sobre Aspectos Sanitarios</p>
-					<br />
-					<h:graphicImage class="imagenInformativo"
-						value="/Imagenes/news2.jpg" />
-					<div class="descripcionInformativo">
-						<span>01-May-2016</span> <br />
-						<p>Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó...</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
-					</div>
-					<P />
-				</div>
+		</ui:repeat>
 			</div>
-
 			
+		<div style="width: 50%; float: right;">
+			<ui:repeat var="noticia" value="#{publicInformativaMBean.listaNoticiasDerecha}" varStatus="status">
+			<div style="padding-left: 10px;">			
+				<div class="fondoInformativo">
+					<p class="tituloinformativo">#{noticia.titulo}</p>
+					<br />
+					<p:graphicImage style="width: 200px; height: 150px;"
+								value="#{noticiaImagen.image}">
+								<f:param name="noticiaId" value="#{noticia.id}" />
+							</p:graphicImage>
+					<div class="descripcionInformativo">
+						<span>#{noticia.fecha}</span> <br />
+						<p>#{noticia.descripcionCorta}</p>
+						<span class="leerMas"><a href="#">Leer más</a></span>
+					</div>
+					<P />
+				</div>				
+			</div>
+			<br />
+		</ui:repeat>
 		</div>
 	</ui:define>
 </ui:composition>

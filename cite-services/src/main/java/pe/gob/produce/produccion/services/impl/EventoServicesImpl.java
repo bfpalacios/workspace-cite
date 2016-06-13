@@ -33,5 +33,10 @@ public class EventoServicesImpl implements EventoServices {
 	public List<EventoBO> listarEventos() throws Exception {
 		return eventoDao.listarEventos();
 	}
+
+	@Override
+	public void actualizarEvento(EventoBO nuevoEvento) throws Exception {
+		eventoDao.actualizarEvento(nuevoEvento);
+	}
 	
 }

@@ -5,5 +5,6 @@ import java.util.List;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
 
 public interface InformativoDAO {
-	public List<ServicioInformativoBO> listarNoticias();
+	public List<ServicioInformativoBO> listarNoticias(int numNoticias);
+	public List<ServicioInformativoBO> listarNoticiasPorMes(int anio, int mes);
 }

@@ -8,4 +8,5 @@ public interface EventoServices {
 	public List<EventoBO> listarEventos() throws Exception;
 	public List<EventoBO> listarEventosPorMes(int anio, int mes) throws Exception;
 	public void grabarEvento(EventoBO nuevoEvento) throws Exception;
+	public void actualizarEvento(EventoBO nuevoEvento) throws Exception;
 }

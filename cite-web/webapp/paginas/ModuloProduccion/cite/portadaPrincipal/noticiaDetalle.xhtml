@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+
+		<div style="overflow: auto; float: both;">
+			<ui:repeat var="noticia" value="#{portadaMBean.listaNoticias}"
+				varStatus="status">
+				<div
+					style="width: 90%; padding-left: 10px; padding-right: 10px; background-color: #E6E6E6; overflow: auto; float: both;">
+					<p style="color: #2E9AFE; text-align: left;">
+						<h:graphicImage value="/Imagenes/Calendar_icon.png" />
+						#{noticia.fecha}
+					</p>
+					<p style="text-align: left; font-weight: bold; font-size: 120%;">#{noticia.titulo}</p>
+					<div style="width: 50%; float: left;">
+
+						<p:graphicImage style="width: 200px; height: 150px;"
+							value="#{noticiaImagen.image}">
+							<f:param name="noticiaId" value="#{noticia.id}" />
+						</p:graphicImage>
+					</div>
+					<div style="width: 50%; float: right; text-align: justify;">
+						<p>
+							<span>#{noticia.descripcionCorta}</span>
+						</p>
+						<p style="text-align: right; padding-right: 15px;">
+							<span class="leerMasNoticia"><a href="#">Leer más</a></span>
+						</p>
+					</div>
+				</div>
+				<br />
+			</ui:repeat>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

@@ -6,25 +6,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
- 
-
-
-
-
-
-
-
 
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +22,14 @@ import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.EventoBO;
 import pe.gob.produce.produccion.services.EventoServices;
-import pe.gob.produce.produccion.services.impl.EventoServicesImpl;
  
 @Controller("scheduleView")
 @ViewScoped
 public class ScheduleView implements Serializable {
  
-    private ScheduleModel eventModel;
+    private static final long serialVersionUID = 1L;
+
+	private ScheduleModel eventModel;
      
     private ScheduleModel lazyEventModel;
     
@@ -58,23 +49,12 @@ public class ScheduleView implements Serializable {
 		}
         for (EventoBO eventoDB : eventos) {
         	DefaultScheduleEvent evento = new DefaultScheduleEvent(eventoDB.getTitulo(), eventoDB.getFechaInicio(), eventoDB.getFechaFin());
-        	evento.setId(eventoDB.getId().toString());
+        	evento.setId("" + eventoDB.getId().intValue());
+        	System.out.println(eventoDB.getId().intValue());
         	evento.setDescription(eventoDB.getDescripcion());
         	evento.setAllDay((eventoDB.getTodoElDia() == 1)?true:false);
         	eventModel.addEvent(evento);
-		}
-         
-        lazyEventModel = new LazyScheduleModel() {
-             
-            @Override
-            public void loadEvents(Date start, Date end) {
-                Date random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Prueba 1", random, random));
-                 
-                random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Prueba 2", random, random));
-            }   
-        };
+		} 
     }
      
     public Date getRandomDate(Date base) {
@@ -186,22 +166,30 @@ public class ScheduleView implements Serializable {
     }
      
     public void addEvent(ActionEvent actionEvent) {
-        if(event.getId() == null){
-        	EventoBO  nuevoEvento = new EventoBO();
-        	nuevoEvento.setTitulo(event.getTitle());
-        	nuevoEvento.setDescripcion(event.getDescription());
-        	nuevoEvento.setFechaInicio(event.getStartDate());
-        	nuevoEvento.setFechaFin(event.getEndDate());
-        	nuevoEvento.setTodoElDia((event.isAllDay()) ? 1 : 0);
+    	EventoBO  nuevoEvento = new EventoBO();
+    	nuevoEvento.setTitulo(event.getTitle());
+    	nuevoEvento.setDescripcion(event.getDescription());
+    	nuevoEvento.setFechaInicio(event.getStartDate());
+    	nuevoEvento.setFechaFin(event.getEndDate());
+    	nuevoEvento.setTodoElDia((event.isAllDay()) ? 1 : 0);
+        if(event.getId() == null){        	
         	try {
 				eventoService.grabarEvento(nuevoEvento);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
             eventModel.addEvent(event);
-        }else
+        }else{
+        	/*
+        	nuevoEvento.setId(Integer.parseInt(event.getId()));
+        	try {
+				eventoService.actualizarEvento(nuevoEvento);;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        	*/
             eventModel.updateEvent(event);
-         
+        }         
         event = new DefaultScheduleEvent();
     }
      

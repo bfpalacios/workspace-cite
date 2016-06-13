@@ -51,7 +51,7 @@
  
             <p:outputLabel for="allDay" value="Todo el día:" />
             <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
- 
+ 	
             <p:commandButton type="reset" value="Limpiar" />
             <p:commandButton id="addButton" value="Guardar" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
         </h:panelGrid>

@@ -33,14 +33,27 @@ float: right;
 text-align: center;
 text-decoration: none;
 padding: 3px;
-color: white;
-background: blue;
-border: 2px solid darkblue;
+color: black;
+background: #A4A4A4;
+border: 1px solid darkblue;
 -webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
 }
 .leerMas a:hover {
-color: blue;
-background: lightcyan;
+color: black;
+background: #6E6E6E;
+border-color: blue;
+}
+.leerMasNoticia a {
+text-align: right;
+text-decoration: none;
+padding: 3px;
+color: white;
+background: #2E9AFE;
+-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;
+}
+.leerMasNoticia a:hover {
+color: white;
+background: #2E64FE;
 border-color: blue;
 }
 

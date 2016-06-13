@@ -15,9 +15,17 @@ public class InformativoServicesImpl implements InformativoServices {
 	@Autowired
 	private InformativoDAO informativoDao;
 	
+	public InformativoServicesImpl(){		
+	}
+	
 	@Override
-	public List<ServicioInformativoBO> listarNoticias() {
-		return informativoDao.listarNoticias();
+	public List<ServicioInformativoBO> listarNoticias(int numNoticias) {
+		return informativoDao.listarNoticias(numNoticias);
+	}
+
+	@Override
+	public List<ServicioInformativoBO> listarNoticiasPorMes(int anio, int mes) {
+		return informativoDao.listarNoticiasPorMes(anio, mes);
 	}
 
 }

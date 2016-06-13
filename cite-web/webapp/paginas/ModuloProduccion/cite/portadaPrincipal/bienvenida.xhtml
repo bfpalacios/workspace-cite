@@ -18,60 +18,61 @@
 				</p:column>
 			</p:row>
 		</p:outputPanel>
-		<div style="width: 50%; float: left;">
-			<p:panel id="noticia"
-				header="PPK ratifica sus frases sobre Keiko, pero luego se disculpa"
-				footer="Ver más" style="margin-bottom:20px">
-				<h:panelGrid columns="2" cellpadding="10">
-					<h:graphicImage value="/Imagenes/news1.jpg" />
-					<h:outputText
-						value="Pedro Pablo Kuczynski (PPK), candidato presidencial de Peruanos por el Kambio, se ratificó respecto a lo que dijo ayer en un mitin de su agrupación sobre su rival de Fuerza Popular, Keiko Fujimori. Sin embargo, luego se disculpó..." />
-				</h:panelGrid>
-			</p:panel>
 
-			<p:panel id="noticia2"
-				header="Mercedes Aráoz: Keiko Fujimori es una malagradecida"
-				footer="Ver más" style="margin-bottom:20px">
-				<h:panelGrid columns="2" cellpadding="10">
-					<h:graphicImage value="/Imagenes/news2.jpg" />
-					<h:outputText
-						value="Mercedes Aráoz, candidata a la primera vicepresidencia de Peruanos por el Kambio, cumplió hoy en Trujillo actividades proselitistas con miras a la segunda vuelta que se llevará a cabo el 5 de junio..." />
-				</h:panelGrid>
-			</p:panel>
+		<div style="width: 45%; float: left;">
+			<div style="overflow: auto; float: both;">
+				<ui:repeat var="noticia" value="#{portadaMBean.listaNoticias}"
+					varStatus="status">
+					<div
+						style="width: 90%; padding-left: 10px;padding-right: 10px;background-color: #E6E6E6; overflow: auto; float: both;">
+						<p style="color: #2E9AFE; text-align: left;">
+							<h:graphicImage value="/Imagenes/Calendar_icon.png" />
+							#{noticia.fecha}
+						</p>
+						<p style="text-align: left; font-weight: bold; font-size: 120%;">#{noticia.titulo}</p>
+						<div style="width: 50%; float: left;">
 
-		</div>
-		<div style="width: 50%; float: right; overflow: auto;
-	float:both;">
-			<!--  
-			<div style="padding-left: 15px;">
-			<p style="border-bottom-color: black;border-bottom-width: 1px;border-bottom-style: solid;"><span  style="float: left;font-size: 200%">Eventos</span> <SPAN style="float: right;"><A href="#" >ver todos></A></SPAN>
-			</p>		
+							<p:graphicImage style="width: 200px; height: 150px;"
+								value="#{noticiaImagen.image}">
+								<f:param name="noticiaId" value="#{noticia.id}" />
+							</p:graphicImage>
+						</div>
+						<div style="width: 50%; float: right; text-align: justify;">
+							<p>
+								<span>#{noticia.descripcionCorta}</span>
+							</p>
+							<p style="text-align: right; padding-right: 15px;">
+								<span class="leerMasNoticia"><a href="#">Leer más</a></span>
+							</p>
+						</div>
+					</div>
+					<br />
+				</ui:repeat>
 			</div>
-			-->
-			<div style="padding-left: 15px; overflow: auto;
-	float:both;">
+		</div>
+
+		<div style="width: 55%; float: right; overflow: auto; float: both;">
+			<div style="padding-left: 10px; overflow: auto; float: both;">
 				<p
 					style="border-bottom-color: #35465c; color: #35465c; border-bottom-width: 2px; border-bottom-style: solid; text-align: left; font-size: 200%">Eventos
-				</p>	
-			
+				</p>
+				<ui:repeat var="evento" value="#{portadaMBean.listaEventos}"
+					varStatus="status">
+					<div style="overflow: auto; float: both;">
+						<div
+							style="background-color: red; width: 15%; height: 80px; float: left; font-size: 300%; color: white;">
+							#{evento.fecha}</div>
+						<div style="width: 82%; float: right; text-align: left;">
+							<h2 style="color: #375eca;">#{evento.titulo}</h2>
+							<p>
+								<span>#{evento.descripcion}</span> <span style="color: #375eca">#{evento.hora}</span>
+							</p>
+						</div>
+					</div>
+					<br />
+				</ui:repeat>
+			</div>
 
-			<p:dataList style="overflow: auto;
-	float:both; clear: both; border: none;" styleClass="dataList" value="#{portadaMBean.listaEventos}" var="evento" type="definition">
-				
-        <div
-					style="background-color: red; width: 20%; height: 80px; float: left; font-size: 300%; color: white;">
-					#{evento.fecha}</div>
-        <div style="width: 75%; float: right; text-align: left;">
-					<h2 style="color: #375eca;">#{evento.titulo}</h2>
-					<p>
-						<span>#{evento.descripcion}</span> <span
-							style="color: #375eca">#{evento.hora}</span>
-					</p>
-					
-				</div>
-				<p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</p>
-			</p:dataList>
-	</div>
 		</div>
 	</ui:define>
 </ui:composition>

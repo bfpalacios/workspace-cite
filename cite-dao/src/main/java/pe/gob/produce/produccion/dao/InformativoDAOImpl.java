@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -17,11 +19,11 @@ import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
 @Repository("informativoDAO")
 @Transactional
 public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
-	
-	private static int cantidadDeNoticias = 4;
-
+		
+	public InformativoDAOImpl(){		
+	}
 	@Override
-	public List<ServicioInformativoBO> listarNoticias() {
+	public List<ServicioInformativoBO> listarNoticias(int numNoticias) {
 		Connection con = null;		
 		Statement statement = null;
 		ResultSet rs = null;
@@ -29,7 +31,47 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 		try{			
 			con = Conexion.obtenerConexion();
 			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarNoticias(?)}");
-			pstmt.setInt(1, cantidadDeNoticias);
+			pstmt.setInt(1, numNoticias);
+		    rs = pstmt.executeQuery();			
+			while(rs.next()){				
+				ServicioInformativoBO noticia = new ServicioInformativoBO();
+				noticia.setId(rs.getInt(1));
+				noticia.setTituloInformativo(rs.getString(2));
+				noticia.setDescInformativo(rs.getString(3));
+				noticia.setDescCortaInformativo(rs.getString(4));
+				noticia.setFecha(rs.getDate(5));
+				noticia.setArchivoInformativo(rs.getBytes(6));
+				listaNoticias.add(noticia);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}		
+		return listaNoticias;
+	}
+	@Override
+	public List<ServicioInformativoBO> listarNoticiasPorMes(int anio, int mes) {
+		Connection con = null;		
+		Statement statement = null;
+		ResultSet rs = null;
+		List<ServicioInformativoBO> listaNoticias = new ArrayList<>();
+		
+		try{
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(anio, mes, 1);
+			Date fechaInicioConsulta = calendar.getTime();
+	        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+	        Date fechaFinConsulta = calendar.getTime();
+			
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarNoticiasPorMes(?,?)}");
+			pstmt.setDate(1, new java.sql.Date(fechaInicioConsulta.getTime()));
+			pstmt.setDate(2, new java.sql.Date(fechaFinConsulta.getTime()));
 		    rs = pstmt.executeQuery();			
 			while(rs.next()){				
 				ServicioInformativoBO noticia = new ServicioInformativoBO();

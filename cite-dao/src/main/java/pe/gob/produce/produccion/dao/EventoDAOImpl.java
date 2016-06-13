@@ -124,7 +124,31 @@ public class EventoDAOImpl extends BaseDAO implements EventoDAO {
 		} finally {
 			this.cerrarStatement(cstm);
 			this.cerrarConexion(con);
+		}		
+	}
+
+	@Override
+	public void actualizarEvento(EventoBO nuevoEvento) throws Exception {
+		Connection con = null;
+		CallableStatement cstm = null;
+		try {
+			con = Conexion.obtenerConexion();
+			cstm = con.prepareCall("{call ActualizarEvento(?,?,?,?,?,?)}");		
+			cstm.setQueryTimeout(3);
+			cstm.setString(1, nuevoEvento.getTitulo());		
+			cstm.setString(2, nuevoEvento.getDescripcion());
+			cstm.setDate(3, new java.sql.Date(nuevoEvento.getFechaInicio().getTime())); 
+			cstm.setDate(4, new java.sql.Date(nuevoEvento.getFechaFin().getTime()));
+			cstm.setInt(5, nuevoEvento.getTodoElDia());
+			cstm.setInt(6, nuevoEvento.getId());
+			
+			cstm.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			this.cerrarStatement(cstm);
+			this.cerrarConexion(con);
 		}
-		
 	}
 }

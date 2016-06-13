@@ -41,163 +41,133 @@ import pe.gob.produce.produccion.services.ServicioServices;
 @Controller("citesMBean")
 @ViewScoped
 public class CITESMBean {
-	
-	
+
 	@Autowired
 	private ServicioModel servicioModel;
-	
+
 	@Autowired
 	private UsuarioModel usuarioModel;
-	
+
 	@Autowired
 	private CITEServices citeServices;
-	
-	
+
 	@Autowired
 	private ComunServices comunServices;
-	
+
 	@Autowired
 	private ServicioServices servicioServices;
-	
-	//datos complementarios de la pantalla
+
+	// datos complementarios de la pantalla
 	private Date date;
 	private UsuarioModel usuarioModelSelect;
 	private String rutaComprobante;
-	
-	//constantes
+
+	// constantes
 	private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static final String PATTERN_STRING = "([a-z]|[A-Z]|\\s)+";
 
-	
-	
-	//para la lista de servicios se declara una variable list de tipo ServicioModel
-	private List<ServicioModel>  datosServiciosModelGrid;
-	private List<ServicioModel>  selectedServicios;
-	
-	
-	
-	//constructor
-	public CITESMBean(){
-		System.out.println("::::: LOADING ServicioMBean ::::::::");		
-		inicializarClases();		
+	// para la lista de servicios se declara una variable list de tipo
+	// ServicioModel
+	private List<ServicioModel> datosServiciosModelGrid;
+	private List<ServicioModel> selectedServicios;
+
+	// constructor
+	public CITESMBean() {
+		System.out.println("::::: LOADING ServicioMBean ::::::::");
+		inicializarClases();
 		new Convertidor();
 		new FormateadorFecha();
-		date=new Date();
-		
-		this.usuarioModel = new UsuarioModel();
-		this.usuarioModelSelect = new UsuarioModel();
-		
-		
-	}
-	
+		date = new Date();
 
-	
-	
-	private void inicializarClases(){
-		this.servicioModel = new ServicioModel();	
 		this.usuarioModel = new UsuarioModel();
 		this.usuarioModelSelect = new UsuarioModel();
-		
+
 	}
-	
-	
-	public String selectorNuevoServicio() throws Exception{
-		 String pagina = "";
-			
-		 inicializarClases();
-		//carga el combo para los departamentos, provincia y distrito
-		 cargarUbigeo();
-		 //listarCITE();
-		 //listarSedes();
-		 
-		 
-		 pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoCite.xhtml";  
-		 
-		return pagina;		
+
+	private void inicializarClases() {
+		this.servicioModel = new ServicioModel();
+		this.usuarioModel = new UsuarioModel();
+		this.usuarioModelSelect = new UsuarioModel();
+
 	}
-	
-	
-	public String selectorNuevoDependencia(int modo) throws Exception{
-		System.out.println("ENTRANDO"); 
+
+	public String selectorNuevoCite() throws Exception {
 		String pagina = "";
-			
-		 inicializarClases();
-		 
-		 listarSedes();
-		 
-		 switch(modo){ 
-		
-		 /*@@ESTE ES EL CASO PARA PERFIL CITE */
-		 case 1: 	
-			
-			 pagina = "/paginas/ModuloProduccion/cite/nuevo/nuevaDependencia.xhtml"; break;
-		
-		 
-		/*@@ESTE ES EL CASO PARA PERFIL ADMIN */
-		 case 2:  									
-			
-		 	pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaDependencia.xhtml"; break;
-			
-			
-		 }
-		return pagina;		
-	}
-	
-	
-	public String selectorNuevoSede() throws Exception{
-		 String pagina = "";
-		
-		 //inicializacion de clases
-		 inicializarClases();
-		 //carga las cites de la BD
-		 listarCITE(); 
-		 
-		 pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaSede.xhtml"; 
-		
-		 
-		 return pagina;		
-	}
-	
-	public void cargarUbigeo(){
-		
+
 		inicializarClases();
+		// carga el combo para los departamentos, provincia y distrito
+		cargarUbigeo();
+		 
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoCite.xhtml";
+
+		return pagina;
+	}
+
+	public String selectorNuevoDependencia() throws Exception {
+		System.out.println("ENTRANDO");
+		String pagina = "";
+
+		inicializarClases();
+
+		listarSedes(); 
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaDependencia.xhtml";
 			 
+		return pagina;
+	}
+
+	public String selectorNuevoSede() throws Exception {
+		String pagina = "";
+
+		// inicializacion de clases
+		inicializarClases();
+		// carga las cites de la BD
+		listarCITE();
+
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaSede.xhtml";
+
+		return pagina;
+	}
+
+	public void cargarUbigeo() {
+
+		inicializarClases();
+
 		List<UbigeoBO> listarUbigeo = new ArrayList<UbigeoBO>();
 
 		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
 
 		try {
-				// se llama para cargar al combo de departamento
-				listarUbigeo = comunServices.listUbigeo();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			// se llama para cargar al combo de departamento
+			listarUbigeo = comunServices.listUbigeo();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		for (UbigeoBO ubigeoBO : listarUbigeo) {
-				UbigeoModel ubigeo = new UbigeoModel();
-					ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
-					ubigeo.setDepartamento(ubigeoBO.getDepartamento());
-					listaUbigeoModel.add(ubigeo);
-			}
+			UbigeoModel ubigeo = new UbigeoModel();
+			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
+			ubigeo.setDepartamento(ubigeoBO.getDepartamento());
+			listaUbigeoModel.add(ubigeo);
+		}
 
-			getUsuarioModel().setListUbigeo(listaUbigeoModel);
+		getUsuarioModel().setListUbigeo(listaUbigeoModel);
 	}
-	
-	public String nuevoServicioInformativo() throws Exception{
-		 
+
+	public String nuevoServicioInformativo() throws Exception {
+
 		System.out.println("nuevoServicioInformativo:INICIO");
 		String pagina = "";
-			
-		 inicializarClases();									
-			
-		 pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioInformativo.xhtml"; 
-		 System.out.println("nuevoServicioInformativo:FIN");
-		 return pagina;		
-	
+
+		inicializarClases();
+
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioInformativo.xhtml";
+		System.out.println("nuevoServicioInformativo:FIN");
+		return pagina;
+
 	}
-	
+
 	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
 		String codDepartamento = (String) (e.getNewValue() == null ? "" : e
 				.getNewValue());
@@ -252,28 +222,31 @@ public class CITESMBean {
 
 		getUsuarioModel().setListDistrito(listaUbigeoModel);
 	}
-	
+
 	public void handleFileUpload(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
-		System.out.println (new File (".").getAbsolutePath ());
-		
-		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+		System.out.println(new File(".").getAbsolutePath());
+
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
 		String deploymentDirectoryPath = servletContext.getRealPath("/");
 		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
 		System.out.println("RUTA: " + uploadDirectoryPath);
 		/*		
 		*/
 		UploadedFile uploadedPhoto = e.getFile();
-		//String filePath = "D:/ITP/";
-		
+		// String filePath = "D:/ITP/";
+
 		String filePath = uploadDirectoryPath;
 		byte[] bytes = null;
 
 		if (null != uploadedPhoto) {
 			bytes = uploadedPhoto.getContents();
-			String filename = FilenameUtils.getName(uploadedPhoto.getFileName());
-			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath + filename)));
+			String filename = FilenameUtils
+					.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(filePath + filename)));
 			stream.write(bytes);
 			stream.close();
 
@@ -281,31 +254,37 @@ public class CITESMBean {
 		}
 
 	}
-	public void buscarServicio() throws Exception{
-		
-		/*FacesContext facesContext = FacesContext.getCurrentInstance();
-		LoginModel login = (LoginModel) facesContext.getExternalContext().getSessionMap().get("user");
-		System.out.println("login user " + login.getUsuario() + "hola" + getServicioModel().getCodigoCITE() + "que tal");
-		*/
-		String nombreServicio = getServicioModel().getNombre()==""?null:getServicioModel().getNombre();
-		String codigoServicio = getServicioModel().getCodigo()==""?null:getServicioModel().getCodigo();
-		String codigoCITE = getServicioModel().getCodigoCITE()==""?"0":getServicioModel().getCodigoCITE();
-		
-		if (getServicioModel().getCodigoCITE() == null){
-			codigoCITE= "0";
-			
+
+	public void buscarServicio() throws Exception {
+
+		/*
+		 * FacesContext facesContext = FacesContext.getCurrentInstance();
+		 * LoginModel login = (LoginModel)
+		 * facesContext.getExternalContext().getSessionMap().get("user");
+		 * System.out.println("login user " + login.getUsuario() + "hola" +
+		 * getServicioModel().getCodigoCITE() + "que tal");
+		 */
+		String nombreServicio = getServicioModel().getNombre() == "" ? null
+				: getServicioModel().getNombre();
+		String codigoServicio = getServicioModel().getCodigo() == "" ? null
+				: getServicioModel().getCodigo();
+		String codigoCITE = getServicioModel().getCodigoCITE() == "" ? "0"
+				: getServicioModel().getCodigoCITE();
+
+		if (getServicioModel().getCodigoCITE() == null) {
+			codigoCITE = "0";
+
 		}
-		
-		
-		
-		System.out.println("dATOS SERVICIO BUSQUEDA " + nombreServicio + "-" + codigoServicio + "-" + codigoCITE);
-		
+
+		System.out.println("dATOS SERVICIO BUSQUEDA " + nombreServicio + "-"
+				+ codigoServicio + "-" + codigoCITE);
+
 		List<ServicioBO> listaServicio = new ArrayList<ServicioBO>();
-		//SE ENVIA EL 6 POR DEFAULT
-		listaServicio = servicioServices.buscarServicio(codigoServicio,nombreServicio, Integer.parseInt(codigoCITE));
+		// SE ENVIA EL 6 POR DEFAULT
+		listaServicio = servicioServices.buscarServicio(codigoServicio,
+				nombreServicio, Integer.parseInt(codigoCITE));
 		List<ServicioModel> datosServiciosModelGrid = new ArrayList<ServicioModel>();
-		
-		
+
 		for (ServicioBO servicioBO : listaServicio) {
 			ServicioModel servicioModel = new ServicioModel();
 			servicioModel.setCodigo(servicioBO.getCodigo());
@@ -314,328 +293,333 @@ public class CITESMBean {
 			servicioModel.setRequisito(servicioBO.getRequisito());
 			servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
 			servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
-			
+
 			datosServiciosModelGrid.add(servicioModel);
 		}
-		
 
 		setDatosServiciosModelGrid(datosServiciosModelGrid);
 		listarCITE();
 	}
-	
-	
-	public String selectorBuscarServicio(int modo) throws Exception{
+
+	public String selectorBuscarServicio(int modo) throws Exception {
 		String pagina = "";
 		inicializarClases();
 		List<ServicioBO> listaServicio = new ArrayList<ServicioBO>();
-			
+
 		List<ServicioModel> datosServiciosModelGrid = new ArrayList<ServicioModel>();
-			
-		switch(modo){ 
-			case 1:  								
-					//SE ENVIA 0 EN EL CODIGO DE CITE PARA QUE NOS OBTENGA TODOS LOS SERVICIOS DE LOS CITES
-					listaServicio = servicioServices.buscarServicio(null, null, 0);
-					
-					for (ServicioBO servicioBO : listaServicio) {
-						ServicioModel servicioModel = new ServicioModel();
-						servicioModel.setCodigo(servicioBO.getCodigo());
-						servicioModel.setNombre(servicioBO.getNombre());
-						servicioModel.setUnidad(servicioBO.getUnidad());
-						servicioModel.setRequisito(servicioBO.getRequisito());
-						servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
-						servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
-						
-						datosServiciosModelGrid.add(servicioModel);
-					}
-					
 
-					setDatosServiciosModelGrid(datosServiciosModelGrid);
-					listarCITE();
-					pagina = "/paginas/ModuloProduccion/cliente/servicio/buscar/buscarServicio.xhtml"; break;
-			/*@@ESTE ES EL CASO PARA PERFIL CITE */
-			case 2:  
-				 	//SE ENVIA 0 EN EL CODIGO DE CITE PARA QUE NOS OBTENGA TODOS LOS SERVICIOS DE LOS CITES
-					listaServicio = servicioServices.buscarServicio("", "", 0);
-					
-					for (ServicioBO servicioBO : listaServicio) {
-						ServicioModel servicioModel = new ServicioModel();
-						servicioModel.setCodigo(servicioBO.getCodigo());
-						servicioModel.setNombre(servicioBO.getNombre());
-						servicioModel.setUnidad(servicioBO.getUnidad());
-						servicioModel.setRequisito(servicioBO.getRequisito());
-						servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
-						servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
-						
-						datosServiciosModelGrid.add(servicioModel);
-					}
-					
+		switch (modo) {
+		case 1:
+			// SE ENVIA 0 EN EL CODIGO DE CITE PARA QUE NOS OBTENGA TODOS LOS
+			// SERVICIOS DE LOS CITES
+			listaServicio = servicioServices.buscarServicio(null, null, 0);
 
-					setDatosServiciosModelGrid(datosServiciosModelGrid);
-					listarCITE();
-					pagina = "/paginas/ModuloProduccion/cite/servicio/buscar/buscarServicio.xhtml"; break;
-					
-			/*@@ESTE ES EL CASO PARA PERFIL EMPRESA */
-			case 3:  
-					//SE ENVIA 0 EN EL CODIGO DE CITE PARA QUE NOS OBTENGA TODOS LOS SERVICIOS DE LOS CITES
-					listaServicio = servicioServices.buscarServicio("", "", 0);
-					
-					for (ServicioBO servicioBO : listaServicio) {
-						ServicioModel servicioModel = new ServicioModel();
-						servicioModel.setCodigo(servicioBO.getCodigo());
-						servicioModel.setNombre(servicioBO.getNombre());
-						servicioModel.setUnidad(servicioBO.getUnidad());
-						servicioModel.setRequisito(servicioBO.getRequisito());
-						servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
-						servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
-						
-						datosServiciosModelGrid.add(servicioModel);
-					}
-					
+			for (ServicioBO servicioBO : listaServicio) {
+				ServicioModel servicioModel = new ServicioModel();
+				servicioModel.setCodigo(servicioBO.getCodigo());
+				servicioModel.setNombre(servicioBO.getNombre());
+				servicioModel.setUnidad(servicioBO.getUnidad());
+				servicioModel.setRequisito(servicioBO.getRequisito());
+				servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
+				servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
 
-					setDatosServiciosModelGrid(datosServiciosModelGrid);
-					listarCITE();
-					pagina = "/paginas/ModuloProduccion/empresa/servicio/buscar/buscarServicio.xhtml"; break;
-					
-			
+				datosServiciosModelGrid.add(servicioModel);
+			}
+
+			setDatosServiciosModelGrid(datosServiciosModelGrid);
+			listarCITE();
+			pagina = "/paginas/ModuloProduccion/cliente/servicio/buscar/buscarServicio.xhtml";
+			break;
+		/* @@ESTE ES EL CASO PARA PERFIL CITE */
+		case 2:
+			// SE ENVIA 0 EN EL CODIGO DE CITE PARA QUE NOS OBTENGA TODOS LOS
+			// SERVICIOS DE LOS CITES
+			listaServicio = servicioServices.buscarServicio("", "", 0);
+
+			for (ServicioBO servicioBO : listaServicio) {
+				ServicioModel servicioModel = new ServicioModel();
+				servicioModel.setCodigo(servicioBO.getCodigo());
+				servicioModel.setNombre(servicioBO.getNombre());
+				servicioModel.setUnidad(servicioBO.getUnidad());
+				servicioModel.setRequisito(servicioBO.getRequisito());
+				servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
+				servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
+
+				datosServiciosModelGrid.add(servicioModel);
+			}
+
+			setDatosServiciosModelGrid(datosServiciosModelGrid);
+			listarCITE();
+			pagina = "/paginas/ModuloProduccion/cite/servicio/buscar/buscarServicio.xhtml";
+			break;
+
+		/* @@ESTE ES EL CASO PARA PERFIL EMPRESA */
+		case 3:
+			// SE ENVIA 0 EN EL CODIGO DE CITE PARA QUE NOS OBTENGA TODOS LOS
+			// SERVICIOS DE LOS CITES
+			listaServicio = servicioServices.buscarServicio("", "", 0);
+
+			for (ServicioBO servicioBO : listaServicio) {
+				ServicioModel servicioModel = new ServicioModel();
+				servicioModel.setCodigo(servicioBO.getCodigo());
+				servicioModel.setNombre(servicioBO.getNombre());
+				servicioModel.setUnidad(servicioBO.getUnidad());
+				servicioModel.setRequisito(servicioBO.getRequisito());
+				servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
+				servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
+
+				datosServiciosModelGrid.add(servicioModel);
+			}
+
+			setDatosServiciosModelGrid(datosServiciosModelGrid);
+			listarCITE();
+			pagina = "/paginas/ModuloProduccion/empresa/servicio/buscar/buscarServicio.xhtml";
+			break;
+
 		}
-		return pagina;		
-	 }
-	
-	
-	
-
+		return pagina;
+	}
 
 	public void guardarNuevoServicio(int opcion) {
 		ObtenerNumeroAleatorio numero = new ObtenerNumeroAleatorio();
 		FormateadorFecha fecha = new FormateadorFecha();
-		try{
-			//if (buscarUsuario(getUsuarioModel().getIdUsuario()==null?"0":getUsuarioModel().getIdUsuario()).equals("")){
-			if (true){
-				String nombreServicio = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
-				String citeID = getServicioModel().getCodigoCITE()==null?"":getServicioModel().getCodigoCITE();
-				String unidad = getServicioModel().getUnidad()==null?"":getServicioModel().getUnidad();
-				String requisito = getServicioModel().getRequisito()==null?"":getServicioModel().getRequisito();
-				String valorDeVenta = getServicioModel().getValorDeVenta()==null?"":getServicioModel().getValorDeVenta();
-				String precioDeVenta = getServicioModel().getPrecioDeVenta()==null?"":getServicioModel().getPrecioDeVenta();
-				String codigoServicio ="";
+		try {
+			// if
+			// (buscarUsuario(getUsuarioModel().getIdUsuario()==null?"0":getUsuarioModel().getIdUsuario()).equals("")){
+			if (true) {
+				String nombreServicio = getServicioModel().getNombre() == null ? ""
+						: getServicioModel().getNombre();
+				String citeID = getServicioModel().getCodigoCITE() == null ? ""
+						: getServicioModel().getCodigoCITE();
+				String unidad = getServicioModel().getUnidad() == null ? ""
+						: getServicioModel().getUnidad();
+				String requisito = getServicioModel().getRequisito() == null ? ""
+						: getServicioModel().getRequisito();
+				String valorDeVenta = getServicioModel().getValorDeVenta() == null ? ""
+						: getServicioModel().getValorDeVenta();
+				String precioDeVenta = getServicioModel().getPrecioDeVenta() == null ? ""
+						: getServicioModel().getPrecioDeVenta();
+				String codigoServicio = "";
 				String codigoUbigeo = "1";
-				
-				if(citeID.equals("1")) 
-				{
-					codigoServicio = "0001" + fecha.formatoFechaDDMMAAAA2(new Date()) + String.valueOf(numero.obtenerNumeroAleatorioEntero());
+
+				if (citeID.equals("1")) {
+					codigoServicio = "0001"
+							+ fecha.formatoFechaDDMMAAAA2(new Date())
+							+ String.valueOf(numero
+									.obtenerNumeroAleatorioEntero());
 				}
-				
-				if(citeID.equals("2")) 
-				{
-					codigoServicio = "0002" + fecha.formatoFechaDDMMAAAA2(new Date()) + String.valueOf(numero.obtenerNumeroAleatorioEntero());
+
+				if (citeID.equals("2")) {
+					codigoServicio = "0002"
+							+ fecha.formatoFechaDDMMAAAA2(new Date())
+							+ String.valueOf(numero
+									.obtenerNumeroAleatorioEntero());
 				}
-				if(citeID.equals("3")) 
-				{
-					codigoServicio = "0003" + fecha.formatoFechaDDMMAAAA2(new Date()) + String.valueOf(numero.obtenerNumeroAleatorioEntero());
+				if (citeID.equals("3")) {
+					codigoServicio = "0003"
+							+ fecha.formatoFechaDDMMAAAA2(new Date())
+							+ String.valueOf(numero
+									.obtenerNumeroAleatorioEntero());
 				}
-				if(citeID.equals("4")) 
-				{
-					codigoServicio = "0004" + fecha.formatoFechaDDMMAAAA2(new Date()) + String.valueOf(numero.obtenerNumeroAleatorioEntero());
+				if (citeID.equals("4")) {
+					codigoServicio = "0004"
+							+ fecha.formatoFechaDDMMAAAA2(new Date())
+							+ String.valueOf(numero
+									.obtenerNumeroAleatorioEntero());
 				}
-				
-					
+
 				ServicioBO servicio = new ServicioBO();
-					servicio.setCodigo(codigoServicio);
-					
-					servicio.setUbigeo(new UbigeoBO());
-					servicio.getUbigeo().setIdUbigeo(codigoUbigeo);
-					servicio.setCite(new CITEBO());
-					servicio.getCite().setCodigo(citeID);
-					servicio.setEstado("1");
-					servicio.setUnidad(unidad);
-					servicio.setNombre(nombreServicio);
-					servicio.setRequisito(requisito);
-					servicio.setPrecioDeVenta(precioDeVenta);
-					servicio.setValorDeVenta(valorDeVenta);
-					
-					
+				servicio.setCodigo(codigoServicio);
+
+				servicio.setUbigeo(new UbigeoBO());
+				servicio.getUbigeo().setIdUbigeo(codigoUbigeo);
+				servicio.setCite(new CITEBO());
+				servicio.getCite().setCodigo(citeID);
+				servicio.setEstado("1");
+				servicio.setUnidad(unidad);
+				servicio.setNombre(nombreServicio);
+				servicio.setRequisito(requisito);
+				servicio.setPrecioDeVenta(precioDeVenta);
+				servicio.setValorDeVenta(valorDeVenta);
+
 				servicioServices.nuevoServicio(servicio);
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			mostrarMensaje(9);				
-		}		
+			mostrarMensaje(9);
+		}
 		limpiarObjetos();
-		mostrarMensaje(8);	 
-		
-		 
-		
+		mostrarMensaje(8);
+
 	}
-	
-	
+
 	public void guardarNuevaSede() {
-		try{
-			String codigoSede 		= getServicioModel().getCodigo()==null?"invalido":getServicioModel().getCodigo();
-			String jefaturaSede 	= getServicioModel().getJefaturaSede()==null?"invalido":getServicioModel().getJefaturaSede();
+		try {
+			String codigoSede = getServicioModel().getCodigo() == null ? "invalido"
+					: getServicioModel().getCodigo();
+			String jefaturaSede = getServicioModel().getJefaturaSede() == null ? "invalido"
+					: getServicioModel().getJefaturaSede();
 			String emailSede = getServicioModel().getEmailSede() == null ? ""
 					: validaCorreo(getServicioModel().getEmailSede()) == true ? getServicioModel()
 							.getEmailSede() : "invalido";
-			String nombreSede 		= getServicioModel().getNombre()==null?"invalido":getServicioModel().getNombre();
-			String telefonoSede 	= getServicioModel().getTelefono()==null?"invalido":getServicioModel().getTelefono();
-			String celularSede 		= getServicioModel().getCelular()==null?"invalido":getServicioModel().getNombre();
-			String codigoCite 		= getUsuarioModelSelect().getCodCite()==null?"invalido":getUsuarioModelSelect().getCodCite();
-			 	
+			String nombreSede = getServicioModel().getNombre() == null ? "invalido"
+					: getServicioModel().getNombre();
+			String telefonoSede = getServicioModel().getTelefono() == null ? "invalido"
+					: getServicioModel().getTelefono();
+			String celularSede = getServicioModel().getCelular() == null ? "invalido"
+					: getServicioModel().getNombre();
+			String codigoCite = getUsuarioModelSelect().getCodCite() == null ? "invalido"
+					: getUsuarioModelSelect().getCodCite();
+
 			System.out.println("codigoSede" + codigoSede);
 			System.out.println("nombreSede" + nombreSede);
 			System.out.println("jefaturaSede" + jefaturaSede);
 			System.out.println("emailSede" + emailSede);
 			System.out.println("telefonoSede" + telefonoSede);
 			System.out.println("celularSede" + celularSede);
-				
-			System.out.println("Codigo cite" + codigoCite); 
-				
-			if(validarCampos(codigoSede, nombreSede,  "00",  "00",  "00", "00",jefaturaSede, emailSede, "00", codigoCite))
-				
+
+			System.out.println("Codigo cite" + codigoCite);
+			
+			if (validarCamposSede(codigoSede, nombreSede,
+					jefaturaSede, emailSede, celularSede, codigoCite))
+
 			{
 				SedeBO sede = new SedeBO();
 
-					sede.setCodigo(codigoSede);
-					sede.setCodigoCite(codigoCite);
-					sede.setDescripcion(nombreSede); 					
-					sede.setEmail(emailSede);			
-					sede.setTelefono(telefonoSede);			
-					sede.setJefatura(jefaturaSede);			
-					sede.setCelular(celularSede);			
-					
-					citeServices.grabarNuevaSede(sede);
-				
+				sede.setCodigo(codigoSede);
+				sede.setCodigoCite(codigoCite);
+				sede.setDescripcion(nombreSede);
+				sede.setEmail(emailSede);
+				sede.setTelefono(telefonoSede);
+				sede.setJefatura(jefaturaSede);
+				sede.setCelular(celularSede);
+
+				citeServices.grabarNuevaSede(sede);
+
 				limpiarObjetos();
 				cargarUbigeo();
 				RequestContext rc = RequestContext.getCurrentInstance();
 				rc.execute("dialogNuevaSede.show()");
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			mostrarMensaje(9);				
-		}	 
-		
-		
+			mostrarMensaje(11);
+		}
+
 	}
-	
-	 
-	
+
 	public void guardarNuevaCite() {
-		try{
-			 
-			
-			String codigoCite = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();
-			String nombreCite = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
-			//String codigoSede = getUsuarioModelSelect().getCodigoDependencia()==null?"invalido":getUsuarioModelSelect().getCodigoDependencia();
+		try {
+
 			Date fechaCite = getDate();
-			
-			String codigoDpto 		= getUsuarioModelSelect().getCodDepartamento()==null?"invalido":getUsuarioModelSelect().getCodDepartamento();
-			String codigoProvincia 	= getUsuarioModelSelect().getCodProvincia()==null?"invalido":getUsuarioModelSelect().getCodProvincia() ;
-			String codigoDistrito 	= getUsuarioModelSelect().getCodDistrito()==null?"invalido":getUsuarioModelSelect().getCodDistrito();
-			String codigoUbigeo =  codigoDpto + codigoProvincia + codigoDistrito;
-				
-			codigoUbigeo = codigoUbigeo.equals("")?"0":codigoUbigeo;
-			
+			String codigoCite = getServicioModel().getCodigo() == null ? ""
+					: getServicioModel().getCodigo();
+			String nombreCite = getServicioModel().getNombre() == null ? ""
+					: getServicioModel().getNombre();			
+
+			String codigoDpto = getUsuarioModelSelect().getCodDepartamento() == null ? "invalido"
+					: getUsuarioModelSelect().getCodDepartamento();
+			String codigoProvincia = getUsuarioModelSelect().getCodProvincia() == null ? "invalido"
+					: getUsuarioModelSelect().getCodProvincia();
+			String codigoDistrito = getUsuarioModelSelect().getCodDistrito() == null ? "invalido"
+					: getUsuarioModelSelect().getCodDistrito();
+			String codigoUbigeo = codigoDpto + codigoProvincia + codigoDistrito;
+
+			codigoUbigeo = codigoUbigeo.equals("") ? "0" : codigoUbigeo;
+
 			System.out.println("codigoCite " + codigoCite);
 			System.out.println("nombreCite " + nombreCite);
 			System.out.println("codigo ubigeo " + codigoUbigeo);
-			System.out.println("fechaCite"  + fechaCite);
+			System.out.println("fechaCite" + fechaCite);
 
-			if(validarCampos(codigoCite, nombreCite,  "00",  "00",  "00", "00","00","00",codigoUbigeo, "00"))
-			
+			if (validarCamposCite(codigoCite, nombreCite, codigoDpto,
+					codigoProvincia, codigoDistrito, codigoUbigeo))
+
 			{
-					
-				
+
 				CITEBO cite = new CITEBO();
-					cite.setCodigo(codigoCite);
-					cite.setDescripcion(nombreCite);  
-					cite.setFecha(fechaCite);
-					cite.setEstado("A");
-					cite.setCodigoUbigeo(codigoUbigeo);			
-					citeServices.grabarNuevaCite(cite);
-				
-				limpiarObjetos(); 
-				listarSedes();
+				cite.setCodigo(codigoCite);
+				cite.setDescripcion(nombreCite);
+				cite.setFecha(fechaCite);
+				cite.setEstado("A");
+				cite.setCodigoUbigeo(codigoUbigeo);
+				citeServices.grabarNuevaCite(cite);
+
+				limpiarObjetos();
+				//listarSedes();
+				cargarUbigeo();
 				RequestContext rc = RequestContext.getCurrentInstance();
 				rc.execute("dialogNuevaCite.show()");
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			mostrarMensaje(9);				
-		}	
-		
-		
-		
+			mostrarMensaje(11);
+		}
+
 	}
-	
-	
+
 	public void guardarNuevaDependencia() {
-		try{
-			 
-			
-			String codigoDependencia = getServicioModel().getCodigo()==null?"":getServicioModel().getCodigo();
-			String nombreDependencia = getServicioModel().getNombre()==null?"":getServicioModel().getNombre();
-			String codigoUTT = getUsuarioModelSelect().getCodigoDependencia()==null?"invalido":getUsuarioModelSelect().getCodigoDependencia();
-			
+		try {
+
+			String codigoDependencia = getServicioModel().getCodigo() == null ? ""
+					: getServicioModel().getCodigo();
+			String nombreDependencia = getServicioModel().getNombre() == null ? ""
+					: getServicioModel().getNombre();
+			String codigoUTT = getUsuarioModelSelect().getCodigoDependencia() == null ? "invalido"
+					: getUsuarioModelSelect().getCodigoDependencia();
+
 			System.out.println("codigoDependencia " + codigoDependencia);
 			System.out.println("nombreDependencia " + nombreDependencia);
 			System.out.println("Codigo UTT" + codigoUTT);
 
-			if(validarCampos(codigoDependencia, nombreDependencia,  "00",  "00",  "00", codigoUTT,"00","00", "00", "00"))
-			
+			if (validarCamposDepedencia(codigoDependencia, nombreDependencia, codigoUTT))
+
 			{
-					
-				
+
 				DependenciaBO dependencia = new DependenciaBO();
 				dependencia.setCodigo(codigoDependencia);
 				dependencia.setDescripcion(nombreDependencia);
 				dependencia.setSede(new SedeBO());
 				dependencia.getSede().setCodigo(codigoUTT);
-				
-							
+
 				citeServices.grabarNuevaDependencia(dependencia);
-				
-				limpiarObjetos(); 
+
+				limpiarObjetos();
 				listarSedes();
 				RequestContext rc = RequestContext.getCurrentInstance();
 				rc.execute("dialogNuevaDependencia.show()");
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			mostrarMensaje(9);				
-		}	
-		
-		
-		
+			mostrarMensaje(11);
+		}
+
 	}
-	
-	
-	private void limpiarObjetos(){
+
+	private void limpiarObjetos() {
 		setServicioModelbi(null);
 		setServicioModelbi(new ServicioModel());
 		setUsuarioModelSelect(new UsuarioModel());
-		//reset();
+		
+		setUsuarioModel(new UsuarioModel());
+		// reset();
 	}
-	
+
 	public void reset() {
-		RequestContext.getCurrentInstance().reset("formPrincipal:pnlGridNuevaSede");
-		
+		RequestContext.getCurrentInstance().reset(
+				"formPrincipal:pnlGridNuevaSede");
+
 	}
-	
-	private void listarCITE(){
-		try{
+
+	private void listarCITE() {
+		try {
 			inicializarClases();
-		
+
 			getServicioModel().setListarCITE(citeServices.listarCITES());
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public boolean validaCorreo(String correo) {
 		boolean correoValido = false;
@@ -648,36 +632,118 @@ public class CITESMBean {
 		}
 		return correoValido;
 	}
- 
-	private boolean validarCampos(String codigo, String descripcion, String codigoDepartamento, String codigoProvincia, 
-					String codigoDistrito, String codigoUTT, String jefaturaSede, String emailSede, String codigoUbigeo, String codigoCite ) {
+
+	private boolean validarCamposCite(String codigoCite, String nombreCite,
+			String codigoDepartamento, String codigoProvincia,
+			String codigoDistrito, String codigoUbigeo) {
 		boolean apto = true;
 
-		if (codigo == "invalido" || codigo.equals("")) {
+		if (codigoCite == "invalido" || codigoCite.equals("")) {
 			mostrarMensaje(1);
 			apto = false;
 		}
 
-		if (descripcion == "invalido" || descripcion.equals("")) {
+		if (nombreCite == "invalido" || nombreCite.equals("")) {
 			mostrarMensaje(2);
 			apto = false;
-		} 
+		}
 		if (codigoDepartamento == "invalido" || codigoDepartamento.equals("")) {
 			mostrarMensaje(3);
 			apto = false;
-		} 
+		}
 		if (codigoProvincia == "invalido" || codigoProvincia.equals("")) {
 			mostrarMensaje(4);
 			apto = false;
-		} 
+		}
 		if (codigoDistrito == "invalido" || codigoDistrito.equals("")) {
 			mostrarMensaje(5);
 			apto = false;
 		} 
+		if (codigoUbigeo == "invalido" || codigoUbigeo.equals("")
+				|| codigoUbigeo.trim().equals("invalido")) {
+			mostrarMensaje(10);
+			apto = false;
+		} 
+		return apto;
+	}
+	 
+	private boolean validarCamposDepedencia(String codigoDependencia, String nombreDependencia, String codigoUTT) {
+			boolean apto = true;
+
+			if (codigoDependencia == "invalido" || codigoDependencia.equals("")) {
+				mostrarMensaje(13);
+				apto = false;
+			}
+
+			if (nombreDependencia == "invalido" || nombreDependencia.equals("")) {
+				mostrarMensaje(14);
+				apto = false;
+			}  
+			if (codigoUTT == "invalido" || codigoUTT.equals("")) {
+				mostrarMensaje(15);
+				apto = false;
+			} 
+			return apto;
+		}	
+	private boolean validarCamposSede(String codigoSede, String nombreSede, String jefaturaSede,
+			String emailSede, String celularSede, String codigoCite) {
+		boolean apto = true;
+
+		if (codigoSede == "invalido" || codigoSede.equals("")) {
+			mostrarMensaje(6);
+			apto = false;
+		}
+
+		if (nombreSede == "invalido" || nombreSede.equals("")) {
+			mostrarMensaje(7);
+			apto = false;
+		}  
+		if (jefaturaSede == "invalido" || jefaturaSede.equals("")) {
+			mostrarMensaje(8);
+			apto = false;
+		}
+		if (emailSede == "invalido" || emailSede.equals("")) {
+			mostrarMensaje(9);
+			apto = false;
+		} 
+		if (codigoCite == "invalido" || codigoCite.equals("")) {
+			mostrarMensaje(10);
+			apto = false;
+		}
+		return apto;
+	}
+	
+	private boolean validarCampos(String codigo, String descripcion,
+			String codigoDepartamento, String codigoProvincia,
+			String codigoDistrito, String codigoUTT, String jefaturaSede,
+			String emailSede, String codigoUbigeo, String codigoCite) {
+		boolean apto = true;
+
+		if (codigo == "invalido" || codigo.equals("")) {
+			mostrarMensaje(6);
+			apto = false;
+		}
+
+		if (descripcion == "invalido" || descripcion.equals("")) {
+			mostrarMensaje(7);
+			apto = false;
+		}
+		if (codigoDepartamento == "invalido" || codigoDepartamento.equals("")) {
+			mostrarMensaje(8);
+			apto = false;
+		}
+		if (codigoProvincia == "invalido" || codigoProvincia.equals("")) {
+			mostrarMensaje(9);
+			apto = false;
+		}
+		if (codigoDistrito == "invalido" || codigoDistrito.equals("")) {
+			mostrarMensaje(5);
+			apto = false;
+		}
 		if (codigoUTT == "invalido" || codigoUTT.equals("")) {
 			mostrarMensaje(6);
 			apto = false;
-		} 
+		}
 		if (jefaturaSede == "invalido" || jefaturaSede.equals("")) {
 			mostrarMensaje(7);
 			apto = false;
@@ -686,75 +752,155 @@ public class CITESMBean {
 			mostrarMensaje(8);
 			apto = false;
 		}
-		if (codigoUbigeo == "invalido" || codigoUbigeo.equals("") || codigoUbigeo.trim().equals("invalido")) {
+		if (codigoUbigeo == "invalido" || codigoUbigeo.equals("")
+				|| codigoUbigeo.trim().equals("invalido")) {
 			mostrarMensaje(10);
 			apto = false;
 		}
 		if (codigoCite == "invalido" || codigoCite.equals("")) {
 			mostrarMensaje(11);
 			apto = false;
-		} 
+		}
 		return apto;
 	}
 
-	private void listarSedes(){
-		try{
-			
-		
+	private void listarSedes() {
+		try {
+
 			getUsuarioModel().setListarSedes(citeServices.listarSedes());
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	 
-	
-	public String cancelar() throws Exception{
-		 String pagina = "";
-		 
-		 	inicializarClases();
 
-			listarCITE();
-			pagina = "/paginas/ModuloProduccion/cliente/servicio/nuevo/nuevoServicio.xhtml"; 
-			
-		return pagina;		
+	public String cancelarCite() throws Exception {
+		String pagina = "";
+
+		inicializarClases();
+		// carga el combo para los departamentos, provincia y distrito
+		cargarUbigeo();
+		 
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoCite.xhtml";
+
+		return pagina;
 	}
 	
-	private void mostrarMensaje(int opcionMensaje){
-		FacesMessage message = null;		
+	public String cancelarSede() throws Exception {
+		String pagina = "";
+
+		// inicializacion de clases
+		inicializarClases();
+		// carga las cites de la BD
+		listarCITE();
+
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaSede.xhtml";
+
+		return pagina;
+	}
+	
+	public String cancelarDependencia() throws Exception {
+		String pagina = "";
+
+		inicializarClases();
+
+		listarSedes(); 
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaDependencia.xhtml";
+			 
+		return pagina;
+	}
+
+	private void mostrarMensaje(int opcionMensaje) {
+		FacesMessage message = null;
+
+		switch (opcionMensaje) {
+		case 1:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar los caracteres en el campo - " + "Codigo Cite");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 2:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar los caracteres en el campo - "
+							+ "Nombre Cite");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 3:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe elegir el combo - " + "Departamento");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 4:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe elegir el combo - " + "Provincia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 5:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe elegir el combo - " + "Distrito");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 6:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar los caracteres en el campo - " + "Codigo Sede");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+
+		case 7:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar los caracteres en el campo - " + "Nombre Sede");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+ 
+
+		case 8:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar los caracteres en el campo - " + "Jefe de la Sede");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 9:
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+					"El email no tiene el formato correcto");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+
+		case 10:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe elegir el combo de la cite ");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 11:
+			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al guardar en la base de datos");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+
+		case 12:
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+					"Se registro correctamente ");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
 		
-		switch(opcionMensaje){
-			case 1: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar los caracteres en el campo - " + "Codigo");
-	        		FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 2: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar los caracteres en el campo - " + "Descripcion");
-	        		FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 3: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Departamento");
-    				FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 4: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Provincia");
-    				FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 5: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Distrito");
-					FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 6: message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Debe ingresar en el campo - " + "Sede");
-					FacesContext.getCurrentInstance().addMessage(null, message); break;
-
+		case 13:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar en el campo - " + "Codigo de Dependencia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 14:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar en el campo - " + "Descripcion de la Dependencia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
 			
-			case 7: message = new FacesMessage(FacesMessage.SEVERITY_WARN,"", "Debe ingresar en el campo - " + "Jefatura");
-					FacesContext.getCurrentInstance().addMessage(null, message); break;	
-			case 8:message = new FacesMessage(FacesMessage.SEVERITY_INFO,"", "El email no tiene el formato correcto");
-					FacesContext.getCurrentInstance().addMessage(null, message); break;
-			case 9:message = new FacesMessage(FacesMessage.SEVERITY_FATAL,"", "Hubo un error al guardar en la base de datos");
-			FacesContext.getCurrentInstance().addMessage(null, message); break;
+		case 15:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe ingresar en el campo - " + "Codigo de la UTT ");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
 
-			case 10:message = new FacesMessage(FacesMessage.SEVERITY_FATAL,"", "Debe ingresar el codigo de Ubigeo ");
-			FacesContext.getCurrentInstance().addMessage(null, message); break;
-
-			case 11:message = new FacesMessage(FacesMessage.SEVERITY_FATAL,"", "Debe elegir el combo de la cite ");
-			FacesContext.getCurrentInstance().addMessage(null, message); break;
 		}
 	}
-	
+
 	public void setServicioModelbi(ServicioModel servicioModel) {
 		this.servicioModel = servicioModel;
 	}
@@ -770,21 +916,14 @@ public class CITESMBean {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	
+
 	public List<ServicioModel> getSelectedServicios() {
 		return selectedServicios;
 	}
 
-
-
-
 	public void setSelectedServicios(List<ServicioModel> selectedServicios) {
 		this.selectedServicios = selectedServicios;
 	}
-
-
-
 
 	public List<ServicioModel> getDatosServiciosModelGrid() {
 		return datosServiciosModelGrid;
@@ -810,11 +949,5 @@ public class CITESMBean {
 	public void setUsuarioModelSelect(UsuarioModel usuarioModelSelect) {
 		this.usuarioModelSelect = usuarioModelSelect;
 	}
-	
-	
-	
-	
-	
-	
 
 }

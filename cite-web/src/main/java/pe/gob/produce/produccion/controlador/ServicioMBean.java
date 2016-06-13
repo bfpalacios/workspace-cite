@@ -299,14 +299,20 @@ public class ServicioMBean {
 
 	}
 
-	public String documentosITP() throws Exception {
+	public String documentosITP(int modo) throws Exception {
 
 		System.out.println("documentosITP:INICIO");
 		String pagina = "";
 
 		inicializarClases();
-
-		pagina = "/paginas/ModuloAdministrador/admin/cite/documentos/downloadManualesITP.xhtml";
+		switch (modo) {
+		case 1:
+			pagina = "/paginas/ModuloAdministrador/admin/cite/documentos/downloadManualesITP.xhtml";break;
+		case 2:
+			pagina = "/paginas/ModuloProduccion/cite/documentos/downloadManualesITP.xhtml";break;
+		
+		}
+		
 		System.out.println("documentosITP:FIN");
 		return pagina;
 
@@ -1128,8 +1134,8 @@ public class ServicioMBean {
 		
 		case 4:
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
-					"Debe cargar el documento antes de guardar el informativo - "
-							+ "Documento informativo");
+					"Debe cargar la imagen  primero - "
+							+ "Ingrese la imagen");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
 

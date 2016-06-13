@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevosManuales"
+			style="width:500px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panelGrid id="pnlGridNuevosManuales">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="6">Download  Documentos  </p:column>
+				</p:row>
+			</f:facet> 
+    
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Manuales" action="#{servicioMBean.invocarServletDocumentos}"  icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+     			
+     			</p:column>
+				 		
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Formatos" action="#{servicioMBean.invocarServletDocumentosFormatos}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Procedimientos" action="#{servicioMBean.invocarServletDocumentosProcedimientos}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Instructivos" action="#{servicioMBean.invocarServletDocumentosInstructivos}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column colspan="2"> 
+				 	<p:commandLink value="Documentos" action="#{servicioMBean.invocarServletDocumentosGeneral}" icon="ui-icon-wrench"
+     					style="border-width:0;background:none;"/>
+				 		 
+				 </p:column>
+			</p:row>
+
+		</p:panelGrid> 
+		
+	</ui:define>
+</ui:composition>
+</html>

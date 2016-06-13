@@ -6,11 +6,16 @@
 	font-weight: bold;
 	color: #2e6e9e;
 	text-transform: capitalize !important;
-	border-radius:5px; 
-	-moz-border-radius:5px; /* Firefox */ 
-	-webkit-border-radius:5px; /* Safari y Chrome */
-	 padding: 5px;
-	
+	border-radius: 5px;
+	-moz-border-radius: 5px; /* Firefox */
+	-webkit-border-radius: 5px; /* Safari y Chrome */
+	padding: 5px;
+}
+
+.carpetasLink {
+	background-image:
+		url("#{facesContext.externalContext.request.contextPath}/webapp/Imagenes/carpeta.png")
+		!important;
 }
 
 #botonNuevo {
@@ -18,53 +23,42 @@
 }
 
 #disabledButton {
-	opacity:1 !important;
+	opacity: 1 !important;
 	margin: 5px;
 }
 
 .buscarNumeroCotizacion {
-	    margin-left: 32x;
+	margin-left: 32x;
 }
 
-.buttonMarginNormal{
-	   margin-right: 50px;
+.buttonMarginNormal {
+	margin-right: 50px;
 }
 
-.numeroCuenta{
-	   width:300px; float:left; padding-left:45px;
+.numeroCuenta {
+	width: 300px;
+	float: left;
+	padding-left: 45px;
 }
 
-.opcionesIconos{
-	
+.opcionesIconos {
 	width: 350px;
 }
 
-.disabledInput{
-
-	opacity:1 !important;
+.disabledInput {
+	opacity: 1 !important;
 }
 
-.selectOneEstado{
-
+.selectOneEstado {
 	margin-left: 10px;
 }
 
-.previewComprobante{
-
+.previewComprobante {
 	border: 5px solid #DDECF7;
-    padding: 5px;
-    background: #fff;
+	padding: 5px;
+	background: #fff;
 }
 
-.ui-layout-unit-content ui-widget-content{
+.ui-layout-unit-content ui-widget-content {
 	overflow: hidden !important;
 }
-
-
-
-
-
-
-
-
-

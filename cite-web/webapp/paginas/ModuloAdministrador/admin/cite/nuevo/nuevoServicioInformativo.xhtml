@@ -75,15 +75,15 @@
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lDocumentoInformativo"
-						value="Documento informativo" />
+						value="Cargar Imagen del informativo" />
 				</p:column> 
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
 					<p:growl id="messagesInformativo" showDetail="true" />
-					<p:fileUpload label="Cargar documento ..."  id="docInformativo"
-						uploadLabel="Guardar documento" cancelLabel="Cancelar"
+					<p:fileUpload label="Cargar imagen ..."  id="docInformativo"
+						uploadLabel="Guardar imagen" cancelLabel="Cancelar"
 						fileUploadListener="#{servicioMBean.handleFileUploadInformativo}"
 						mode="advanced" dragDropSupport="false" update="messages"
-						fileLimit="1" value="Informativo" previewWidth="300"
+						fileLimit="1" value="Imagen" previewWidth="300"
 						style="margin-left: 160px;" skinSimple="true" />
 				</p:column>
 					 

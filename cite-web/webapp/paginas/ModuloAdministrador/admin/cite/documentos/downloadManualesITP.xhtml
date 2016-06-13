@@ -20,57 +20,58 @@
 		<p:panelGrid id="pnlGridNuevosManuales">
 			<f:facet name="header">
 				<p:row>
-					<p:column colspan="6">Download  Manuales  </p:column>
+					<p:column colspan="6">Download  Documentos  </p:column>
 				</p:row>
-			</f:facet> 
-    
+			</f:facet>
+
 			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Manuales" action="#{servicioMBean.invocarServletDocumentos}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		<!--p:panel styleClass="some_style">
-    				    	<h:graphicImage value="#{some_image}">
-    					</p:panel>
-    				</h:graphicImage -->
-				 <!--a href="http://localhost:8085/Directorios/ListarDirectorios" style="text-align: left; color:#084B8A; font-size:15px; font-family:Arial;">
-					<img src="img/folder.png" alt="Smiley face"></a -->
-				 </p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Formatos" action="#{servicioMBean.invocarServletDocumentosFormatos}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Procedimientos" action="#{servicioMBean.invocarServletDocumentosProcedimientos}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Instructivos" action="#{servicioMBean.invocarServletDocumentosInstructivos}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Documentos" action="#{servicioMBean.invocarServletDocumentosGeneral}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
+				<p:column colspan="2">
+					<p:commandLink value="Manuales"
+						action="#{servicioMBean.invocarServletDocumentos}"
+						icon="ui-icon-wrench" style="border-width:0;background:none;" />
+					
+						
+				</p:column>
 			</p:row>
 
-		</p:panelGrid> 
-		
+			<p:row>
+				<p:column colspan="2">
+					<p:commandLink value="Formatos"
+						action="#{servicioMBean.invocarServletDocumentosFormatos}"
+						icon="ui-icon-wrench" style="border-width:0;background:none;" />
+
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column colspan="2">
+					<p:commandLink value="Procedimientos"
+						action="#{servicioMBean.invocarServletDocumentosProcedimientos}"
+						icon="ui-icon-wrench" style="border-width:0;background:none;" />
+
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column colspan="2">
+					<p:commandLink value="Instructivos"
+						action="#{servicioMBean.invocarServletDocumentosInstructivos}"
+						icon="ui-icon-wrench" style="border-width:0;background:none;" />
+
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column colspan="2">
+					<p:commandLink value="Documentos"
+						action="#{servicioMBean.invocarServletDocumentosGeneral}"
+						icon="ui-icon-wrench" style="border-width:0;background:none;" />
+
+				</p:column>
+			</p:row>
+
+		</p:panelGrid>
+
 	</ui:define>
 </ui:composition>
 </html>

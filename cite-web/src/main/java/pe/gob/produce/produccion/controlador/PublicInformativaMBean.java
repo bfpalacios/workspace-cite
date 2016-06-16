@@ -29,9 +29,9 @@ public class PublicInformativaMBean {
 	private String mes;
 	private List<String> meses;
 
-	private List<InformativoModel> listaNoticias;
-	private List<InformativoModel> listaNoticiasDerecha;
-	private List<InformativoModel> listaNoticiasIzquierda;
+	private List<InformativoModel> listaPublicaciones;
+	private List<InformativoModel> listaPublicacionesDerecha;
+	private List<InformativoModel> listaPublicacionesIzquierda;
 	
 	@Autowired
 	private InformativoServices informativoService;
@@ -43,7 +43,7 @@ public class PublicInformativaMBean {
 	@SuppressWarnings("static-access")
 	@PostConstruct
 	public void init() {
-		cargarNoticias(4);	
+		cargarPublicaciones(4);	
 		anios = new ArrayList<Integer>();		
 		Calendar calendar = Calendar.getInstance();
 		int actual = calendar.get(calendar.YEAR);
@@ -61,23 +61,23 @@ public class PublicInformativaMBean {
 	
 	public void separar2columnas(){
 		int count = 1;
-		listaNoticiasDerecha = new ArrayList<>();
-		listaNoticiasIzquierda = new ArrayList<>();
-		for (InformativoModel info : listaNoticias) {
+		listaPublicacionesDerecha = new ArrayList<>();
+		listaPublicacionesIzquierda = new ArrayList<>();
+		for (InformativoModel info : listaPublicaciones) {
 			if(count % 2 ==0){
-				listaNoticiasDerecha.add(info);
+				listaPublicacionesDerecha.add(info);
 			}else{
-				listaNoticiasIzquierda.add(info);
+				listaPublicacionesIzquierda.add(info);
 			}
 			count++;
 		}
 	}
 	
-	public String buscar(){
+	public void buscar(){
 		int m = 0;
 		for (Mes mesEnum : Mes.values()) {
 			if(mesEnum.toString().equals(mes)){
-				m = mesEnum.getValor();
+				m = mesEnum.getValor() - 1;
 				break;
 			}
 		}
@@ -89,16 +89,16 @@ public class PublicInformativaMBean {
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalido", "Año no es seleccionado.");             
 		        FacesContext.getCurrentInstance().addMessage(null, msg);
 			}else{
-			cargarNoticiasPorMes(anio, m);
+			cargarPublicacionesPorMes(anio, m);
 			}
 		}
-		return "/paginas/ModuloProduccion/cite/portadaPrincipal/publicacionesInformativas.xhtml";
+		//return "/paginas/ModuloProduccion/cite/portadaPrincipal/publicacionesInformativas.xhtml";
 	}
 	
-	public void cargarNoticias(int numNoticias){
-		listaNoticias = new ArrayList<>();
+	public void cargarPublicaciones(int numPublicaciones){
+		listaPublicaciones = new ArrayList<>();
 		SimpleDateFormat formato = new SimpleDateFormat("dd-MMM-yyyy");
-		for (ServicioInformativoBO informativo : informativoService.listarNoticias(numNoticias)) {
+		for (ServicioInformativoBO informativo : informativoService.listarPublicaciones(numPublicaciones)) {
 			InformativoModel noticia = new InformativoModel();
 			noticia.setId(informativo.getId().intValue() + "");
 			noticia.setTitulo(informativo.getTituloInformativo());
@@ -108,15 +108,15 @@ public class PublicInformativaMBean {
 			noticia.setFecha(fecha);
 			InputStream imagenDB = new ByteArrayInputStream(informativo.getArchivoInformativo());
 			noticia.setImagen(new DefaultStreamedContent(imagenDB, "image/jpg"));
-			listaNoticias.add(noticia);
+			listaPublicaciones.add(noticia);
 		}
 		separar2columnas();
 	}
 
-	public void cargarNoticiasPorMes(int anio, int mes){
-		listaNoticias = new ArrayList<>();
+	public void cargarPublicacionesPorMes(int anio, int mes){
+		listaPublicaciones = new ArrayList<>();
 		SimpleDateFormat formato = new SimpleDateFormat("dd-MMM-yyyy");
-		for (ServicioInformativoBO informativo : informativoService.listarNoticiasPorMes(anio, mes)) {
+		for (ServicioInformativoBO informativo : informativoService.listarPublicacionesPorMes(anio, mes)) {
 			InformativoModel noticia = new InformativoModel();
 			noticia.setId(informativo.getId().intValue() + "");
 			noticia.setTitulo(informativo.getTituloInformativo());
@@ -126,7 +126,7 @@ public class PublicInformativaMBean {
 			noticia.setFecha(fecha);
 			InputStream imagenDB = new ByteArrayInputStream(informativo.getArchivoInformativo());
 			noticia.setImagen(new DefaultStreamedContent(imagenDB, "image/jpg"));
-			listaNoticias.add(noticia);
+			listaPublicaciones.add(noticia);
 		}
 		separar2columnas();
 	}
@@ -168,27 +168,27 @@ public class PublicInformativaMBean {
 	}
 	
 
-	public List<InformativoModel> getListaNoticiasDerecha() {
-		return listaNoticiasDerecha;
+	public List<InformativoModel> getListaPublicacionesDerecha() {
+		return listaPublicacionesDerecha;
 	}
-	public void setListaNoticiasDerecha(List<InformativoModel> listaNoticiasDerecha) {
-		this.listaNoticiasDerecha = listaNoticiasDerecha;
+	public void setListaPublicacionesDerecha(List<InformativoModel> listaPublicacionesDerecha) {
+		this.listaPublicacionesDerecha = listaPublicacionesDerecha;
 	}
-	public List<InformativoModel> getListaNoticiasIzquierda() {
-		return listaNoticiasIzquierda;
+	public List<InformativoModel> getListaPublicacionesIzquierda() {
+		return listaPublicacionesIzquierda;
 	}
-	public void setListaNoticiasIzquierda(
-			List<InformativoModel> listaNoticiasIzquierda) {
-		this.listaNoticiasIzquierda = listaNoticiasIzquierda;
+	public void setListaPublicacionesIzquierda(
+			List<InformativoModel> listaPublicacionesIzquierda) {
+		this.listaPublicacionesIzquierda = listaPublicacionesIzquierda;
 	}
 	public void setMeses(List<String> meses) {
 		this.meses = meses;
 	}
-	public List<InformativoModel> getListaNoticias() {
-		return listaNoticias;
+	public List<InformativoModel> getListaPublicaciones() {
+		return listaPublicaciones;
 	}
-	public void setListaNoticias(List<InformativoModel> listaNoticias) {
-		this.listaNoticias = listaNoticias;
+	public void setListaPublicaciones(List<InformativoModel> listaPublicaciones) {
+		this.listaPublicaciones = listaPublicaciones;
 	}
 
 	

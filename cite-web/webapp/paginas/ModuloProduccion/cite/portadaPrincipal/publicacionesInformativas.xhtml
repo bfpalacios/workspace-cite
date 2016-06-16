@@ -30,23 +30,24 @@
 
 				<p:selectOneMenu id="mes" value="#{publicInformativaMBean.mes}"
 					style="width:120px">
-					<p:ajax listener="#{publicInformativaMBean.buscar}"/>
+					<p:ajax listener="#{publicInformativaMBean.buscar}" update="publicacion"/>
 					<f:selectItem itemLabel="Mes" itemValue=""
 						noSelectionOption="true" />
 					<f:selectItems value="#{publicInformativaMBean.meses}" />
 				</p:selectOneMenu>
 		</div>
 		<br />
-		<div style="width: 50%; float: left;">
+		<h:panelGroup id="publicacion">
+		<div style="width: 50%; float: left;">	
 		
-		<ui:repeat var="noticia" value="#{publicInformativaMBean.listaNoticiasIzquierda}" varStatus="status">
+		<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesIzquierda}" varStatus="status">
 			<div style="padding-left: 10px;">			
 				<div class="fondoInformativo">
 					<p class="tituloinformativo">#{noticia.titulo}</p>
 					<br />
 					<p:graphicImage style="width: 200px; height: 150px;"
 								value="#{noticiaImagen.image}">
-								<f:param name="noticiaId" value="#{noticia.id}" />
+								<f:param name="publicacionId" value="#{noticia.id}" />
 							</p:graphicImage>
 					<div class="descripcionInformativo">
 						<span>#{noticia.fecha}</span> <br />
@@ -61,14 +62,14 @@
 			</div>
 			
 		<div style="width: 50%; float: right;">
-			<ui:repeat var="noticia" value="#{publicInformativaMBean.listaNoticiasDerecha}" varStatus="status">
+			<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesDerecha}" varStatus="status">
 			<div style="padding-left: 10px;">			
 				<div class="fondoInformativo">
 					<p class="tituloinformativo">#{noticia.titulo}</p>
 					<br />
 					<p:graphicImage style="width: 200px; height: 150px;"
 								value="#{noticiaImagen.image}">
-								<f:param name="noticiaId" value="#{noticia.id}" />
+								<f:param name="publicacionId" value="#{noticia.id}" />
 							</p:graphicImage>
 					<div class="descripcionInformativo">
 						<span>#{noticia.fecha}</span> <br />
@@ -80,7 +81,9 @@
 			</div>
 			<br />
 		</ui:repeat>
+		
 		</div>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>
 </html>

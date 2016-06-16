@@ -25,36 +25,54 @@ public class NoticiaImagen {
 
 	@Autowired
 	private InformativoServices informativoService;
-	
+
 	private List<ServicioInformativoBO> listaNoticias;
-	
+	private List<ServicioInformativoBO> listaPublicaciones;
+
 	@PostConstruct
 	public void init() {
 		listaNoticias = informativoService.listarNoticias(4);
+		listaPublicaciones = informativoService.listarPublicaciones(4);
 	}
 
-    public StreamedContent getImage() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
+	public StreamedContent getImage() throws IOException {
+		FacesContext context = FacesContext.getCurrentInstance();
 
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            return new DefaultStreamedContent();
-        }
-        else {
-            String noticiaIdUi = context.getExternalContext().getRequestParameterMap().get("noticiaId");
-            String noticiaId = null;
-            byte[] imagenByte = null;
-            for (ServicioInformativoBO informativo : listaNoticias) {
-            	noticiaId = informativo.getId().intValue() + "";
-				if(noticiaId.equals(noticiaIdUi)){
-					imagenByte = informativo.getArchivoInformativo();
-					break;
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			return new DefaultStreamedContent();
+		} else {
+			String noticiaIdUi = context.getExternalContext()
+					.getRequestParameterMap().get("noticiaId");
+			String publicacionIdUi = context.getExternalContext()
+					.getRequestParameterMap().get("publicacionId");
+			String noticiaId = null;
+			String publicacionId = null;
+			byte[] imagenByte = null;
+
+			if (noticiaIdUi != null) {
+				for (ServicioInformativoBO informativo : listaNoticias) {
+					noticiaId = informativo.getId().intValue() + "";
+					if (noticiaId.equals(noticiaIdUi)) {
+						imagenByte = informativo.getArchivoInformativo();
+						break;
+					}
 				}
 			}
-            if(imagenByte != null){
-            return new DefaultStreamedContent(new ByteArrayInputStream(imagenByte));
-            }else{
-            	throw new IOException("Error cargando imagen");
-            }
-        }
-    }
+			if (publicacionIdUi != null) {
+				for (ServicioInformativoBO informativo : listaPublicaciones) {
+					publicacionId = informativo.getId().intValue() + "";
+					if (publicacionId.equals(publicacionIdUi)) {
+						imagenByte = informativo.getArchivoInformativo();
+						break;
+					}
+				}
+			}
+			if (imagenByte != null) {
+				return new DefaultStreamedContent(new ByteArrayInputStream(
+						imagenByte));
+			} else {
+				throw new IOException("Error cargando imagen");
+			}
+		}
+	}
 }

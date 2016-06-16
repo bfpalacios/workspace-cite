@@ -21,7 +21,7 @@
 		
 		<div style="width: 50%; float: left;">
 			<div style="overflow: auto; float: both;">
-				<ui:repeat var="noticia" value="#{publicInformativaMBean.listaNoticiasIzquierda}"
+				<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesIzquierda}"
 					varStatus="status">
 					<div
 						style="width: 90%; padding-left: 10px;padding-right: 10px;background-color: #E6E6E6; overflow: auto; float: both;">
@@ -34,7 +34,7 @@
 
 							<p:graphicImage style="width: 200px; height: 150px;"
 								value="#{noticiaImagen.image}">
-								<f:param name="noticiaId" value="#{noticia.id}" />
+								<f:param name="publicacionId" value="#{noticia.id}" />
 							</p:graphicImage>
 						</div>
 						<div style="width: 50%; float: right; text-align: justify;">
@@ -52,14 +52,14 @@
 		</div>
 			
 		<div style="width: 50%; float: right;">
-			<ui:repeat var="noticia" value="#{publicInformativaMBean.listaNoticiasDerecha}" varStatus="status">
+			<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesDerecha}" varStatus="status">
 			<div style="padding-left: 10px;">			
 				<div class="fondoInformativo">
 					<p class="tituloinformativo">#{noticia.titulo}</p>
 					<br />
 					<p:graphicImage style="width: 200px; height: 150px;"
 								value="#{noticiaImagen.image}">
-								<f:param name="noticiaId" value="#{noticia.id}" />
+								<f:param name="publicacionId" value="#{noticia.id}" />
 							</p:graphicImage>
 					<div class="descripcionInformativo">
 						<span>#{noticia.fecha}</span> <br />

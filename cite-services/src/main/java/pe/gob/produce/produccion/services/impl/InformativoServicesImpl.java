@@ -28,4 +28,15 @@ public class InformativoServicesImpl implements InformativoServices {
 		return informativoDao.listarNoticiasPorMes(anio, mes);
 	}
 
+	@Override
+	public List<ServicioInformativoBO> listarPublicaciones(int numNoticias) {
+		return informativoDao.listarPublicaciones(numNoticias);
+	}
+
+	@Override
+	public List<ServicioInformativoBO> listarPublicacionesPorMes(int anio,
+			int mes) {
+		return informativoDao.listarPublicacionesPorMes(anio, mes);
+	}
+
 }

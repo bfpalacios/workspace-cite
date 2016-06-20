@@ -20,38 +20,39 @@
 		</p:outputPanel>
 
 		<div style="width: 45%; float: left;">
-			<div style="overflow: auto; float: both;">
-				<ui:repeat var="noticia" value="#{portadaMBean.listaNoticias}"
-					varStatus="status">
-					<div
-						style="width: 90%; padding-left: 10px;padding-right: 10px;background-color: #E6E6E6; overflow: auto; float: both;">
-						<p style="color: #2E9AFE; text-align: left;">
-							<h:graphicImage value="/Imagenes/Calendar_icon.png" />
-							#{noticia.fecha}
-						</p>
-						<p style="text-align: left; font-weight: bold; font-size: 120%;">#{noticia.titulo}</p>
-						<div style="width: 50%; float: left;">
+			<ui:repeat var="noticia" value="#{portadaMBean.listaNoticias}"
+				varStatus="status">
+				<div
+					style="width: 90%; padding-left: 10px; padding-right: 10px; background-color: #E6E6E6; overflow: auto; float: both;">
+					<p style="text-align: left;">
+						<h:graphicImage value="/Imagenes/Calendar_icon.png" />
+						#{noticia.fecha}
+					</p>
+					<p style="text-align: left; font-weight: bold; font-size: 120%;">#{noticia.titulo}</p>
+					<div style="width: 50%; float: left;">
 
-							<p:graphicImage style="width: 200px; height: 150px;"
-								value="#{noticiaImagen.image}">
-								<f:param name="noticiaId" value="#{noticia.id}" />
-							</p:graphicImage>
-						</div>
-						<div style="width: 50%; float: right; text-align: justify;">
-							<p>
-								<span>#{noticia.descripcionCorta}</span>
-							</p>
-							<p style="text-align: right; padding-right: 15px;">
-								<span class="leerMasNoticia"><a href="#">Leer más</a></span>
-							</p>
-						</div>
+						<p:graphicImage style="width: 200px; height: 150px;"
+							value="#{noticiaImagen.image}">
+							<f:param name="noticiaId" value="#{noticia.id}" />
+						</p:graphicImage>
 					</div>
-					<br />
-				</ui:repeat>
-			</div>
+					<div style="width: 50%; float: right; text-align: justify;">
+						<p>
+							<span>#{noticia.descripcionCorta}</span>
+						</p>
+						<p style="text-align: right; padding-right: 15px;">
+							<span class="leerMasNoticia"> <h:commandButton
+									styleClass="button" value="Leer más"
+									action="#{portadaMBean.cargarVerMas(noticia)}" ajax="false" />
+							</span>
+						</p>
+					</div>
+				</div>
+				<br />
+			</ui:repeat>
 		</div>
 
-		<div style="width: 55%; float: right; overflow: auto; float: both;">
+		<div style="width: 55%; float: right;">
 			<div style="padding-left: 10px; overflow: auto; float: both;">
 				<p
 					style="border-bottom-color: #35465c; color: #35465c; border-bottom-width: 2px; border-bottom-style: solid; text-align: left; font-size: 200%">Eventos
@@ -72,7 +73,6 @@
 					<br />
 				</ui:repeat>
 			</div>
-
 		</div>
 	</ui:define>
 </ui:composition>

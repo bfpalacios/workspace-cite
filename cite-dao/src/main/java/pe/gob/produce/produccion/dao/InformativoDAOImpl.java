@@ -15,25 +15,28 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
+import pe.gob.produce.produccion.core.util.TipoInformativo;
 
 @Repository("informativoDAO")
 @Transactional
 public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
-		
-	public InformativoDAOImpl(){		
+
+	public InformativoDAOImpl() {
 	}
+
 	@Override
 	public List<ServicioInformativoBO> listarNoticias(int numNoticias) {
-		Connection con = null;		
+		Connection con = null;
 		Statement statement = null;
 		ResultSet rs = null;
-		List<ServicioInformativoBO> listaNoticias = new ArrayList<ServicioInformativoBO>();		
-		try{			
+		List<ServicioInformativoBO> listaNoticias = new ArrayList<ServicioInformativoBO>();
+		try {
 			con = Conexion.obtenerConexion();
-			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarNoticias(?)}");
+			PreparedStatement pstmt = con
+					.prepareStatement("{call dbo.ListarNoticias(?)}");
 			pstmt.setInt(1, numNoticias);
-		    rs = pstmt.executeQuery();			
-			while(rs.next()){				
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
 				ServicioInformativoBO noticia = new ServicioInformativoBO();
 				noticia.setId(rs.getInt(1));
 				noticia.setTituloInformativo(rs.getString(2));
@@ -43,37 +46,38 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				noticia.setArchivoInformativo(rs.getBytes(6));
 				listaNoticias.add(noticia);
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally{
+		} finally {
 			this.cerrarResultSet(rs);
 			this.cerrarSentenceStatement(statement);
 			this.cerrarConexion(con);
-		}		
+		}
 		return listaNoticias;
 	}
+
 	@Override
 	public List<ServicioInformativoBO> listarNoticiasPorMes(int anio, int mes) {
-		Connection con = null;		
+		Connection con = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		List<ServicioInformativoBO> listaNoticias = new ArrayList<>();
-		
-		try{
+
+		try {
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(anio, mes, 1);
 			Date fechaInicioConsulta = calendar.getTime();
-	        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-	        Date fechaFinConsulta = calendar.getTime();
-			
+			calendar.set(Calendar.DAY_OF_MONTH,
+					calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			Date fechaFinConsulta = calendar.getTime();
+
 			con = Conexion.obtenerConexion();
-			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarNoticiasPorMes(?,?)}");
+			PreparedStatement pstmt = con
+					.prepareStatement("{call dbo.ListarNoticiasPorMes(?,?)}");
 			pstmt.setDate(1, new java.sql.Date(fechaInicioConsulta.getTime()));
 			pstmt.setDate(2, new java.sql.Date(fechaFinConsulta.getTime()));
-		    rs = pstmt.executeQuery();			
-			while(rs.next()){				
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
 				ServicioInformativoBO noticia = new ServicioInformativoBO();
 				noticia.setId(rs.getInt(1));
 				noticia.setTituloInformativo(rs.getString(2));
@@ -83,29 +87,29 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				noticia.setArchivoInformativo(rs.getBytes(6));
 				listaNoticias.add(noticia);
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally{
+		} finally {
 			this.cerrarResultSet(rs);
 			this.cerrarSentenceStatement(statement);
 			this.cerrarConexion(con);
-		}		
+		}
 		return listaNoticias;
 	}
+
 	@Override
 	public List<ServicioInformativoBO> listarPublicaciones(int numNoticias) {
-		Connection con = null;		
+		Connection con = null;
 		Statement statement = null;
 		ResultSet rs = null;
-		List<ServicioInformativoBO> listaPublicaciones = new ArrayList<ServicioInformativoBO>();		
-		try{			
+		List<ServicioInformativoBO> listaPublicaciones = new ArrayList<ServicioInformativoBO>();
+		try {
 			con = Conexion.obtenerConexion();
-			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarPublicaciones(?)}");
+			PreparedStatement pstmt = con
+					.prepareStatement("{call dbo.ListarPublicaciones(?)}");
 			pstmt.setInt(1, numNoticias);
-		    rs = pstmt.executeQuery();			
-			while(rs.next()){				
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
 				ServicioInformativoBO publicacion = new ServicioInformativoBO();
 				publicacion.setId(rs.getInt(1));
 				publicacion.setTituloInformativo(rs.getString(2));
@@ -115,38 +119,39 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				publicacion.setArchivoInformativo(rs.getBytes(6));
 				listaPublicaciones.add(publicacion);
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally{
+		} finally {
 			this.cerrarResultSet(rs);
 			this.cerrarSentenceStatement(statement);
 			this.cerrarConexion(con);
-		}		
+		}
 		return listaPublicaciones;
 	}
+
 	@Override
 	public List<ServicioInformativoBO> listarPublicacionesPorMes(int anio,
 			int mes) {
-		Connection con = null;		
+		Connection con = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		List<ServicioInformativoBO> listaPublicaciones = new ArrayList<>();
-		
-		try{
+
+		try {
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(anio, mes, 1);
 			Date fechaInicioConsulta = calendar.getTime();
-	        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-	        Date fechaFinConsulta = calendar.getTime();
-			
+			calendar.set(Calendar.DAY_OF_MONTH,
+					calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			Date fechaFinConsulta = calendar.getTime();
+
 			con = Conexion.obtenerConexion();
-			PreparedStatement pstmt = con.prepareStatement("{call dbo.ListarPublicacionesPorMes(?,?)}");
+			PreparedStatement pstmt = con
+					.prepareStatement("{call dbo.ListarPublicacionesPorMes(?,?)}");
 			pstmt.setDate(1, new java.sql.Date(fechaInicioConsulta.getTime()));
 			pstmt.setDate(2, new java.sql.Date(fechaFinConsulta.getTime()));
-		    rs = pstmt.executeQuery();			
-			while(rs.next()){				
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
 				ServicioInformativoBO publicacion = new ServicioInformativoBO();
 				publicacion.setId(rs.getInt(1));
 				publicacion.setTituloInformativo(rs.getString(2));
@@ -156,15 +161,48 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				publicacion.setArchivoInformativo(rs.getBytes(6));
 				listaPublicaciones.add(publicacion);
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally{
+		} finally {
 			this.cerrarResultSet(rs);
 			this.cerrarSentenceStatement(statement);
 			this.cerrarConexion(con);
-		}		
+		}
 		return listaPublicaciones;
+	}
+
+	@Override
+	public ServicioInformativoBO obtenerInformativo(int id, TipoInformativo tipo) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		ServicioInformativoBO informativo = null;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			if (tipo == TipoInformativo.NOTICIA) {
+				pstmt = con.prepareStatement("{call dbo.ObtenerNoticia(?)}");
+			} else if (tipo == TipoInformativo.PUBLICACION) {
+				pstmt = con.prepareStatement("{call dbo.ObtenerPublicacion(?)}");
+			}
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				informativo = new ServicioInformativoBO();
+				informativo.setId(rs.getInt(1));
+				informativo.setTituloInformativo(rs.getString(2));
+				informativo.setDescInformativo(rs.getString(3));
+				informativo.setDescCortaInformativo(rs.getString(4));
+				informativo.setFecha(rs.getDate(5));
+				informativo.setArchivoInformativo(rs.getBytes(6));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return informativo;
 	}
 }

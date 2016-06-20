@@ -20,57 +20,61 @@
 		</p:outputPanel>
 		
 		<div style="width: 50%; float: left;">
-			<div style="overflow: auto; float: both;">
-				<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesIzquierda}"
-					varStatus="status">
-					<div
-						style="width: 90%; padding-left: 10px;padding-right: 10px;background-color: #E6E6E6; overflow: auto; float: both;">
-						<p style="color: #2E9AFE; text-align: left;">
-							<h:graphicImage value="/Imagenes/Calendar_icon.png" />
-							#{noticia.fecha}
-						</p>
-						<p style="text-align: left; font-weight: bold; font-size: 120%;">#{noticia.titulo}</p>
-						<div style="width: 50%; float: left;">
+			<ui:repeat var="noticia" value="#{portadaMBean.listaNoticias}"
+				varStatus="status">
+				<div
+					style="width: 90%; padding-left: 10px; padding-right: 10px; background-color: #E6E6E6; overflow: auto; float: both;">
+					<p style="text-align: left;">
+						<h:graphicImage value="/Imagenes/Calendar_icon.png" />
+						#{noticia.fecha}
+					</p>
+					<p style="text-align: left; font-weight: bold; font-size: 120%;">#{noticia.titulo}</p>
+					<div style="width: 50%; float: left;">
 
-							<p:graphicImage style="width: 200px; height: 150px;"
-								value="#{noticiaImagen.image}">
-								<f:param name="publicacionId" value="#{noticia.id}" />
-							</p:graphicImage>
-						</div>
-						<div style="width: 50%; float: right; text-align: justify;">
-							<p>
-								<span>#{noticia.descripcionCorta}</span>
-							</p>
-							<p style="text-align: right; padding-right: 15px;">
-								<span class="leerMasNoticia"><a href="#">Leer más</a></span>
-							</p>
+						<p:graphicImage style="width: 200px; height: 150px;"
+							value="#{noticiaImagen.image}">
+							<f:param name="noticiaId" value="#{noticia.id}" />
+						</p:graphicImage>
+					</div>
+					<div style="width: 50%; float: right; text-align: justify;">
+						<p>
+							<span>#{noticia.descripcionCorta}</span>
+						</p>
+						<p style="text-align: right; padding-right: 15px;">
+							<span class="leerMasNoticia"> <h:commandButton
+									styleClass="button" value="Leer más"
+									action="#{portadaMBean.cargarVerMas(noticia)}" ajax="false" />
+							</span>
+						</p>
+					</div>
+				</div>
+				<br />
+			</ui:repeat>
+		</div>
+			
+		<div style="width: 50%; float: right;">
+			<ui:repeat var="publicacion"
+					value="#{portadaMBean.listaPublicaciones}"
+					varStatus="status">
+					<div style="padding-left: 10px;">
+						<div class="fondoInformativo">
+							<p class="tituloinformativo">#{publicacion.titulo}</p>
+							<br />
+							<h:graphicImage style="width: 200px; height: 150px;"
+								value="/Imagenes/publicacion_icon.png"/>
+							<div class="descripcionInformativo">
+								<span>#{publicacion.fecha}</span> <br />
+								<p>#{publicacion.descripcionCorta}</p>
+								<span class="leerMasNoticia"> <h:commandButton
+									styleClass="button" value="Leer más"
+									action="#{publicInformativaMBean.cargarVerMas(publicacion)}" ajax="false" />
+								</span>
+							</div>
+							<P />
 						</div>
 					</div>
 					<br />
 				</ui:repeat>
-			</div>
-		</div>
-			
-		<div style="width: 50%; float: right;">
-			<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesDerecha}" varStatus="status">
-			<div style="padding-left: 10px;">			
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">#{noticia.titulo}</p>
-					<br />
-					<p:graphicImage style="width: 200px; height: 150px;"
-								value="#{noticiaImagen.image}">
-								<f:param name="publicacionId" value="#{noticia.id}" />
-							</p:graphicImage>
-					<div class="descripcionInformativo">
-						<span>#{noticia.fecha}</span> <br />
-						<p>#{noticia.descripcionCorta}</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
-					</div>
-					<P />
-				</div>				
-			</div>
-			<br />
-		</ui:repeat>
 		</div>		
 	</ui:define>
 </ui:composition>

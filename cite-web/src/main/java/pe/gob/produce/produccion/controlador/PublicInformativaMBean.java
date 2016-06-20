@@ -191,5 +191,8 @@ public class PublicInformativaMBean {
 		this.listaPublicaciones = listaPublicaciones;
 	}
 
+	public String cargarVerMas(InformativoModel publicacion) {
+		return "/paginas/ModuloProduccion/cite/portadaPrincipal/publicacionDetalle.xhtml";
+	}
 	
 }

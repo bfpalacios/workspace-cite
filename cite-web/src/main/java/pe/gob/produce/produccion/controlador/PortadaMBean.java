@@ -10,7 +10,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,8 +34,9 @@ public class PortadaMBean {
 	private List<EventoModel> listaEventos;
 	
 	private List<InformativoModel> listaNoticias;
+	
+	private List<InformativoModel> listaPublicaciones;
 
-	@SuppressWarnings("static-access")
 	@PostConstruct
 	public void init() {
 		try {
@@ -102,12 +102,31 @@ public class PortadaMBean {
 		}
 	}
 	
+	public void cargarPublicaciones(int numPublicaciones){
+		listaPublicaciones = new ArrayList<>();
+		SimpleDateFormat formato = new SimpleDateFormat("dd-MMM-yyyy");
+		for (ServicioInformativoBO informativo : informativoService.listarPublicaciones(numPublicaciones)) {
+			InformativoModel noticia = new InformativoModel();
+			noticia.setId(informativo.getId().intValue() + "");
+			noticia.setTitulo(informativo.getTituloInformativo());
+			noticia.setDescripcionCorta(informativo.getDescCortaInformativo());
+			noticia.setDescripcion(informativo.getDescInformativo());			
+			String fecha = formato.format(informativo.getFecha());
+			noticia.setFecha(fecha);
+			InputStream imagenDB = new ByteArrayInputStream(informativo.getArchivoInformativo());
+			noticia.setImagen(new DefaultStreamedContent(imagenDB, "image/jpg"));
+			listaPublicaciones.add(noticia);
+		}
+	}
+	
 	public String cargarBienvenida() {
 		cargarNoticias(2);
 		return "/paginas/ModuloProduccion/cite/portadaPrincipal/bienvenida.xhtml";
 	}
 
 	public String cargarRedNoticias() {
+		cargarNoticias(4);
+		cargarPublicaciones(4);
 		return "/paginas/ModuloProduccion/cite/portadaPrincipal/redNoticias.xhtml";
 	}
 
@@ -118,6 +137,14 @@ public class PortadaMBean {
 	public String cargarPublicacionesInformativas() {
 		return "/paginas/ModuloProduccion/cite/portadaPrincipal/publicacionesInformativas.xhtml";
 	}
+	
+	public String cargarVerMas(InformativoModel noticia) {
+		return "/paginas/ModuloProduccion/cite/portadaPrincipal/noticiaDetalle.xhtml";
+	}
+	
+	public String cargarVerMasRedNoticia(InformativoModel publicacion) {
+		return "/paginas/ModuloProduccion/cite/portadaPrincipal/redNoticias.xhtml";
+	}
 
 	public List<EventoModel> getListaEventos() {
 		return listaEventos;
@@ -126,6 +153,7 @@ public class PortadaMBean {
 	public void setListaEventos(List<EventoModel> listaEventos) {
 		this.listaEventos = listaEventos;
 	}
+	
 
 	public List<InformativoModel> getListaNoticias() {
 		return listaNoticias;
@@ -134,4 +162,14 @@ public class PortadaMBean {
 	public void setListaNoticias(List<InformativoModel> listaNoticias) {
 		this.listaNoticias = listaNoticias;
 	}
+
+	public List<InformativoModel> getListaPublicaciones() {
+		return listaPublicaciones;
+	}
+
+	public void setListaPublicaciones(List<InformativoModel> listaPublicaciones) {
+		this.listaPublicaciones = listaPublicaciones;
+	}
+	
+	
 }

@@ -18,71 +18,76 @@
 				</p:column>
 			</p:row>
 		</p:outputPanel>
-		<div style="background-color: #BDBDBD;text-align: right;padding-top: 5px;padding-bottom: 5px;">
-				<span style="text-align: left; float: left;font-size: 130%; padding-left: 10px;font-weight: bold;">Buscar boletines informativos por año y mes</span>
-				<p:selectOneMenu id="anio" value="#{publicInformativaMBean.anio}"
-					style="width:120px">
-					<p:ajax listener="#{publicInformativaMBean.guardarAnio}"/>
-					<f:selectItem itemLabel="Año" itemValue=""
-						noSelectionOption="true" />
-					<f:selectItems value="#{publicInformativaMBean.anios}" />
-				</p:selectOneMenu>
-
-				<p:selectOneMenu id="mes" value="#{publicInformativaMBean.mes}"
-					style="width:120px">
-					<p:ajax listener="#{publicInformativaMBean.buscar}" update="publicacion"/>
-					<f:selectItem itemLabel="Mes" itemValue=""
-						noSelectionOption="true" />
-					<f:selectItems value="#{publicInformativaMBean.meses}" />
-				</p:selectOneMenu>
+		<div
+			style="background-color: #BDBDBD; text-align: right; padding:5px 25px 5px 0px;">
+			<span
+				style="text-align: left; float: left; font-size: 130%; padding-left: 10px; font-weight: bold;">Buscar
+				boletines informativos por año y mes</span>
+			<p:selectOneMenu id="anio" value="#{publicInformativaMBean.anio}"
+				styleClass="selectMenu">
+				<f:selectItem itemLabel="Año" itemValue="" noSelectionOption="true" />
+				<f:selectItems value="#{publicInformativaMBean.anios}" />
+			</p:selectOneMenu>
+							
+			<p:selectOneMenu id="mes" value="#{publicInformativaMBean.mes}"
+				styleClass="selectMenu">
+				<f:selectItem itemLabel="Mes" itemValue="" noSelectionOption="true" />
+				<f:selectItems value="#{publicInformativaMBean.meses}" />
+			</p:selectOneMenu>
+			<p:commandButton value="Buscar" update="publicacion"
+				actionListener="#{publicInformativaMBean.buscar}" />
 		</div>
 		<br />
 		<h:panelGroup id="publicacion">
-		<div style="width: 50%; float: left;">	
-		
-		<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesIzquierda}" varStatus="status">
-			<div style="padding-left: 10px;">			
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">#{noticia.titulo}</p>
-					<br />
-					<p:graphicImage style="width: 200px; height: 150px;"
-								value="#{noticiaImagen.image}">
-								<f:param name="publicacionId" value="#{noticia.id}" />
-							</p:graphicImage>
-					<div class="descripcionInformativo">
-						<span>#{noticia.fecha}</span> <br />
-						<p>#{noticia.descripcionCorta}</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
+			<div style="width: 50%; float: left;">
+				<ui:repeat var="publicacion"
+					value="#{publicInformativaMBean.listaPublicacionesIzquierda}"
+					varStatus="status">
+					<div style="padding-left: 10px;">
+						<div class="fondoInformativo">
+							<p class="tituloinformativo">#{publicacion.titulo}</p>
+							<br />
+							<h:graphicImage style="width: 200px; height: 150px;"
+								value="/Imagenes/publicacion_icon.png"/>
+							<div class="descripcionInformativo">
+								<span>#{publicacion.fecha}</span> <br />
+								<p>#{publicacion.descripcionCorta}</p>
+								<span class="leerMasNoticia"> <h:commandButton
+									styleClass="button" value="Leer más"
+									action="#{publicInformativaMBean.cargarVerMas(publicacion)}" ajax="false" />
+								</span>
+							</div>
+							<P />
+						</div>
 					</div>
-					<P />
-				</div>				
-			</div>
-			<br />
-		</ui:repeat>
-			</div>
-			
-		<div style="width: 50%; float: right;">
-			<ui:repeat var="noticia" value="#{publicInformativaMBean.listaPublicacionesDerecha}" varStatus="status">
-			<div style="padding-left: 10px;">			
-				<div class="fondoInformativo">
-					<p class="tituloinformativo">#{noticia.titulo}</p>
 					<br />
-					<p:graphicImage style="width: 200px; height: 150px;"
-								value="#{noticiaImagen.image}">
-								<f:param name="publicacionId" value="#{noticia.id}" />
-							</p:graphicImage>
-					<div class="descripcionInformativo">
-						<span>#{noticia.fecha}</span> <br />
-						<p>#{noticia.descripcionCorta}</p>
-						<span class="leerMas"><a href="#">Leer más</a></span>
-					</div>
-					<P />
-				</div>				
+				</ui:repeat>
 			</div>
-			<br />
-		</ui:repeat>
-		
-		</div>
+
+			<div style="width: 50%; float: right;">
+				<ui:repeat var="publicacion"
+					value="#{publicInformativaMBean.listaPublicacionesDerecha}"
+					varStatus="status">
+					<div style="padding-left: 10px;">
+						<div class="fondoInformativo">
+							<p class="tituloinformativo">#{publicacion.titulo}</p>
+							<br />
+							<h:graphicImage style="width: 200px; height: 150px;"
+								value="/Imagenes/publicacion_icon.png"/>
+							<div class="descripcionInformativo">
+								<span>#{publicacion.fecha}</span> <br />
+								<p>#{publicacion.descripcionCorta}</p>
+								<span class="leerMasNoticia"> <h:commandButton
+									styleClass="button" value="Leer más"
+									action="#{publicInformativaMBean.cargarVerMas(publicacion)}" ajax="false" />
+								</span>
+							</div>
+							<P />
+						</div>
+					</div>
+					<br />
+				</ui:repeat>
+			</div>
 		</h:panelGroup>
 	</ui:define>
 </ui:composition>

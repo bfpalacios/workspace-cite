@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.produccion.core.util.TipoInformativo;
 import pe.gob.produce.produccion.dao.InformativoDAO;
 import pe.gob.produce.produccion.services.InformativoServices;
 
@@ -37,6 +38,11 @@ public class InformativoServicesImpl implements InformativoServices {
 	public List<ServicioInformativoBO> listarPublicacionesPorMes(int anio,
 			int mes) {
 		return informativoDao.listarPublicacionesPorMes(anio, mes);
+	}
+
+	@Override
+	public ServicioInformativoBO obtenerInformativo(int id, TipoInformativo tipo) {
+		return informativoDao.obtenerInformativo(id, tipo);
 	}
 
 }

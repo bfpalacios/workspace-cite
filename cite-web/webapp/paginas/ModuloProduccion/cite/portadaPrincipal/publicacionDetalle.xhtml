@@ -23,26 +23,42 @@
 			style="background-color: #E6E6E6; overflow: auto; float: both; padding: 5px 15px 15px 15px;">
 			<p style="color: #2E9AFE; text-align: left;">
 				<h:graphicImage value="/Imagenes/Calendar_icon.png" />
-				#{noticia.fecha}
+				#{publicacion.fecha}
 			</p>
-			<p style="text-align: left; font-weight: bold; font-size: 120%;">#{noticia.titulo}</p>
+			<p style="text-align: left; font-weight: bold; font-size: 120%;">#{publicacion.titulo}</p>
 			<div style="width: 30%; float: left;">
 
-				<p:graphicImage
-					style="padding-left:15px; width: 350px; height: 200px;"
-					value="#{noticiaImagen.image}">
-					<f:param name="noticiaId" value="#{noticia.id}" />
-				</p:graphicImage>
+				<p:media value="#{noticiaImagen.stream}" width="100%" height="100px"
+					player="pdf">
+					<f:param name="publicacionId" value="#{publicacion.id}" />
+				</p:media>
+				<p:commandButton value="Descargar" ajax="false"
+						onclick="PrimeFaces.monitorDownload(start, stop);"
+						icon="ui-icon-arrowthick-1-s" action="#{noticiaImagen.setId(publicacion.id)}">
+						<f:param name="publicacionId" value="#{publicacion.id}" />
+						<p:fileDownload value="#{noticiaImagen.getStreamPdf(publicacion.id)}" />						
+					</p:commandButton>
 			</div>
 			<div style="width: 62%; float: right; padding-right: 30px;">
 				<p style="text-align: justify; line-height: 180%;">
-					<span>#{noticia.descripcion}</span>
+					<span>#{publicacion.descripcion}</span>
 				</p>
 				<p style="text-align: right;">
 					<span class="leerMasNoticia"> <h:commandButton
 							styleClass="button" value="Volver"
-							action="#{portadaMBean.cargarBienvenida}" ajax="false" />
-					</span>
+							action="#{portadaMBean.cargarPublicacionesInformativas}"
+							ajax="false" />
+					</span>					
+
+					<script type="text/javascript">
+function start() {
+    PF('statusDialog').show();
+}
+ 
+function stop() {
+    PF('statusDialog').hide();
+}
+</script>
 				</p>
 			</div>
 			<br />

@@ -92,6 +92,19 @@
 					<p:message for="celularSede" />
 				</p:column>
 			</p:row>
+			
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDireccion"
+						value="Direccion de la Sede - UTT" />
+				</p:column>
+				<p:column colspan="4">
+					<p:inputText id="direccionSede" size="100"
+						value="#{citesMBean.servicioModel.direccion}" />					
+					<p:message for="direccionSede" />
+				</p:column>	
+			</p:row>
+			
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lblTSede" value="CITE :" />
@@ -122,7 +135,7 @@
 					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
 						value="Guardar SEDE"
 						actionListener="#{citesMBean.guardarNuevaSede}"
-						update="nombreSede,codigoSede,cite,telefonoSede, celularSede, emailSede, jefaturaSede"
+						update="nombreSede,codigoSede,cite,telefonoSede, celularSede, emailSede, jefaturaSede, direccionSede"
 						ajax="false" />
 				</p:column>
 				

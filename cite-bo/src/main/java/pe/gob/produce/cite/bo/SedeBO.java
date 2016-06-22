@@ -15,6 +15,7 @@ public class SedeBO implements Serializable {
 	private String celular;
 	private String jefatura;
 	private String email;
+	private String direccion;
 	private UbigeoBO ubigeo; 
 	
 	
@@ -66,5 +67,10 @@ public class SedeBO implements Serializable {
 	public void setCodigoCite(String codigoCite) {
 		this.codigoCite = codigoCite;
 	}
-	
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}	
 }

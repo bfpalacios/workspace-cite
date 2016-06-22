@@ -470,13 +470,16 @@ public class CITESMBean {
 					: getServicioModel().getNombre();
 			String codigoCite = getUsuarioModelSelect().getCodCite() == null ? "invalido"
 					: getUsuarioModelSelect().getCodCite();
-
+			
+			String direccionSede = getServicioModel().getDireccion() == null ? "invalido"
+					: getServicioModel().getDireccion();
 			System.out.println("codigoSede" + codigoSede);
 			System.out.println("nombreSede" + nombreSede);
 			System.out.println("jefaturaSede" + jefaturaSede);
 			System.out.println("emailSede" + emailSede);
 			System.out.println("telefonoSede" + telefonoSede);
 			System.out.println("celularSede" + celularSede);
+			System.out.println("direccionSede" + direccionSede);
 
 			System.out.println("Codigo cite" + codigoCite);
 			
@@ -493,7 +496,7 @@ public class CITESMBean {
 				sede.setTelefono(telefonoSede);
 				sede.setJefatura(jefaturaSede);
 				sede.setCelular(celularSede);
-
+				sede.setDireccion(direccionSede);
 				citeServices.grabarNuevaSede(sede);
 
 				limpiarObjetos();

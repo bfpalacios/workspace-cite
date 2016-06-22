@@ -1,0 +1,995 @@
+USE [DBCITE]
+GO
+/****** Object:  User [GERARDITO]    Script Date: 06/22/2016 08:43:52 ******/
+CREATE USER [GERARDITO] FOR LOGIN [GERARDITO] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [USERCITE]    Script Date: 06/22/2016 08:43:52 ******/
+CREATE USER [USERCITE] FOR LOGIN [USERCITE] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  Table [dbo].[USUARIO_DOCS]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[USUARIO_DOCS](
+	[IDUSUARIO_DOCS] [bigint] IDENTITY(1,1) NOT NULL,
+	[IDUSUARIO] [bigint] NOT NULL,
+	[NUMERO_DOC] [varchar](45) NOT NULL,
+	[ESTADO_DOC] [tinyint] NOT NULL,
+ CONSTRAINT [PK_USUARIO_DOCS] PRIMARY KEY CLUSTERED 
+(
+	[IDUSUARIO_DOCS] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[USUARIO]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[USUARIO](
+	[IDUSUARIO] [bigint] IDENTITY(1,1) NOT NULL,
+	[ID_USUARIO] [varchar](20) NOT NULL,
+	[CONTRASENIA] [varchar](max) NOT NULL,
+	[NOMBRES] [varchar](100) NOT NULL,
+	[APELLIDO_PAT] [varchar](45) NULL,
+	[APELLIDO_MAT] [varchar](45) NULL,
+	[TIPO_USUARIO] [tinyint] NOT NULL,
+	[TELEFONO1] [varchar](20) NULL,
+	[TELEFONO2] [varchar](20) NULL,
+	[ESTADO] [tinyint] NOT NULL,
+	[NOMBRE_CONTACTO] [varchar](50) NULL,
+	[NOMBRE_CARGO] [varchar](50) NULL,
+	[EMAIL_ADMIN] [varchar](50) NULL,
+	[ID_CITE] [varchar](25) NULL,
+	[COD_DEPENDENCIA] [varchar](25) NULL,
+	[ID_SEDE] [varchar](25) NULL,
+	[EMAIL_PERSONAL] [varchar](50) NULL,
+ CONSTRAINT [PK_USUARIO] PRIMARY KEY CLUSTERED 
+(
+	[IDUSUARIO] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[UBIGEO]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[UBIGEO](
+	[IDUBIGEO] [varchar](6) NOT NULL,
+	[DEPARTAMENTO] [varchar](50) NULL,
+	[PROVINCIA] [varchar](50) NULL,
+	[DISTRITO] [varchar](50) NULL,
+ CONSTRAINT [PK_UBIGEO] PRIMARY KEY CLUSTERED 
+(
+	[IDUBIGEO] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[TIPO_USUARIO]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[TIPO_USUARIO](
+	[IDTIPO_USUARIO] [tinyint] IDENTITY(1,1) NOT NULL,
+	[NOMBRE_TIPO_USUARIO] [varchar](30) NOT NULL,
+	[ESTADO] [tinyint] NOT NULL,
+ CONSTRAINT [PK_TIPO_USUARIO] PRIMARY KEY CLUSTERED 
+(
+	[IDTIPO_USUARIO] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[SEDE]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[SEDE](
+	[IDSEDE] [bigint] IDENTITY(1,1) NOT NULL,
+	[ID_SEDE] [varchar](25) NOT NULL,
+	[NOMBRE_SEDE] [varchar](50) NULL,
+	[TELEFONO_SEDE] [varchar](10) NULL,
+	[CELULAR_SEDE] [varchar](10) NULL,
+	[JEFATURA_SEDE] [varchar](50) NULL,
+	[EMAIL_SEDE] [varchar](50) NULL,
+	[ID_CITE] [varchar](25) NULL,
+	[DIRECCION] [varchar](100) NULL,
+ CONSTRAINT [PK_SEDE] PRIMARY KEY CLUSTERED 
+(
+	[IDSEDE] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[ROL]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[ROL](
+	[ID_ROL] [int] IDENTITY(1,1) NOT NULL,
+	[DESC_ROL] [varchar](25) NULL,
+	[ROL_USUARIO] [varchar](25) NULL,
+ CONSTRAINT [PK_ROL] PRIMARY KEY CLUSTERED 
+(
+	[ID_ROL] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[PUBLICACIONES]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[PUBLICACIONES](
+	[ID_PUBLICACIONES] [int] IDENTITY(1,1) NOT NULL,
+	[TITULO_PUBLICACIONES] [varchar](100) NOT NULL,
+	[DESC_PUBLICACIONES] [text] NULL,
+	[DESC_CORTA_PUBLICACIONES] [varchar](100) NULL,
+	[FECHA] [datetime] NOT NULL,
+	[ARCHIVO_PUBLICACIONES] [varbinary](max) NOT NULL,
+ CONSTRAINT [PK_PUBLICACIONES] PRIMARY KEY CLUSTERED 
+(
+	[ID_PUBLICACIONES] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[INFORMATIVO]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[INFORMATIVO](
+	[ID_INFORMATIVO] [int] IDENTITY(1,1) NOT NULL,
+	[TITULO_INFORMATIVO] [varchar](100) NOT NULL,
+	[DESC_INFORMATIVO] [text] NULL,
+	[DESC_CORTA_INFORMATIVO] [varchar](100) NULL,
+	[FECHA] [datetime] NOT NULL,
+	[ARCHIVO_INFORMATIVO] [varbinary](max) NOT NULL,
+ CONSTRAINT [PK_INFORMATIVO] PRIMARY KEY CLUSTERED 
+(
+	[ID_INFORMATIVO] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[EVENTO]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EVENTO](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[TITULO] [nchar](100) NOT NULL,
+	[DESCRIPCION] [text] NULL,
+	[FECHA_INICIO] [datetime] NULL,
+	[FECHA_FIN] [datetime] NULL,
+	[TODO_DIA] [int] NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DEPENDENCIA]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[DEPENDENCIA](
+	[ID_DEPENDENCIA] [int] IDENTITY(1,1) NOT NULL,
+	[DESC_DEPENDENCIA] [varchar](50) NULL,
+	[COD_DEPENDENCIA] [varchar](25) NOT NULL,
+	[ID_SEDE] [varchar](25) NOT NULL,
+ CONSTRAINT [PK_DEPENDENCIA] PRIMARY KEY CLUSTERED 
+(
+	[ID_DEPENDENCIA] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[CITE]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[CITE](
+	[IDCITE] [int] IDENTITY(1,1) NOT NULL,
+	[ID_CITE] [varchar](25) NOT NULL,
+	[NOMBRE_CITE] [varchar](50) NOT NULL,
+	[ESTADO] [varchar](1) NOT NULL,
+	[FECHA_REGISTRO_CITE] [date] NULL,
+	[IDUBIGEO] [varchar](6) NULL,
+ CONSTRAINT [PK_CITE] PRIMARY KEY CLUSTERED 
+(
+	[IDCITE] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  StoredProcedure [dbo].[ActualizarEvento]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ActualizarEvento]
+            @titulo VARCHAR(100),
+            @descripcion TEXT ,
+            @fechaInicio Datetime,
+            @fechafin Datetime,
+            @todoElDia int,
+            @id int
+        AS
+            BEGIN
+	
+                UPDATE dbo.EVENTO
+                SET TITULO = @titulo, 
+                DESCRIPCION = @descripcion, 
+                FECHA_INICIO = @fechaInicio, 
+                FECHA_FIN = @fechafin,
+                TODO_DIA = @todoElDia
+                WHERE ID = @id
+            END
+GO
+/****** Object:  StoredProcedure [dbo].[ObtenerPublicacion]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ObtenerPublicacion]
+    @id int
+AS
+    BEGIN     
+				SELECT	* 
+				FROM
+				dbo.PUBLICACIONES t
+				WHERE 
+				t.ID_PUBLICACIONES = @id   
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ObtenerNoticia]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ObtenerNoticia]
+    @id int
+AS
+    BEGIN     
+				SELECT	* 
+				FROM
+				dbo.INFORMATIVO t
+				WHERE 
+				t.ID_INFORMATIVO = @id   
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarSedes]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarSedes]
+	@IDCITE VARCHAR(25)
+AS
+    BEGIN
+        SELECT S.ID_SEDE, S.NOMBRE_SEDE, C.ID_CITE FROM CITE C
+		INNER JOIN SEDE S
+		ON C.ID_CITE = S.ID_CITE
+		WHERE C.ID_CITE = @IDCITE
+         
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarPublicacionesPorMes]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarPublicacionesPorMes]
+    @fechaInicioBusqueda DATE,
+    @fechaFinBusqueda DATE
+AS
+    BEGIN     
+				SELECT	* 
+				FROM
+				dbo.PUBLICACIONES t
+				WHERE 
+				t.FECHA between @fechaInicioBusqueda AND 
+				@fechaFinBusqueda   
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarPublicaciones]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarPublicaciones]
+    @cantidadRegistros int
+AS
+    BEGIN     
+				SELECT	top (@cantidadRegistros) * 
+				FROM
+				dbo.PUBLICACIONES			
+    
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarProvincias]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarProvincias]
+    @IDDEPARTAMENTO VARCHAR(2)
+AS
+    BEGIN
+        SELECT  IDUBIGEO, PROVINCIA 
+        FROM    dbo.UBIGEO
+        WHERE   SUBSTRING(IDUBIGEO, 1, 2) = @IDDEPARTAMENTO
+                AND SUBSTRING(IDUBIGEO, 3, 2) <> '00'
+                AND SUBSTRING(IDUBIGEO, 5, 2) = '00'
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarNoticiasPorMes]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarNoticiasPorMes]
+    @fechaInicioBusqueda DATE,
+    @fechaFinBusqueda DATE
+AS
+    BEGIN     
+				SELECT	* 
+				FROM
+				dbo.INFORMATIVO t
+				WHERE 
+				t.FECHA between @fechaInicioBusqueda AND 
+				@fechaFinBusqueda   
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarNoticias]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarNoticias]
+    @cantidadRegistros int
+AS
+    BEGIN     
+				SELECT	top (@cantidadRegistros) * 
+				FROM
+				dbo.INFORMATIVO			
+    
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarEventosPorMes]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarEventosPorMes]
+    @fechaInicioBusqueda DATE,
+    @fechaFinBusqueda DATE
+AS
+    BEGIN     
+				SELECT	* 
+				FROM
+				dbo.EVENTO t
+				WHERE 
+				t.FECHA_INICIO between @fechaInicioBusqueda AND 
+				@fechaFinBusqueda   
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarEventos]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarEventos]
+    @cantidadRegistros int
+AS
+    BEGIN     
+				SELECT	top (@cantidadRegistros) * 
+				FROM
+				dbo.EVENTO			
+    
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarDistritos]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarDistritos]
+    @IDDEPARTAMENTO VARCHAR(2) ,
+    @IDPROVINCIA VARCHAR(2)
+AS
+    BEGIN
+        SELECT  IDUBIGEO ,
+                DISTRITO
+        FROM    dbo.UBIGEO
+        WHERE   SUBSTRING(IDUBIGEO, 1, 2) = @IDDEPARTAMENTO
+                AND SUBSTRING(IDUBIGEO, 3, 2) = @IDPROVINCIA
+                AND SUBSTRING(IDUBIGEO, 5, 2) <> '00'
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarDependencias]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarDependencias]
+	@IDSEDE VARCHAR(25)
+AS
+    BEGIN
+        SELECT D.ID_DEPENDENCIA, D.DESC_DEPENDENCIA FROM DEPENDENCIA D
+		INNER JOIN SEDE S
+		ON D.ID_SEDE = S.ID_SEDE
+		WHERE S.ID_SEDE = @IDSEDE
+         
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarDepartamentos]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarDepartamentos]
+AS
+    BEGIN
+        SELECT  IDUBIGEO ,
+                DEPARTAMENTO
+        FROM    dbo.UBIGEO
+        WHERE   SUBSTRING(IDUBIGEO, 3, 2) = '00'
+                AND SUBSTRING(IDUBIGEO, 5, 2) = '00'
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[ListarCites]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarCites]
+AS
+    BEGIN
+        SELECT  ID_CITE ,
+                NOMBRE_CITE
+        FROM    dbo.CITE
+         
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[InsertarEvento]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[InsertarEvento]
+            @titulo VARCHAR(100),
+            @descripcion TEXT ,
+            @fechaInicio Datetime,
+            @fechafin Datetime,
+            @todoElDia int
+        AS
+            BEGIN
+	
+                INSERT  INTO dbo.EVENTO
+                        ( TITULO, DESCRIPCION, FECHA_INICIO, FECHA_FIN,TODO_DIA )
+                VALUES  ( @titulo, 
+                          @descripcion, 
+                          @fechaInicio,
+                          @fechafin,
+                          @todoElDia
+                          )	
+            END
+GO
+/****** Object:  StoredProcedure [dbo].[Insertar_Usuario_Documentos]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Insertar_Usuario_Documentos]
+        @IdUsuario BIGINT ,
+        @NumeroDocumento VARCHAR(45) ,
+        @EstadoDocumento TINYINT
+    AS
+        BEGIN
+        
+            IF EXISTS ( SELECT  1
+                        FROM    dbo.USUARIO_DOCS
+                        WHERE   NUMERO_DOC = @NumeroDocumento )
+                BEGIN
+        
+                    RAISERROR ('Este número de Documento ya existe.' , 10, 1 )
+                    RETURN
+                END
+	
+            INSERT  INTO dbo.USUARIO_DOCS
+                    ( IDUSUARIO ,
+                      NUMERO_DOC ,
+                      ESTADO_DOC
+                    )
+            VALUES  ( @IdUsuario , -- IDUSUARIO - bigint
+                      @NumeroDocumento , -- NUMERO_DOC - varchar(45)
+                      @EstadoDocumento -- ESTADO_DOC - tinyint
+                    )
+        END
+GO
+/****** Object:  Table [dbo].[USUARIO_ROL]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[USUARIO_ROL](
+	[IDUSUARIO_ROL] [bigint] IDENTITY(1,1) NOT NULL,
+	[IDUSUARIO] [bigint] NOT NULL,
+	[IDROL] [int] NOT NULL,
+	[ID_USUARIO] [varchar](50) NULL,
+	[ROL] [varchar](50) NULL,
+ CONSTRAINT [PK_USUARIO_ROL] PRIMARY KEY CLUSTERED 
+(
+	[IDUSUARIO_ROL] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Buscar_Evento]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Buscar_Evento]
+    @fechaBusqueda DATE
+AS
+    BEGIN     
+				SELECT	* 
+				FROM
+				dbo.EVENTO t
+				WHERE 
+				t.FECHA_INICIO <= @fechaBusqueda AND 
+				t.FECHA_FIN >= @fechaBusqueda			
+    
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[Insertar_Evento]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Insertar_Evento]
+            @titulo VARCHAR(100),
+            @descripcion TEXT ,
+            @fechaInicio Datetime,
+            @fechafin Datetime,
+            @todoElDia int
+        AS
+            BEGIN
+	
+                INSERT  INTO dbo.EVENTO
+                        ( TITULO, DESCRIPCION, FECHA_INICIO, FECHA_FIN,TODO_DIA )
+                VALUES  ( @titulo, 
+                          @descripcion, 
+                          @fechaInicio,
+                          @fechafin,
+                          @todoElDia
+                          )	
+            END
+    
+    ----------------------------------------------------
+
+
+
+
+
+
+ 
+SET ANSI_NULLS ON
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Recuperar_Detalle_Infomativo]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Recuperar_Detalle_Infomativo]
+AS
+    BEGIN
+        SELECT  ID_INFORMATIVO ,
+                TITULO_INFORMATIVO ,
+                DESC_INFORMATIVO ,
+                DESC_CORTA_INFORMATIVO ,
+                FECHA ,
+                ARCHIVO_INFORMATIVO
+        FROM    dbo.INFORMATIVO
+    END
+GO
+/****** Object:  Table [dbo].[USUARIO_DIRECC]    Script Date: 06/22/2016 08:43:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[USUARIO_DIRECC](
+	[IDUSUARIO_DIRECC] [bigint] IDENTITY(1,1) NOT NULL,
+	[IDUSUARIO] [bigint] NOT NULL,
+	[IDUBIGEO] [varchar](6) NOT NULL,
+	[DIRECCION] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_USUARIO_DIRECC] PRIMARY KEY CLUSTERED 
+(
+	[IDUSUARIO_DIRECC] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Nueva_Sede]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Nueva_Sede]
+        @IdSede VARCHAR(20) ,
+        @NombreSede VARCHAR(50) ,
+        @IdCite VARCHAR(25),
+        @Jefatura VARCHAR(50),
+        @Email VARCHAR(50),
+        @Telefono VARCHAR(10),
+        @Celular VARCHAR(10),
+        @Direccion VARCHAR(100)
+    AS
+        BEGIN
+			
+			INSERT  INTO dbo.SEDE
+                    ( 
+                      ID_SEDE ,
+                      NOMBRE_SEDE ,
+                      ID_CITE,
+                      JEFATURA_SEDE,
+                      EMAIL_SEDE,
+                      TELEFONO_SEDE,
+                      CELULAR_SEDE, 
+                      DIRECCION
+                      
+                      
+		            )
+            VALUES  (	
+						@IdSede ,
+						@NombreSede  ,
+						@IdCite,
+						@Jefatura,
+						@Email,
+						@Telefono,
+						@Celular,
+						@Direccion
+						 
+		            )
+				        
+            		        
+        END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Nueva_Dependencia]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Nueva_Dependencia]
+        @codDepdencia VARCHAR(20) ,
+        @descDepedencia VARCHAR(50) ,
+        @IdSede VARCHAR(25)
+    AS
+        BEGIN
+			
+			INSERT  INTO dbo.DEPENDENCIA
+                    ( 
+                      COD_DEPENDENCIA ,
+                      DESC_DEPENDENCIA ,
+                      ID_SEDE 
+		            )
+            VALUES  (	
+						@codDepdencia ,
+						@descDepedencia  ,
+						@IdSede  
+		            )
+				        
+            		        
+        END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Nueva_Cite]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Nueva_Cite]
+        @codCite VARCHAR(20) ,
+        @descCite VARCHAR(50) ,
+        @estado VARCHAR(1) ,        
+        @Fecha DATETIME ,
+        @IdUbigeo VARCHAR(6)
+    AS
+        BEGIN
+			
+			INSERT  INTO dbo.CITE
+                    ( 
+                      ID_CITE ,
+                      NOMBRE_CITE ,
+                      ESTADO ,
+                      FECHA_REGISTRO_CITE ,
+                      IDUBIGEO
+		            )
+            VALUES  (	
+						@codCite ,
+						@descCite  ,
+						@estado  ,
+						@Fecha  ,
+						@IdUbigeo  
+		            )
+				        
+            		        
+        END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Insertar_Publicaciones]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Insertar_Publicaciones]
+    @Titulo_Publicaciones VARCHAR(25) ,
+    @Desc_Publicaciones VARCHAR(50) ,
+    @Desc_Corta_Publicaciones VARCHAR(25) ,
+    @Fecha DATETIME ,
+    @Archivo_Publicaciones VARBINARY(MAX)
+AS
+    BEGIN
+        INSERT  dbo.PUBLICACIONES
+                ( TITULO_PUBLICACIONES ,
+                  DESC_PUBLICACIONES ,
+                  DESC_CORTA_PUBLICACIONES ,
+                  FECHA ,
+                  ARCHIVO_PUBLICACIONES
+                )
+        VALUES  ( @Titulo_Publicaciones ,
+                  @Desc_Publicaciones ,
+                  @Desc_Corta_Publicaciones ,
+                  @Fecha ,
+                  @Archivo_Publicaciones
+                )
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Insertar_Detalle_Infomativo]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Insertar_Detalle_Infomativo]
+    @Titulo_Informativo VARCHAR(25) ,
+    @Desc_Informativo VARCHAR(50) ,
+    @Desc_Corta_Informativo VARCHAR(25) ,
+    @Fecha DATETIME ,
+    @Archivo_Informativo VARBINARY(MAX)
+AS
+    BEGIN
+        INSERT  dbo.INFORMATIVO
+                ( TITULO_INFORMATIVO ,
+                  DESC_INFORMATIVO ,
+                  DESC_CORTA_INFORMATIVO ,
+                  FECHA ,
+                  ARCHIVO_INFORMATIVO
+                )
+        VALUES  ( @Titulo_Informativo ,
+                  @Desc_Informativo ,
+                  @Desc_Corta_Informativo ,
+                  @Fecha ,
+                  @Archivo_Informativo
+                )
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Buscar_Usuario]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Buscar_Usuario]
+    @CodigoUsuario VARCHAR(20) = NULL 
+AS
+    BEGIN 
+        
+    
+				SELECT	U.IDUSUARIO,	U.ID_USUARIO, UDOC.NUMERO_DOC,
+								
+						UD.DIRECCION,	
+						U.NOMBRES,		U.APELLIDO_PAT, 
+						U.NOMBRE_CARGO , U.TELEFONO1,
+						U.TELEFONO2, U.EMAIL_ADMIN  
+				FROM
+				dbo.USUARIO U
+				INNER JOIN dbo.USUARIO_DIRECC UD ON UD.IDUSUARIO = U.IDUSUARIO
+				INNER JOIN dbo.USUARIO_DOCS UDOC ON UDOC.IDUSUARIO = U.IDUSUARIO
+				WHERE U.ID_USUARIO = @CodigoUsuario				
+    
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Nuevo_Usuario]    Script Date: 06/22/2016 08:43:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Nuevo_Usuario]
+        @CodUsuario VARCHAR(20) ,
+        @Contrasenia VARCHAR(MAX) ,
+        @Nombres VARCHAR(100) ,
+        @Cargo VARCHAR(50) ,
+        @CodCite VARCHAR(25) ,
+        @CodSede VARCHAR(25) ,
+        @CodDepedencia VARCHAR(25) ,
+        @TipoUsuario TINYINT ,
+        @Telefono1 VARCHAR(20) ,
+        @Telefono2 VARCHAR(20) ,
+        @EmailITP		VARCHAR(50) ,
+        @EmailPersonal	VARCHAR(50) ,
+        @Estado TINYINT ,
+        @IdRol INT,
+        @IdUsuario int OUT
+            
+        
+        
+    AS
+        BEGIN
+    
+            --DECLARE @IdUsuario BIGINT
+            DECLARE @RoleUsuario VARCHAR(20)
+            DECLARE @RESULT BIGINT
+			
+            IF EXISTS ( SELECT  1
+                        FROM    dbo.USUARIO
+                        WHERE   ID_USUARIO = @CodUsuario )
+                BEGIN
+        
+                    RAISERROR ('Este codigo de usuario ya existe, porfavor introduzca otro.' , 10, 1 )
+                    RETURN
+                END
+                
+            CREATE TABLE #DUAL ( DUMMY VARCHAR(1) )
+
+            INSERT  INTO #DUAL
+                    ( DUMMY )
+            VALUES  ( 'X' )
+		
+            SELECT  @Contrasenia = CAST(SUBSTRING(master.dbo.fn_varbintohexstr(HASHBYTES('SHA1',
+                                                              @Contrasenia)),
+                                                  3, 40) AS VARCHAR(MAX))
+            FROM    #DUAL  
+					
+            INSERT  INTO dbo.USUARIO
+                    ( ID_USUARIO ,
+                      CONTRASENIA ,
+                      NOMBRES ,
+                      NOMBRE_CARGO ,
+                      ID_CITE ,
+                      ID_SEDE ,
+                      COD_DEPENDENCIA,
+                      TIPO_USUARIO ,
+                      TELEFONO1 ,
+                      TELEFONO2 ,
+                      EMAIL_ADMIN ,
+                      EMAIL_PERSONAL ,
+                      ESTADO
+		            )
+            VALUES  ( @CodUsuario , -- COD_USUARIO - varchar(20)
+                      @Contrasenia , -- CONTRASENIA - varchar(max)
+                      @Nombres , -- NOMBRES - varchar(100)
+                      @Cargo , -- APELLIDO_PAT - varchar(45)
+                      @CodCite , -- APELLIDO_MAT - varchar(45)
+                      @CodSede , -- APELLIDO_MAT - varchar(45)
+                      @CodDepedencia , -- APELLIDO_MAT - varchar(45)
+                      @TipoUsuario , -- TIPO_USUARIO - tinyint
+                      @Telefono1 , -- TELEFONO1 - varchar(20)
+                      @Telefono2 , -- TELEFONO2 - varchar(20)
+                      @EmailITP , -- TELEFONO2 - varchar(20)
+                      @EmailPersonal , -- TELEFONO2 - varchar(20)
+                      @Estado  -- ESTADO - tinyint
+                      
+		            )
+		         
+			SET @IdUsuario = @@IDENTITY
+			
+			SELECT  @RoleUsuario = ( SELECT  NOMBRE_TIPO_USUARIO FROM dbo.TIPO_USUARIO TU
+										WHERE TU.IDTIPO_USUARIO = @IdRol)
+            FROM    #DUAL
+			
+			
+            INSERT  INTO dbo.USUARIO_ROL
+                    ( IDUSUARIO, IDROL, ID_USUARIO, ROL )
+            VALUES  ( @IdUsuario, -- IDUSUARIO - bigint
+                      @IdRol,  -- IDROL - int
+                      @CodUsuario,
+                      @RoleUsuario
+                      )
+                    
+            SET @RESULT = @IdUsuario
+            
+            --RETURN @RESULT 
+            RETURN @IdUsuario 		        
+        END
+GO
+/****** Object:  StoredProcedure [dbo].[Insertar_Usuario_Direcciones]    Script Date: 06/22/2016 08:43:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Insertar_Usuario_Direcciones]
+            @IdUsuario BIGINT ,
+            @IdUbigeo VARCHAR(6) ,
+            @Direccion VARCHAR(100)
+        AS
+            BEGIN
+	
+                INSERT  INTO dbo.USUARIO_DIRECC
+                        ( IDUSUARIO, IDUBIGEO, DIRECCION )
+                VALUES  ( @IdUsuario, -- IDUSUARIO - bigint
+                          @IdUbigeo, -- IDUBIGEO - varchar(6)
+                          @Direccion  -- DIRECCION - varchar(100)
+                          )	
+            END
+    
+    ----------------------------------------------------
+GO
+/****** Object:  ForeignKey [FK_USUARIO_DIRECC_UBIGEO]    Script Date: 06/22/2016 08:43:52 ******/
+ALTER TABLE [dbo].[USUARIO_DIRECC]  WITH CHECK ADD  CONSTRAINT [FK_USUARIO_DIRECC_UBIGEO] FOREIGN KEY([IDUBIGEO])
+REFERENCES [dbo].[UBIGEO] ([IDUBIGEO])
+GO
+ALTER TABLE [dbo].[USUARIO_DIRECC] CHECK CONSTRAINT [FK_USUARIO_DIRECC_UBIGEO]
+GO
+/****** Object:  ForeignKey [FK_USUARIO_DIRECC_USUARIO]    Script Date: 06/22/2016 08:43:52 ******/
+ALTER TABLE [dbo].[USUARIO_DIRECC]  WITH CHECK ADD  CONSTRAINT [FK_USUARIO_DIRECC_USUARIO] FOREIGN KEY([IDUSUARIO])
+REFERENCES [dbo].[USUARIO] ([IDUSUARIO])
+GO
+ALTER TABLE [dbo].[USUARIO_DIRECC] CHECK CONSTRAINT [FK_USUARIO_DIRECC_USUARIO]
+GO
+/****** Object:  ForeignKey [FK_USUARIO_ROL_ROL]    Script Date: 06/22/2016 08:43:52 ******/
+ALTER TABLE [dbo].[USUARIO_ROL]  WITH CHECK ADD  CONSTRAINT [FK_USUARIO_ROL_ROL] FOREIGN KEY([IDROL])
+REFERENCES [dbo].[ROL] ([ID_ROL])
+GO
+ALTER TABLE [dbo].[USUARIO_ROL] CHECK CONSTRAINT [FK_USUARIO_ROL_ROL]
+GO
+/****** Object:  ForeignKey [FK_USUARIO_ROL_USUARIO]    Script Date: 06/22/2016 08:43:52 ******/
+ALTER TABLE [dbo].[USUARIO_ROL]  WITH CHECK ADD  CONSTRAINT [FK_USUARIO_ROL_USUARIO] FOREIGN KEY([IDUSUARIO])
+REFERENCES [dbo].[USUARIO] ([IDUSUARIO])
+GO
+ALTER TABLE [dbo].[USUARIO_ROL] CHECK CONSTRAINT [FK_USUARIO_ROL_USUARIO]
+GO

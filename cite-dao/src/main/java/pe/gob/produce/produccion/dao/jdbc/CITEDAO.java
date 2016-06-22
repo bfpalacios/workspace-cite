@@ -67,7 +67,7 @@ public class CITEDAO extends BaseDAO implements CITEIDAO  {
 			CallableStatement cstm = null;
 			
 			con = Conexion.obtenerConexion();
-			cstm = con.prepareCall("{call SP_Nueva_Sede(?,?,?,?,?,?,?)}");		
+			cstm = con.prepareCall("{call SP_Nueva_Sede(?,?,?,?,?,?,?,?)}");		
 			cstm.setQueryTimeout(3);
 			cstm.setString(1, sede.getCodigo());		
 			cstm.setString(2, sede.getDescripcion());
@@ -76,6 +76,7 @@ public class CITEDAO extends BaseDAO implements CITEIDAO  {
 			cstm.setString(5, sede.getEmail());
 			cstm.setString(6, sede.getTelefono());
 			cstm.setString(7, sede.getCelular());
+			cstm.setString(8, sede.getDireccion());
 			
 			cstm.execute();
 			

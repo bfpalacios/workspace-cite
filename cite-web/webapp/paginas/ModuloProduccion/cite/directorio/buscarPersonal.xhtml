@@ -19,8 +19,8 @@
 			</p:row>
 		</p:outputPanel>
 
-		<p:panel header="Consulta de Servicios - Cites " style="width: 400px;">
-			<p:panelGrid id="pnlGridBuscarServicio">
+		<p:panel header="Consulta de Personal - Red Cites " style="width: 400px;">
+			<p:panelGrid id="pnlGridBuscarPersonal">
 
 				<p:row>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -46,30 +46,12 @@
 
 				</p:row>
 
-				<p:row>
-					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lCite"
-							value="#{mensaje['produccion.buscar.servicio.label.buscarporcite']}" />
-					</p:column>
-					<p:column colspan="2">
-						<p:selectOneMenu id="selectOneCITE"
-							value="#{servicioMBean.servicioModel.codigoCITE}"
-							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<f:selectItem itemLabel="Seleccione el CITE " />
-							<f:selectItems value="#{servicioMBean.servicioModel.listarCITE}"
-								var="CITE" itemLabel="#{CITE.descripcion}"
-								itemValue="#{CITE.codigo}" />
-						</p:selectOneMenu>
-					</p:column>
-
-				</p:row>
-
 
 				<p:row id="filServicios">
 					<p:column colspan="2"
 						styleClass="ui-column-label-spij styleAlignCenterColumn">
-						<p:commandButton value="Buscar" id="botonBuscar" actionListener="#{servicioMBean.buscarServicio}" ajax="true"
-							update="tablaServicios" />
+						<p:commandButton value="Buscar" id="botonBuscar" actionListener="#{servicioMBean.buscarPersonal}" ajax="true"
+							update="tablaPersonas" />
 					</p:column>
 				</p:row>
 			</p:panelGrid>
@@ -78,14 +60,14 @@
 				
 		<p:panelGrid id="pnlGridResultadoBuscarServicio">
 			<p:row>
-				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.servicio.label.listadeservicios']}</p:column>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.servicio.label.listadepersonal']}</p:column>
 			</p:row>
 
 			<p:row id="filTabla">
 				<p:column id="colTabla"
 					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
 
-					<p:dataTable id="tablaServicios"
+					<p:dataTable id="tablaPersonas"
 						value="#{servicioMBean.datosServiciosModelGrid}"
 						selectionMode="multiple"
 						selection="#{servicioMBean.selectedServicios}"
@@ -98,30 +80,19 @@
 							<h:outputText value="#{registro.codigo}" />
 						</p:column>
 
-						<p:column headerText="Nombre Servicio"
+						<p:column headerText="Nombre "
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.nombre}" />
 						</p:column>
 
-						<p:column headerText="Unidad"
+						<p:column headerText="Dependencia"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.unidad}" />
 						</p:column>
 
-						<p:column headerText="Requisito"
+						<p:column headerText="CITE"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.requisito}" />
-						</p:column>
-
-						<p:column headerText="Valor de Venta"
-							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<h:outputText value="#{registro.valorDeVenta}" />
-						</p:column>
-						
-						<p:column headerText="Precio de Venta"
-							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<h:outputText value="#{registro.precioDeVenta}" />
-
 						</p:column>
 
 						

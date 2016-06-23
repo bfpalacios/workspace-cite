@@ -784,6 +784,59 @@ public class ServicioMBean {
 		}
 
 	}
+	
+	
+	
+	
+	public String selectorBuscarPersonal() throws Exception {
+		String pagina = "";
+
+		inicializarClases();
+
+		pagina = "/paginas/ModuloProduccion/cite/directorio/buscarPersonal.xhtml";
+		
+		return pagina;
+	}
+	
+	public void buscarPersonal() throws Exception {
+
+		String nombreServicio = getServicioModel().getNombre() == "" ? null
+				: getServicioModel().getNombre();
+		String codigoServicio = getServicioModel().getCodigo() == "" ? null
+				: getServicioModel().getCodigo();
+		String codigoCITE = getServicioModel().getCodigoCITE() == "" ? "0"
+				: getServicioModel().getCodigoCITE();
+
+		if (getServicioModel().getCodigoCITE() == null) {
+			codigoCITE = "0";
+
+		}
+
+		System.out.println("dATOS SERVICIO BUSQUEDA " + nombreServicio + "-"
+				+ codigoServicio + "-" + codigoCITE);
+
+		List<ServicioBO> listaServicio = new ArrayList<ServicioBO>();
+		// SE ENVIA EL 6 POR DEFAULT
+		listaServicio = servicioServices.buscarServicio(codigoServicio,
+				nombreServicio, Integer.parseInt(codigoCITE));
+		List<ServicioModel> datosServiciosModelGrid = new ArrayList<ServicioModel>();
+
+		for (ServicioBO servicioBO : listaServicio) {
+			ServicioModel servicioModel = new ServicioModel();
+			servicioModel.setCodigo(servicioBO.getCodigo());
+			servicioModel.setNombre(servicioBO.getNombre());
+			servicioModel.setUnidad(servicioBO.getUnidad());
+			servicioModel.setRequisito(servicioBO.getRequisito());
+			servicioModel.setValorDeVenta(servicioBO.getValorDeVenta());
+			servicioModel.setPrecioDeVenta(servicioBO.getPrecioDeVenta());
+
+			datosServiciosModelGrid.add(servicioModel);
+		}
+
+		setDatosServiciosModelGrid(datosServiciosModelGrid);
+		listarCITE();
+	}
+	
 	public void buscarServicio() throws Exception {
 
 		String nombreServicio = getServicioModel().getNombre() == "" ? null

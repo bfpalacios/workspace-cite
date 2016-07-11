@@ -205,4 +205,46 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 		}
 		return informativo;
 	}
+
+	@Override
+	public List<ServicioInformativoBO> buscarInformativo(String titulo,
+			Date fecha, TipoInformativo tipo) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		List<ServicioInformativoBO> listaInformativo = new ArrayList<>();
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			if (tipo == TipoInformativo.NOTICIA) {
+				pstmt = con.prepareStatement("{call dbo.BuscarNoticias(?,?)}");
+			} else if (tipo == TipoInformativo.PUBLICACION) {
+				pstmt = con.prepareStatement("{call dbo.BuscarPublicaciones(?,?)}");
+			}
+			pstmt.setString(1, titulo);
+			if(fecha != null){
+				pstmt.setDate(2, new java.sql.Date(fecha.getTime()));
+			}else{
+				pstmt.setDate(2, null);
+			}
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ServicioInformativoBO informativo = new ServicioInformativoBO();
+				informativo.setId(rs.getInt(1));
+				informativo.setTituloInformativo(rs.getString(2));
+				informativo.setDescInformativo(rs.getString(3));
+				informativo.setDescCortaInformativo(rs.getString(4));
+				informativo.setFecha(rs.getDate(5));
+				informativo.setArchivoInformativo(rs.getBytes(6));
+				listaInformativo.add(informativo);
+			}
+		} catch (Exception e) {
+			System.out.println("No data found for: " + titulo + fecha);
+		} finally {
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return listaInformativo;
+	}
 }

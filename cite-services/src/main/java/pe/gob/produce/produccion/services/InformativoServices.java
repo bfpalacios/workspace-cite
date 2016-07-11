@@ -1,5 +1,6 @@
 package pe.gob.produce.produccion.services;
 
+import java.util.Date;
 import java.util.List;
 
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
@@ -11,4 +12,5 @@ public interface InformativoServices {
 	public List<ServicioInformativoBO> listarPublicaciones(int numNoticias);
 	public List<ServicioInformativoBO> listarPublicacionesPorMes(int anio, int mes);
 	ServicioInformativoBO obtenerInformativo(int id, TipoInformativo tipo);
+	List<ServicioInformativoBO> buscarInformativo(String titulo, Date fecha, TipoInformativo tipo);
 }

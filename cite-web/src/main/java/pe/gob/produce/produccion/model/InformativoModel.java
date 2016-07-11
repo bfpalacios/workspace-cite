@@ -1,7 +1,12 @@
 package pe.gob.produce.produccion.model;
 
-import org.primefaces.model.StreamedContent;
+import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.StreamedContent;
+import org.springframework.stereotype.Component;
+
+@Component("informativoModel")
+@ViewScoped
 public class InformativoModel {
 	private String id;
 	private String titulo;

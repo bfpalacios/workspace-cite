@@ -1,5 +1,6 @@
 package pe.gob.produce.produccion.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,12 @@ public class InformativoServicesImpl implements InformativoServices {
 	@Override
 	public ServicioInformativoBO obtenerInformativo(int id, TipoInformativo tipo) {
 		return informativoDao.obtenerInformativo(id, tipo);
+	}
+
+	@Override
+	public List<ServicioInformativoBO> buscarInformativo(String titulo,
+			Date fecha, TipoInformativo tipo) {
+		return informativoDao.buscarInformativo(titulo, fecha, tipo);
 	}
 
 }

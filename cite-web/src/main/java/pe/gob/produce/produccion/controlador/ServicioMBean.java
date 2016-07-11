@@ -30,6 +30,7 @@ import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.produccion.core.util.Convertidor;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
 import pe.gob.produce.produccion.core.util.ObtenerNumeroAleatorio;
+import pe.gob.produce.produccion.model.InformativoModel;
 import pe.gob.produce.produccion.model.ServicioModel;
 import pe.gob.produce.produccion.model.UbigeoModel;
 import pe.gob.produce.produccion.model.UsuarioModel;
@@ -232,7 +233,7 @@ public class ServicioMBean {
 		System.out.println("nuevoServicioPublicaciones:FIN");
 		return pagina;
 
-	}
+	}	
 
 	public String nuevosManuales() throws Exception {
 

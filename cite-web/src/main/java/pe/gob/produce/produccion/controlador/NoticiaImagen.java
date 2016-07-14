@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class NoticiaImagen {
 
 	@Autowired
 	private InformativoServices informativoService;
-	
+
 	private int id;
 
 	@PostConstruct
@@ -37,45 +38,57 @@ public class NoticiaImagen {
 		} else {
 			String noticiaIdUi = context.getExternalContext()
 					.getRequestParameterMap().get("noticiaId");
-			ServicioInformativoBO informativo = informativoService.obtenerInformativo(Integer.parseInt(noticiaIdUi), TipoInformativo.NOTICIA);
-        	if (informativo != null) {
-        		return new DefaultStreamedContent(new ByteArrayInputStream(
-        				informativo.getArchivoInformativo()));
-        	} else {
-				throw new IOException("Error cargando imagen");
-			}		
+			if (StringUtils.isNotEmpty(noticiaIdUi)) {
+				ServicioInformativoBO informativo = informativoService
+						.obtenerInformativo(Integer.parseInt(noticiaIdUi),
+								TipoInformativo.NOTICIA);
+				if (informativo != null) {
+					return new DefaultStreamedContent(new ByteArrayInputStream(
+							informativo.getArchivoInformativo()));
+				} else {
+					throw new IOException("Error cargando imagen");
+				}
+			} else {
+				return new DefaultStreamedContent();
+			}
 		}
 	}
-	
+
 	public StreamedContent getStreamPdf(int publicacionId) throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-       if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            return new DefaultStreamedContent();
-        } else {
-        	ServicioInformativoBO informativo = informativoService.obtenerInformativo(id, TipoInformativo.PUBLICACION);
-        	if (informativo != null) {
-        		return new DefaultStreamedContent(new ByteArrayInputStream(informativo.getArchivoInformativo()));
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			return new DefaultStreamedContent();
+		} else {
+			ServicioInformativoBO informativo = informativoService
+					.obtenerInformativo(id, TipoInformativo.PUBLICACION);
+			if (informativo != null) {
+				return new DefaultStreamedContent(new ByteArrayInputStream(
+						informativo.getArchivoInformativo()));
 			} else {
 				throw new IOException("Error cargando archivo pdf");
 			}
-        }
-    }
-	public StreamedContent getStream() throws IOException {	
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            return new DefaultStreamedContent();
-        } else {
-        	String publicacionIdUi = context.getExternalContext()
+		}
+	}
+
+	public StreamedContent getStream() throws IOException {
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			return new DefaultStreamedContent();
+		} else {
+			String publicacionIdUi = context.getExternalContext()
 					.getRequestParameterMap().get("publicacionId");
-        	this.id = Integer.parseInt(publicacionIdUi);
-        	ServicioInformativoBO informativo = informativoService.obtenerInformativo(Integer.parseInt(publicacionIdUi), TipoInformativo.PUBLICACION);
-        	if (informativo != null) {
-        		return new DefaultStreamedContent(new ByteArrayInputStream(informativo.getArchivoInformativo()));
+			this.id = Integer.parseInt(publicacionIdUi);
+			ServicioInformativoBO informativo = informativoService
+					.obtenerInformativo(Integer.parseInt(publicacionIdUi),
+							TipoInformativo.PUBLICACION);
+			if (informativo != null) {
+				return new DefaultStreamedContent(new ByteArrayInputStream(
+						informativo.getArchivoInformativo()));
 			} else {
 				throw new IOException("Error cargando archivo pdf");
 			}
-        }
-    }
+		}
+	}
 
 	public int getId() {
 		return id;
@@ -84,5 +97,5 @@ public class NoticiaImagen {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 }

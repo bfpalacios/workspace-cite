@@ -1,5 +1,7 @@
 package pe.gob.produce.produccion.model;
 
+import java.util.Date;
+
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.StreamedContent;
@@ -13,21 +15,22 @@ public class InformativoModel {
 	private String descripcionCorta;
 	private String descripcion;
 	private String fecha;
-	private StreamedContent imagen;	
-	
-	public InformativoModel(){		
+	private Date fechaCalendario;
+	private StreamedContent imagen;
+
+	public InformativoModel() {
 	}
-	
-	public InformativoModel(String id, String titulo, String descripcionCorta, String descripcion, String fecha,
-			StreamedContent imagen) {
+
+	public InformativoModel(String id, String titulo, String descripcionCorta,
+			String descripcion, String fecha, StreamedContent imagen) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descripcionCorta = descripcionCorta;
 		this.descripcion = descripcion;
 		this.fecha = fecha;
 		this.imagen = imagen;
-	}	
-	
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -39,10 +42,11 @@ public class InformativoModel {
 	public String getTitulo() {
 		return titulo;
 	}
+
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	
+
 	public String getDescripcionCorta() {
 		return descripcionCorta;
 	}
@@ -54,18 +58,30 @@ public class InformativoModel {
 	public String getDescripcion() {
 		return descripcion;
 	}
+
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
 	public String getFecha() {
 		return fecha;
 	}
+
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
+	public Date getFechaCalendario() {
+		return fechaCalendario;
+	}
+
+	public void setFechaCalendario(Date fechaCalendario) {
+		this.fechaCalendario = fechaCalendario;
+	}
+
 	public StreamedContent getImagen() {
 		return imagen;
 	}
+
 	public void setImagen(StreamedContent imagen) {
 		this.imagen = imagen;
 	}

@@ -2,7 +2,6 @@ package pe.gob.produce.produccion.controlador;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,8 @@ import pe.gob.produce.produccion.services.InformativoServices;
 @ViewScoped
 public class NoticiaMBean {
 	
-	private List<InformativoModel> listaNoticias;	
+	private List<InformativoModel> listaNoticias;
+	@Autowired
 	private InformativoModel informativoModel;
 	private String titulo;
 	private Date fecha;
@@ -67,7 +68,8 @@ public class NoticiaMBean {
 			noticia.setId(informativo.getId().intValue() + "");
 			noticia.setTitulo(informativo.getTituloInformativo());
 			noticia.setDescripcionCorta(informativo.getDescCortaInformativo());
-			noticia.setDescripcion(informativo.getDescInformativo());			
+			noticia.setDescripcion(informativo.getDescInformativo());
+			noticia.setFechaCalendario(informativo.getFecha());
 			String fechaOut = formato.format(informativo.getFecha());
 			noticia.setFecha(fechaOut);
 			InputStream imagenDB = new ByteArrayInputStream(informativo.getArchivoInformativo());
@@ -101,9 +103,76 @@ public class NoticiaMBean {
 			noticia.setImagen(new DefaultStreamedContent(archivoDB));
 			listaNoticias.add(noticia);
 		}
-
 		setDatosInformativoModelGrid(listaNoticias);
 	}
+	
+	public void actualizarNoticia(InformativoModel informativoModel) throws Exception {		
+		if(informativoModel != null){
+			ServicioInformativoBO infoBO = new ServicioInformativoBO();
+			infoBO.setId(Integer.parseInt(informativoModel.getId()));
+			infoBO.setTituloInformativo(informativoModel.getTitulo());
+			infoBO.setDescCortaInformativo(informativoModel.getDescripcionCorta());
+			infoBO.setDescInformativo(informativoModel.getDescripcion());
+			infoBO.setFecha(informativoModel.getFechaCalendario());
+			informativoServices.actualizarInformativo(infoBO, TipoInformativo.NOTICIA);
+		}
+		
+		listaNoticias = new ArrayList<>();
+		List<ServicioInformativoBO> noticiasDB = informativoServices.buscarInformativo(titulo, fecha, TipoInformativo.NOTICIA);
+		for (ServicioInformativoBO informativo : noticiasDB) {
+			InformativoModel noticia = new InformativoModel();
+			noticia.setId(informativo.getId().intValue() + "");
+			noticia.setTitulo(informativo.getTituloInformativo());
+			noticia.setDescripcionCorta(informativo.getDescCortaInformativo());
+			noticia.setDescripcion(informativo.getDescInformativo());
+			InputStream archivoDB = new ByteArrayInputStream(informativo.getArchivoInformativo());
+			noticia.setImagen(new DefaultStreamedContent(archivoDB));
+			listaNoticias.add(noticia);
+		}
+		setDatosInformativoModelGrid(listaNoticias);
+	}
+	
+	public void actualizarPublicacion(InformativoModel informativoModel) throws Exception {		
+		if(informativoModel != null){
+			ServicioInformativoBO infoBO = new ServicioInformativoBO();
+			infoBO.setId(Integer.parseInt(informativoModel.getId()));
+			infoBO.setTituloInformativo(informativoModel.getTitulo());
+			infoBO.setDescCortaInformativo(informativoModel.getDescripcionCorta());
+			infoBO.setDescInformativo(informativoModel.getDescripcion());
+			infoBO.setFecha(informativoModel.getFechaCalendario());
+			informativoServices.actualizarInformativo(infoBO, TipoInformativo.PUBLICACION);
+		}
+		
+		listaNoticias = new ArrayList<>();
+		List<ServicioInformativoBO> noticiasDB = informativoServices.buscarInformativo(titulo, fecha, TipoInformativo.PUBLICACION);
+		for (ServicioInformativoBO informativo : noticiasDB) {
+			InformativoModel noticia = new InformativoModel();
+			noticia.setId(informativo.getId().intValue() + "");
+			noticia.setTitulo(informativo.getTituloInformativo());
+			noticia.setDescripcionCorta(informativo.getDescCortaInformativo());
+			noticia.setDescripcion(informativo.getDescInformativo());
+			InputStream archivoDB = new ByteArrayInputStream(informativo.getArchivoInformativo());
+			noticia.setImagen(new DefaultStreamedContent(archivoDB));
+			listaNoticias.add(noticia);
+		}
+		setDatosInformativoModelGrid(listaNoticias);
+	}
+	
+	public void eliminarNoticia(InformativoModel informativoModel) throws Exception {
+		if(informativoModel != null){
+			informativoServices.eliminarInformativo(Integer.parseInt(informativoModel.getId()), TipoInformativo.NOTICIA);
+		}
+	}
+	
+	public void eliminarPublicacion(InformativoModel informativoModel) throws Exception {
+		if(informativoModel != null){
+			informativoServices.eliminarInformativo(Integer.parseInt(informativoModel.getId()), TipoInformativo.PUBLICACION);
+		}
+	}
+	
+	 public void update(ActionEvent actionEvent) {
+	        System.out.println(actionEvent.getSource());
+	    }
 	
 	public String editarServicioNoticias() throws Exception {
 		System.out.println("editarServicioNoticias:INICIO");
@@ -121,10 +190,6 @@ public class NoticiaMBean {
 		return pagina;
 	}
 	
-	public void action(InformativoModel informativoModel) {
-		this.informativoModel = informativoModel;
-	}
-
 	public List<InformativoModel> getListaNoticias() {
 		return listaNoticias;
 	}
@@ -172,7 +237,5 @@ public class NoticiaMBean {
 
 	public void setInformativoServices(InformativoServices informativoServices) {
 		this.informativoServices = informativoServices;
-	}
-	
-	
+	}	
 }

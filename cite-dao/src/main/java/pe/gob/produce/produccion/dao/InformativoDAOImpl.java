@@ -247,4 +247,58 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 		}
 		return listaInformativo;
 	}
+
+	@Override
+	public Integer actualizarInformativo(ServicioInformativoBO informativo,
+			TipoInformativo tipo) {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			if (tipo == TipoInformativo.NOTICIA) {
+				pstmt = con.prepareStatement("{call dbo.ActualizarNoticia(?,?,?,?,?,?)}");
+			} else if (tipo == TipoInformativo.PUBLICACION) {
+				pstmt = con.prepareStatement("{call dbo.ActualizarPublicacion(?,?,?,?,?,?)}");
+			}
+			pstmt.setString(1, informativo.getTituloInformativo());
+			pstmt.setString(2, informativo.getDescCortaInformativo());
+			pstmt.setString(3, informativo.getDescInformativo());
+			pstmt.setDate(4, new java.sql.Date(informativo.getFecha().getTime()));
+			pstmt.setBytes(5, informativo.getArchivoInformativo());
+			pstmt.setInt(6, informativo.getId());
+			rs = pstmt.executeUpdate();			
+		} catch (Exception e) {
+			System.out.println("No data updated for: " + informativo.getTituloInformativo() + informativo.getFecha());
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
+	}
+
+	@Override
+	public Integer eliminarInformativo(Integer id, TipoInformativo tipo) {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			if (tipo == TipoInformativo.NOTICIA) {
+				pstmt = con.prepareStatement("{call dbo.EliminarNoticia(?)}");
+			} else if (tipo == TipoInformativo.PUBLICACION) {
+				pstmt = con.prepareStatement("{call dbo.EliminarPublicacion(?)}");
+			}
+			pstmt.setInt(1, id);
+			rs = pstmt.executeUpdate();			
+		} catch (Exception e) {
+			System.out.println("No data deleted for: " + id);
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
+	}
 }

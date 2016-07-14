@@ -52,4 +52,15 @@ public class InformativoServicesImpl implements InformativoServices {
 		return informativoDao.buscarInformativo(titulo, fecha, tipo);
 	}
 
+	@Override
+	public Integer actualizarInformativo(ServicioInformativoBO informativo,
+			TipoInformativo tipo) {
+		return informativoDao.actualizarInformativo(informativo, tipo);
+	}
+
+	@Override
+	public Integer eliminarInformativo(Integer id, TipoInformativo tipo) {
+		return informativoDao.eliminarInformativo(id, tipo);
+	}
+
 }

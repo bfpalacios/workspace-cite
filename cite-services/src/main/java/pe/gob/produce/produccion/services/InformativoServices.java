@@ -13,4 +13,6 @@ public interface InformativoServices {
 	public List<ServicioInformativoBO> listarPublicacionesPorMes(int anio, int mes);
 	ServicioInformativoBO obtenerInformativo(int id, TipoInformativo tipo);
 	List<ServicioInformativoBO> buscarInformativo(String titulo, Date fecha, TipoInformativo tipo);
+	Integer actualizarInformativo(ServicioInformativoBO informativo, TipoInformativo tipo);
+	Integer eliminarInformativo(Integer id, TipoInformativo tipo);
 }

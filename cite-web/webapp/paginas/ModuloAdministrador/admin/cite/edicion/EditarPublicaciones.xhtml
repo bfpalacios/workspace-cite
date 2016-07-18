@@ -10,7 +10,7 @@
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
 
-		<p:outputPanel id="mensajeNuevoServicioInformativo"
+		<p:outputPanel id="mensajeNuevoServicioInformativoub"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
@@ -19,7 +19,7 @@
 
 		<p:panel header="#{mensaje['produccion.buscar.publicacion.label.titulo']}"
 			style="width: 400px;">
-			<p:panelGrid id="pnlGridBuscarNoticias">
+			<p:panelGrid id="pnlGridBuscarNoticiasPub">
 
 				<p:row>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -45,7 +45,7 @@
 				</p:row>
 
 
-				<p:row id="filaBuscar">
+				<p:row id="filaBuscarPub">
 					<p:column colspan="2"
 						styleClass="ui-column-label-spij styleAlignCenterColumn">
 						<p:commandButton value="Buscar" id="botonBuscar"
@@ -57,13 +57,13 @@
 		</p:panel>
 		<p:spacer width="10px" />
 
-		<p:panelGrid id="pnlGridResultadoBuscarInformativo">
+		<p:panelGrid id="pnlGridResultadoBuscarInformativoPub">
 
 			<p:row>
 				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.publicacion.label.noticiasencontradas']}</p:column>
 			</p:row>
 
-			<p:row id="filaTabla">
+			<p:row id="filaTablaPub">
 				<p:column id="colTabla"
 					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
 
@@ -108,7 +108,7 @@
 							</p:commandButton>
 
 							<p:commandButton value="Eliminar"
-								update=":formPrincipal:eliminarDetalle"
+								update=":formPrincipal:eliminarDetallePub"
 								oncomplete="PF('eliminarDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{informativoMBean.informativoModel}" />
@@ -138,7 +138,7 @@
 								<p:outputLabel for="fecha" value="Fecha:" />
 								<p:calendar id="fecha"
 									value="#{informativoMBean.informativoModel.fechaCalendario}"
-									timeZone="GMT+2" pattern="yyyy/MM/dd" />
+									pattern="dd/MM/yyyy"/>
 
 								<p:outputLabel for="imagen" value="Documento de La Publicacion:" />
 								<p:row id="imagen">
@@ -180,7 +180,7 @@
 
 					<p:dialog widgetVar="eliminarDialog" header="Eliminar publicacion"
 						showEffect="clip" hideEffect="clip">
-						<p:outputPanel id="eliminarDetalle" style="text-align:center;">
+						<p:outputPanel id="eliminarDetallePub" style="text-align:center;">
 							<h:panelGrid columns="2"
 								rendered="#{not empty informativoMBean.informativoModel}">
 								<p:spacer></p:spacer>

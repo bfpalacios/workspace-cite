@@ -17,6 +17,9 @@
 		base-package="pe.gob.produce.produccion.services.transformer" />
 	<context:component-scan base-package="pe.gob.produce.produccion.model" />
 	<context:component-scan base-package="pe.gob.produce.produccion.controlador" />
+	
+	
+	
 
 	<bean id="serviceProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -48,9 +51,9 @@
 		<property name="password" value="${hibernate.connection.password}" />
 	</bean>
 
-	<bean class="com.empresa.proyecto.dao.impl.CotizacionDAOImpl" id="cotizacionDAO">
+	<!--bean class="com.empresa.proyecto.dao.impl.CotizacionDAOImpl" id="cotizacionDAO">
 		<property name="conexion" ref="dataSource"></property>
-	</bean>
+	</bean -->
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

@@ -79,13 +79,26 @@
 				</p:column>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
 					<p:growl id="messagesInformativo" showDetail="true" />
+					
+					<!--p:fileUpload 
+                    			id="docInformativo"                    			
+                    			fileUploadListener="#{gestionarActasMBean.gestorCargaActas}" mode="advanced"
+                    			label="Elegir archivo"
+                    			auto="true" 
+                    			disabled="#{gestionarActasMBean.desactivarCarga}"
+                    			invalidSizeMessage="El tamaño del archivo cargado ha excedido el límite (2MB)"
+                    			invalidFileMessage="El archivo tiene que ser un archivo PDF (pdf)"                     			
+                    			dragDropSupport="false" update="msgCargaActas" sizeLimit="2097152" fileLimit="3" 
+                    			allowTypes="/(\.|\/)(pdf)$/"/-->
+                    			
 					<p:fileUpload label="Cargar Publicacion ..."  id="docInformativo"
 						uploadLabel="Guardar Publicacion" cancelLabel="Cancelar"
 						fileUploadListener="#{servicioMBean.handleFileUploadPublicaciones}"
 						mode="advanced" dragDropSupport="false" update="messages"
-						
+						invalidFileMessage="El archivo tiene que ser un archivo PDF (pdf)"                    			
+                    			
 						fileLimit="1" value="Imagen" previewWidth="300"
-						style="margin-left: 160px;" skinSimple="true" />
+						allowTypes="/(\.|\/)(pdf)$/" />
 				</p:column>
 			</p:row>
 

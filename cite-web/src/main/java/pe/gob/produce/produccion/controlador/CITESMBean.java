@@ -610,7 +610,7 @@ public class CITESMBean {
 
 	public void reset() {
 		RequestContext.getCurrentInstance().reset(
-				"formPrincipal:pnlGridNuevaSede");
+				"form:formPrincipal:pnlGridNuevaSede");
 
 	}
 

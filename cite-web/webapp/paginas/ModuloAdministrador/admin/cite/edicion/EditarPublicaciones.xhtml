@@ -27,7 +27,7 @@
 							value="#{mensaje['produccion.buscar.publicacion.label.buscarportitulo']}" />
 					</p:column>
 					<p:column>
-						<p:inputText id="tituloNoticia" value="#{noticiaMBean.titulo}"
+						<p:inputText id="tituloNoticia" value="#{informativoMBean.titulo}"
 							size="20" />
 					</p:column>
 				</p:row>
@@ -38,7 +38,7 @@
 							value="#{mensaje['produccion.buscar.publicacion.label.buscarporfecha']}" />
 					</p:column>
 					<p:column>
-						<p:calendar value="#{noticiaMBean.fecha}" id="fechaNoticia"
+						<p:calendar value="#{informativoMBean.fecha}" id="fechaNoticia"
 							pattern="dd/MM/yyyy" mode="popup" showOn="button">
 						</p:calendar>
 					</p:column>
@@ -49,7 +49,7 @@
 					<p:column colspan="2"
 						styleClass="ui-column-label-spij styleAlignCenterColumn">
 						<p:commandButton value="Buscar" id="botonBuscar"
-							actionListener="#{noticiaMBean.buscarNoticias}" ajax="true"
+							actionListener="#{informativoMBean.buscarPublicaciones}" ajax="true"
 							update="tablaPublicaciones" />
 					</p:column>
 				</p:row>
@@ -57,7 +57,7 @@
 		</p:panel>
 		<p:spacer width="10px" />
 
-		<p:panelGrid id="pnlGridResultadoBuscarNoticia">
+		<p:panelGrid id="pnlGridResultadoBuscarInformativo">
 
 			<p:row>
 				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.publicacion.label.noticiasencontradas']}</p:column>
@@ -68,17 +68,17 @@
 					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
 
 					<p:dataTable id="tablaPublicaciones" widgetVar="publicacionTabla"
-						var="registro" value="#{noticiaMBean.datosInformativoModelGrid}"
+						var="registro" value="#{informativoMBean.datosInformativoModelGrid}"
 						selectionMode="single" rowKey="#{registro.id}" binding="#{tabla}"
 						emptyMessage="No se encuentra informacion" paginator="true"
 						rows="10">
 
-						<p:column headerText="Codigo(*)"
+						<!-- <p:column headerText="Codigo(*)"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.id}" />
-						</p:column>
+						</p:column> -->
 
-						<p:column headerText="Título"
+						<p:column headerText="Título(*)"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.titulo}" />
 						</p:column>
@@ -86,6 +86,11 @@
 						<p:column headerText="Descripción corta"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.descripcionCorta}" />
+						</p:column>
+						
+						<p:column headerText="Descripción"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.descripcion}" />
 						</p:column>
 
 						<p:column headerText="Fecha"
@@ -99,14 +104,14 @@
 								update=":formPrincipal:edicionDetallePub"
 								oncomplete="PF('edicionDialogPub').show()">
 								<f:setPropertyActionListener value="#{registro}"
-									target="#{noticiaMBean.informativoModel}" />
+									target="#{informativoMBean.informativoModel}" />
 							</p:commandButton>
 
 							<p:commandButton value="Eliminar"
 								update=":formPrincipal:eliminarDetalle"
 								oncomplete="PF('eliminarDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
-									target="#{noticiaMBean.informativoModel}" />
+									target="#{informativoMBean.informativoModel}" />
 							</p:commandButton>
 
 						</p:column>
@@ -116,43 +121,42 @@
 						width="800" showEffect="clip" hideEffect="clip">
 						<p:outputPanel id="edicionDetallePub" style="text-align:left;">
 							<p:panelGrid style="width:100%" columns="2"
-								rendered="#{not empty noticiaMBean.informativoModel}"
+								rendered="#{not empty informativoMBean.informativoModel}"
 								columnClasses="label,value">
 								<p:outputLabel for="titulo" value="Título:" />
 								<p:inputText style="width:100%" id="titulo"
-									value="#{noticiaMBean.informativoModel.titulo}" />
+									value="#{informativoMBean.informativoModel.titulo}" />
 
 								<p:outputLabel for="dscorta" value="Descripcion corta:" />
 								<p:inputTextarea style="width:100%" id="dscorta"
-									value="#{noticiaMBean.informativoModel.descripcionCorta}" />
+									value="#{informativoMBean.informativoModel.descripcionCorta}" />
 
 								<p:outputLabel for="desc" value="Descripción:" />
 								<p:inputTextarea style="width:100%" id="desc"
-									value="#{noticiaMBean.informativoModel.descripcion}" />
+									value="#{informativoMBean.informativoModel.descripcion}" />
 
 								<p:outputLabel for="fecha" value="Fecha:" />
 								<p:calendar id="fecha"
-									value="#{noticiaMBean.informativoModel.fechaCalendario}"
+									value="#{informativoMBean.informativoModel.fechaCalendario}"
 									timeZone="GMT+2" pattern="yyyy/MM/dd" />
 
-								<p:outputLabel for="imagen" value="Imagen de La Publicacion:" />
+								<p:outputLabel for="imagen" value="Documento de La Publicacion:" />
 								<p:row id="imagen">
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">
-										<p:graphicImage style="width: 130px; height: 70px;"
-											value="#{noticiaImagen.image}">
-											<f:param name="noticiaId"
-												value="#{noticiaMBean.informativoModel.id}" />
-										</p:graphicImage>
+										<p:media value="#{noticiaImagen.stream}" width="70%" height="80px"
+											player="pdf">
+											<f:param name="publicacionId" value="#{informativoMBean.informativoModel.id}" />
+										</p:media>
 										<p:growl id="messagesInformativo" showDetail="true" />
-										<p:fileUpload label="Cargar nueva imagen ..."
-											id="docInformativo" uploadLabel="Guardar imagen"
-											cancelLabel="Cancelar"
-											fileUploadListener="#{servicioMBean.handleFileUploadInformativo}"
-											mode="advanced" dragDropSupport="false" update="messages"
-											allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileLimit="1"
-											value="Imagen" previewWidth="300" skinSimple="false" />
+										<p:fileUpload label="Cargar Publicacion ..."  id="docInformativo"
+											uploadLabel="Guardar Publicacion" cancelLabel="Cancelar"
+											fileUploadListener="#{informativoMBean.handleFileUploadInformativo}"
+											mode="advanced" dragDropSupport="false" update="messages"						
+											fileLimit="1" value="Archivo" previewWidth="300"
+											skinSimple="false" />
 									</p:column>
+									
 								</p:row>
 
 								<p:spacer></p:spacer>
@@ -160,8 +164,8 @@
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="addButton" value="Guardar"
-											actionListener="#{noticiaMBean.buscarNoticias}"
-											oncomplete="PF('publicacionTabla').update();PF('edicionDialogPub').hide();" />											
+											actionListener="#{informativoMBean.actualizarPublicacion(informativoMBean.informativoModel)}"
+											update="tablaPublicaciones" ajax="false" oncomplete="PF('edicionDialogPub').hide();" />											
 											
 									</p:column>
 									<p:column
@@ -178,20 +182,20 @@
 						showEffect="clip" hideEffect="clip">
 						<p:outputPanel id="eliminarDetalle" style="text-align:center;">
 							<h:panelGrid columns="2"
-								rendered="#{not empty noticiaMBean.informativoModel}">
+								rendered="#{not empty informativoMBean.informativoModel}">
 								<p:spacer></p:spacer>
 								<p:outputLabel
 									value="Esta seguro que desea eliminar esta publicacion" />
 								<p:spacer></p:spacer>
 								<p:outputLabel style="font-weight: bold;"
-									value="#{noticiaMBean.informativoModel.titulo}" />
+									value="#{informativoMBean.informativoModel.titulo}" />
 								<p:spacer></p:spacer>
 								<p:row>
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="deleteButton" value="Eliminar"
-											actionListener="#{noticiaMBean.buscarNoticias}"
-											oncomplete="PF('publicacionTabla').update();PF('eliminarDialog').hide();" />
+											actionListener="#{informativoMBean.eliminarPublicacion(informativoMBean.informativoModel)}"
+											update="tablaPublicaciones" ajax="false" oncomplete="PF('eliminarDialog').hide();" />
 									</p:column>
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -208,10 +212,6 @@
 			</p:row>
 
 		</p:panelGrid>
-
-
-
-
 	</ui:define>
 </ui:composition>
 </html>

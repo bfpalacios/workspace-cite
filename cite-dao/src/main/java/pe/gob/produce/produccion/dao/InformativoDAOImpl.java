@@ -1,5 +1,8 @@
 package pe.gob.produce.produccion.dao;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +19,7 @@ import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
 import pe.gob.produce.produccion.core.util.TipoInformativo;
+import pe.gob.produce.produccion.dao.jdbc.CITEDAO;
 
 @Repository("informativoDAO")
 @Transactional
@@ -250,11 +254,13 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 
 	@Override
 	public Integer actualizarInformativo(ServicioInformativoBO informativo,
-			TipoInformativo tipo) {
+			TipoInformativo tipo) throws Exception {
 		Connection con = null;
 		Statement statement = null;
 		int rs = 0;
 		try {
+			/*
+			InputStream archivoInformativo = new ByteArrayInputStream(informativo.getArchivoInformativo());
 			con = Conexion.obtenerConexion();
 			PreparedStatement pstmt = null;
 			if (tipo == TipoInformativo.NOTICIA) {
@@ -266,11 +272,21 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 			pstmt.setString(2, informativo.getDescCortaInformativo());
 			pstmt.setString(3, informativo.getDescInformativo());
 			pstmt.setDate(4, new java.sql.Date(informativo.getFecha().getTime()));
-			pstmt.setBytes(5, informativo.getArchivoInformativo());
+			pstmt.setBlob(5, archivoInformativo, informativo.getArchivoInformativo().length);
 			pstmt.setInt(6, informativo.getId());
-			rs = pstmt.executeUpdate();			
+			rs = pstmt.executeUpdate();
+			*/			
+			this.eliminarInformativo(informativo.getId(), tipo);
+			CITEDAO dao =  new CITEDAO();
+			if (tipo == TipoInformativo.NOTICIA) {				
+				dao.grabarInformativo(informativo);
+			} else if (tipo == TipoInformativo.PUBLICACION) {
+				dao.grabarPublicaciones(informativo);
+			}
+			
 		} catch (Exception e) {
-			System.out.println("No data updated for: " + informativo.getTituloInformativo() + informativo.getFecha());
+			System.out.println("No data updated for: " + informativo.getTituloInformativo() + " " + informativo.getFecha());
+			throw new Exception(e);
 		} finally {
 			this.cerrarSentenceStatement(statement);
 			this.cerrarConexion(con);

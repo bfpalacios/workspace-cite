@@ -54,7 +54,7 @@ public class InformativoServicesImpl implements InformativoServices {
 
 	@Override
 	public Integer actualizarInformativo(ServicioInformativoBO informativo,
-			TipoInformativo tipo) {
+			TipoInformativo tipo) throws Exception{
 		return informativoDao.actualizarInformativo(informativo, tipo);
 	}
 

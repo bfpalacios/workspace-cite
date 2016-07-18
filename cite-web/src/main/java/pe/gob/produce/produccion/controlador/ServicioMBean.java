@@ -466,6 +466,7 @@ public class ServicioMBean {
 				System.out.println("Datos descripcionCorta" + descripcionCorta);
 				System.out.println("Datos descripcion" + descripcion);
 				System.out.println("Datos archivoInformativo" + archivoInformativo);
+				System.out.println("Datos FECHA" + fecha);
 				
 				if (validarCampos(titulo, descripcionCorta, descripcion)){
 					ServicioInformativoBO servicio = new ServicioInformativoBO();
@@ -1053,7 +1054,7 @@ public class ServicioMBean {
 
 	}
 
-	private boolean validarCampos(String titulo, String descripcionCorta,
+	public boolean validarCampos(String titulo, String descripcionCorta,
 			String descripcion) {
 		boolean apto = true;
 

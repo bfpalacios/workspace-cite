@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.produccion.core.util.FormateadorFecha;
 import pe.gob.produce.produccion.core.util.TipoInformativo;
 import pe.gob.produce.produccion.model.InformativoModel;
 import pe.gob.produce.produccion.services.InformativoServices;
@@ -70,7 +71,10 @@ public class InformativoMBean {
 	}
 	
 	public void buscarInformativo(TipoInformativo tipo){
+		
+		FormateadorFecha fechaFormateada = new FormateadorFecha();
 		String titulo = null;
+		
 		Date fecha = null;
 		titulo = getTitulo();
 		fecha = getFecha();
@@ -88,7 +92,10 @@ public class InformativoMBean {
 			noticia.setDescripcionCorta(informativo.getDescCortaInformativo());
 			noticia.setDescripcion(informativo.getDescInformativo());
 			noticia.setFechaCalendario(informativo.getFecha());
-			String fechaOut = formato.format(informativo.getFecha());
+			//String fechaOut = formato.format(informativo.getFecha());
+			String fechaOut = fechaFormateada.formatoFechaDDMMAAAA(informativo.getFecha());
+			
+			
 			noticia.setFecha(fechaOut);
 			InputStream archivoDB = new ByteArrayInputStream(
 					informativo.getArchivoInformativo());

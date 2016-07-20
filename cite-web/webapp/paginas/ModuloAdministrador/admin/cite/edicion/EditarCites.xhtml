@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeEditarCite"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panel header="#{mensaje['produccion.buscar.cite.label.titulo']}"
+			style="width: 400px;">
+			<p:panelGrid id="pnlGridBuscarCites">
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lNombre"
+							value="#{mensaje['produccion.buscar.cite.label.buscarpornombre']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="descCite" value="#{citesMBean.nombreBusqueda}"
+							size="20" />
+					</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lCodigo"
+							value="#{mensaje['produccion.buscar.cite.label.buscarporcodigo']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="nombreCite" value="#{citesMBean.codigoBusqueda}"
+							size="20" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lFecha"
+							value="#{mensaje['produccion.buscar.cite.label.buscarporfecha']}" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{citesMBean.fechaBusqueda}" id="fechaCite"
+							pattern="dd/MM/yyyy" mode="popup" showOn="button">
+						</p:calendar>
+					</p:column>
+				</p:row>
+
+
+				<p:row id="filaBuscar">
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Buscar" id="botonBuscar"
+							actionListener="#{citesMBean.buscarCites}" ajax="true"
+							update="cite_tabla" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<p:spacer width="10px" />
+
+		<p:panelGrid id="pnlGridResultadoBuscarCite">
+
+			<p:row>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.noticia.label.noticiasencontradas']}</p:column>
+			</p:row>
+
+			<p:row id="filaTablaCite">
+				<p:column id="colTablaCite"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
+
+					<p:dataTable id="cite_tabla" widgetVar="citeTabla"
+						var="registro" value="#{citesMBean.listaCites}"
+						selectionMode="single" rowKey="#{registro.id}"
+						emptyMessage="No se encuentra informacion" paginator="true"
+						rows="10">
+
+						<p:column headerText="Codigo(*)"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.codigo}" />
+						</p:column>
+
+						<p:column headerText="Nombre(*)"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.descripcion}" />
+						</p:column>
+
+						<p:column headerText="Estado"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.estado}" />
+						</p:column>				
+
+						<p:column headerText="Fecha"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<p:calendar id="fecha"
+									value="#{registro.fecha}"
+									pattern="dd/MM/yyyy" />
+						</p:column>
+						
+						<p:column headerText="Codigo de Sede"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.codigoUbigeo}" />
+						</p:column>							
+
+						<p:column headerText="Edición"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<p:commandButton value="Editar"
+								update=":formPrincipal:cite_editar"
+								oncomplete="PF('edicionDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{citesMBean.citeActual}" />
+							</p:commandButton>
+
+							<p:commandButton value="Eliminar"
+								update=":formPrincipal:cite_eliminar"
+								oncomplete="PF('eliminarDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{citesMBean.citeActual}" />
+							</p:commandButton>
+
+						</p:column>
+					</p:dataTable>
+
+					<p:dialog widgetVar="edicionDialog" header="Editar noticia"
+						width="800" showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="cite_editar" style="text-align:left;">
+							<p:panelGrid style="width:100%" columns="2"
+								rendered="#{not empty citesMBean.citeActual}"
+								columnClasses="label,value">
+								<p:outputLabel for="codigo" value="Código:" />
+								<p:inputText style="width:100%" id="codigo"
+									value="#{citesMBean.citeActual.codigo}" />
+
+								<p:outputLabel for="nombre" value="Nombre:" />
+								<p:inputText style="width:100%" id="nombre"
+									value="#{citesMBean.citeActual.descripcion}" />
+
+								<p:outputLabel for="estado" value="Descripción:" />
+								<p:inputText style="width:100%" id="estado"
+									value="#{citesMBean.citeActual.estado}" />
+
+								<p:outputLabel for="fecha" value="Fecha:" />
+								<p:calendar id="fecha"
+									value="#{informativoMBean.informativoModel.fechaCalendario}"
+									pattern="dd/MM/yyyy" />
+
+								<p:outputLabel for="sede" value="Sede del Cite:" />
+								<p:row id="sede">
+									
+								</p:row>
+
+								<p:spacer></p:spacer>
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="addButton" value="Guardar"
+											actionListener="#{citesMBean.buscarCites}"
+											update="cite_tabla" ajax="false" oncomplete="PF('edicionDialog').hide();" />										
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelButton" value="Cancelar"
+											oncomplete="PF('edicionDialog').hide();" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+					<p:dialog widgetVar="eliminarDialog" header="Eliminar noticia"
+						showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="cite_eliminar" style="text-align:center;">
+							<h:panelGrid columns="2"
+								rendered="#{not empty citesMBean.citeActual}">
+								<p:spacer></p:spacer>
+								<p:outputLabel
+									value="Esta seguro que desea eliminar este CITE?" />
+								<p:spacer></p:spacer>
+								<p:outputLabel style="font-weight: bold;"
+									value="#{citesMBean.citeActual.descripcion}" />
+								<p:spacer></p:spacer>
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="deleteButton" value="Eliminar"
+											actionListener="#{citesMBean.buscarCites}"
+											update="cite_tabla" ajax="false" oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelDeleteButton" value="Cancelar"
+											oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+								</p:row>
+							</h:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+
+				</p:column>
+			</p:row>
+
+		</p:panelGrid>
+
+	</ui:define>
+</ui:composition>
+</html>

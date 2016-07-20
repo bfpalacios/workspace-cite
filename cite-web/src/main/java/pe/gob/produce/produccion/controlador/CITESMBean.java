@@ -1,9 +1,11 @@
 package pe.gob.produce.produccion.controlador;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,7 @@ import javax.servlet.ServletContext;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,10 +30,13 @@ import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioBO;
+import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.produccion.core.util.Convertidor;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
 import pe.gob.produce.produccion.core.util.ObtenerNumeroAleatorio;
+import pe.gob.produce.produccion.core.util.TipoInformativo;
+import pe.gob.produce.produccion.model.InformativoModel;
 import pe.gob.produce.produccion.model.ServicioModel;
 import pe.gob.produce.produccion.model.UbigeoModel;
 import pe.gob.produce.produccion.model.UsuarioModel;
@@ -71,6 +77,14 @@ public class CITESMBean {
 	// ServicioModel
 	private List<ServicioModel> datosServiciosModelGrid;
 	private List<ServicioModel> selectedServicios;
+	
+	//Busqueda
+	private String nombreBusqueda;
+	private String codigoBusqueda; 
+	private Date fechaBusqueda;
+	private List<CITEBO> listaCites;
+	
+	private CITEBO citeActual;
 
 	// constructor
 	public CITESMBean() {
@@ -166,6 +180,15 @@ public class CITESMBean {
 		System.out.println("nuevoServicioInformativo:FIN");
 		return pagina;
 
+	}
+	
+	public String editarCites() throws Exception {
+		System.out.println("editarCites:INICIO");
+
+		inicializarClases();
+		String pagina = "/paginas/ModuloAdministrador/admin/cite/edicion/EditarCites.xhtml";
+		System.out.println("editarCites:FIN");
+		return pagina;
 	}
 
 	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
@@ -558,7 +581,28 @@ public class CITESMBean {
 			e.printStackTrace();
 			mostrarMensaje(11);
 		}
+	}
+	
+	public void buscarCites(){
+		
+		FormateadorFecha fechaFormateada = new FormateadorFecha();
 
+		String nombre = getNombreBusqueda();
+		String codigo = getCodigoBusqueda();
+		Date fecha = getFechaBusqueda();
+		
+		// this should be gone in a logger
+		System.out.println("DATOS BUSQUEDA DE CITES: " + nombre + " " + codigo + " " + fecha);
+		listaCites = new ArrayList<>();
+		try {
+			listaCites = citeServices.buscarCites(codigo, nombre, fecha);
+		} catch (Exception e) {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error en la busqueda de Cites "  + nombre + " " + codigo + " " + fecha);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}		
+		this.setListaCites(listaCites);
 	}
 
 	public void guardarNuevaDependencia() {
@@ -953,4 +997,44 @@ public class CITESMBean {
 		this.usuarioModelSelect = usuarioModelSelect;
 	}
 
+	public String getNombreBusqueda() {
+		return nombreBusqueda;
+	}
+
+	public void setNombreBusqueda(String nombreBusqueda) {
+		this.nombreBusqueda = nombreBusqueda;
+	}
+
+	public String getCodigoBusqueda() {
+		return codigoBusqueda;
+	}
+
+	public void setCodigoBusqueda(String codigoBusqueda) {
+		this.codigoBusqueda = codigoBusqueda;
+	}
+
+	public Date getFechaBusqueda() {
+		return fechaBusqueda;
+	}
+
+	public void setFechaBusqueda(Date fechaBusqueda) {
+		this.fechaBusqueda = fechaBusqueda;
+	}
+
+	public List<CITEBO> getListaCites() {
+		return listaCites;
+	}
+
+	public void setListaCites(List<CITEBO> listaCites) {
+		this.listaCites = listaCites;
+	}
+
+	public CITEBO getCiteActual() {
+		return citeActual;
+	}
+
+	public void setCiteActual(CITEBO citeActual) {
+		this.citeActual = citeActual;
+	}
+	
 }

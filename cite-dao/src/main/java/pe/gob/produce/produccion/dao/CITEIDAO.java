@@ -1,5 +1,6 @@
 package pe.gob.produce.produccion.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import pe.gob.produce.cite.bo.CITEBO;
@@ -16,4 +17,5 @@ public interface CITEIDAO {
 	public void grabarInformativo(ServicioInformativoBO servicioInformativo) throws Exception;
 	public void grabarPublicaciones(ServicioInformativoBO servicioInformativo) throws Exception;
 	public void grabarNuevaCite(CITEBO cite) throws Exception;
+	public List<CITEBO> buscarCites(String codigo,String nombre, Date fecha)  throws Exception;
 }

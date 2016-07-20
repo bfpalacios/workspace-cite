@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -196,6 +197,45 @@ Connection con = null;
 		cstm.execute();
 		
 	}
-	
 
+	@Override
+	public List<CITEBO> buscarCites(String codigo, String nombre,
+			java.util.Date fecha) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		List<CITEBO> listaCites = new ArrayList<>();
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.BuscarCites(?,?,?)}");
+			pstmt.setString(1, codigo);
+			pstmt.setString(2, nombre);
+			if(fecha != null){
+				pstmt.setDate(3, new java.sql.Date(fecha.getTime()));
+			}else{
+				pstmt.setDate(3, null);
+			}
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				CITEBO cite = new CITEBO();
+				cite.setId(rs.getInt(1));
+				cite.setCodigo(rs.getString(2));
+				cite.setDescripcion(rs.getString(3));
+				cite.setEstado(rs.getString(4));
+				cite.setFecha(rs.getDate(5));
+				cite.setCodigoUbigeo(rs.getString(6));
+				listaCites.add(cite);
+			}
+		} catch (Exception e) {
+			System.out.println("No data found for: " + codigo + " " + nombre + " " + fecha);
+		} finally {
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return listaCites;
+	}
+
+	
 }

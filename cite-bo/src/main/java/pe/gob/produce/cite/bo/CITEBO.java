@@ -10,6 +10,7 @@ public class CITEBO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int id;
 	private String codigo;
 	private String descripcion;
 	private Date fecha; 
@@ -52,7 +53,12 @@ public class CITEBO implements Serializable {
 	}
 	public void setCodigoUbigeo(String codigoUbigeo) {
 		this.codigoUbigeo = codigoUbigeo;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}	
-	
 
 }

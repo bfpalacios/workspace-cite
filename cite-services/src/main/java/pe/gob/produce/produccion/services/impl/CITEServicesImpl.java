@@ -1,5 +1,6 @@
 package pe.gob.produce.produccion.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,13 @@ public class CITEServicesImpl implements CITEServices{
 			throws Exception {
 		citeDAO.grabarPublicaciones(servicioInformativo);
 		
+	}
+
+
+	@Override
+	public List<CITEBO> buscarCites(String codigo, String nombre, Date fecha)
+			throws Exception {
+		return citeDAO.buscarCites(codigo, nombre, fecha);
 	}
 	
 	

@@ -80,4 +80,23 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<UsuarioBO> buscarUsuarioCite(String codUsuario,
+			String nomUsuario) throws Exception {
+		List<UsuarioBO> listaUsuarios = null;
+		try {
+			listaUsuarios = usuarioDao.buscarUsuarioCite(codUsuario, nomUsuario);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listaUsuarios;
+	}
+
+	@Override
+	public Integer eliminarUsuario(Integer id) {
+		// TODO Auto-generated method stub
+		return usuarioDao.eliminarUsuario(id);
+	}
 }

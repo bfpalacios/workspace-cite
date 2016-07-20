@@ -10,10 +10,13 @@ public class UsuarioBO implements Serializable {
 	private String idRol;
 	private String role;
 	private String idUsuario;
+	private String codUsuario;
 	private String contrasenia;
 	private String confirmacionContrasenia;
 	private String nombres;
 	private String cargo;
+	private String jefeInmediato;
+	private String telefonoJefeInmediato;
 	private String apellidoPaterno;
 	private String apellidoMaterno;
 	private String correo;
@@ -387,6 +390,34 @@ public class UsuarioBO implements Serializable {
 		this.telefono2 = telefono2;
 	}
 
-	
+
+	public String getCodUsuario() {
+		return codUsuario;
+	}
+
+
+	public void setCodUsuario(String codUsuario) {
+		this.codUsuario = codUsuario;
+	}
+
+
+	public String getJefeInmediato() {
+		return jefeInmediato;
+	}
+
+
+	public void setJefeInmediato(String jefeInmediato) {
+		this.jefeInmediato = jefeInmediato;
+	}
+
+
+	public String getTelefonoJefeInmediato() {
+		return telefonoJefeInmediato;
+	}
+
+
+	public void setTelefonoJefeInmediato(String telefonoJefeInmediato) {
+		this.telefonoJefeInmediato = telefonoJefeInmediato;
+	}	
 	
 }

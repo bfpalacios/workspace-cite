@@ -17,6 +17,7 @@ import pe.gob.produce.cite.bo.UsuarioRolBO;
 public class UsuarioModel {
 
 	private String idUsuario;
+	private String codUsuario;
 	private String clave;
 	private String confirmarClave;
 	private String nombres;
@@ -35,6 +36,8 @@ public class UsuarioModel {
 	private String codigoCite;
 	private String telefono2;
 	private String cargo;
+	private String telefonoJefe;
+	private String jefe;
 	
 	private String portal;
 	private String dni;
@@ -727,7 +730,29 @@ public class UsuarioModel {
 	public void setCodigoCite(String codigoCite) {
 		this.codigoCite = codigoCite;
 	}
-	
-	
-	 	
+
+	public String getCodUsuario() {
+		return codUsuario;
+	}
+
+	public void setCodUsuario(String codUsuario) {
+		this.codUsuario = codUsuario;
+	}
+
+	public String getTelefonoJefe() {
+		return telefonoJefe;
+	}
+
+	public void setTelefonoJefe(String telefonoJefe) {
+		this.telefonoJefe = telefonoJefe;
+	}
+
+	public String getJefe() {
+		return jefe;
+	}
+
+	public void setJefe(String jefe) {
+		this.jefe = jefe;
+	}
+
 }

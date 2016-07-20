@@ -1,6 +1,11 @@
 package pe.gob.produce.produccion.controlador;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,16 +16,23 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
+import org.apache.commons.io.IOUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
+import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
+import pe.gob.produce.produccion.core.util.FormateadorFecha;
+import pe.gob.produce.produccion.core.util.TipoInformativo;
 import pe.gob.produce.produccion.model.CITESModel;
+import pe.gob.produce.produccion.model.InformativoModel;
 import pe.gob.produce.produccion.model.UbigeoModel;
 import pe.gob.produce.produccion.model.UsuarioModel;
 import pe.gob.produce.produccion.services.ComunServices;
@@ -41,8 +53,15 @@ public class UsuarioMBean extends GenericoController {
 
 	private UIComponent btnGuardar;
 	private UsuarioModel usuarioModelSelect;
- 
-
+	
+	//declaracion de variables
+	private String codigoUsuario;
+	private String nombreUsuario;
+	private List<UsuarioModel> listaUsuarios;
+	private List<UsuarioModel> datosUsuarioModelGrid;
+	
+	private List<UsuarioBO> listaUsuariosDB;
+	
 	private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static final String PATTERN_STRING = "([a-z]|[A-Z]|\\s)+";
@@ -79,60 +98,17 @@ public class UsuarioMBean extends GenericoController {
 				"formPrincipal:panelRegistroUsuario");
 
 	}
-
-	public String registrarNuevoUsuario() {
-
-		String pagina = "";
-		System.out.println("nuevo usuario");
-		pagina = "/admin/nuevo/registrarNuevoUsuario.xhtml";
-
+	
+	public String buscarUsuarioCite() throws Exception {
+		System.out.println("buscarUsuarioCite:INICIO");
+		inicializarClases();
+		String pagina = "/paginas/ModuloAdministrador/admin/cite/buscar/buscarUsuarioCite.xhtml";
+		System.out.println("buscarUsuarioCite:FIN");
 		return pagina;
 	}
-
-	public String registraNuevaEmpresa(int modo) {
-
-		String pagina = "";
-		List<UbigeoBO> listarUbigeo = new ArrayList<UbigeoBO>();
-
-		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
-
-		try {
-			// se llama para cargar al combo de departamento
-			listarUbigeo = comunServices.listUbigeo();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		for (UbigeoBO ubigeoBO : listarUbigeo) {
-
-			UbigeoModel ubigeo = new UbigeoModel();
-			ubigeo.setIdUbigeo(ubigeoBO.getIdUbigeo());
-			ubigeo.setDepartamento(ubigeoBO.getDepartamento());
-			// ubigeo.setProvincia(ubigeoBO.getProvincia());
-			// ubigeo.setDistrito(ubigeoBO.getDistrito());
-			listaUbigeoModel.add(ubigeo);
-		}
-
-		getUsuarioModel().setListUbigeo(listaUbigeoModel);
-
-		switch (modo) {
-		/* @@ESTE ES EL CASO PARA PERFIL usuario nuevo */
-		case 1:
-
-			pagina = "/admin/nuevo/nuevoUsuarioEmpresa.xhtml";
-			break;
-
-		/* @@ESTE ES EL CASO PARA PERFIL CITE */
-		case 2:
-
-			pagina = "/paginas/ModuloProduccion/cite/registro/nuevoUsuarioEmpresa.xhtml";
-			break;
-
-		}
-
-		return pagina;
-	}
+	
+	 
+	 
 	
 	public void actualizarlistSedes(ValueChangeEvent e) throws Exception {
 		String codCite = (String) (e.getNewValue() == null ? "" : e
@@ -223,6 +199,101 @@ public class UsuarioMBean extends GenericoController {
 			
 		return pagina;
 	}
+	
+	public void buscarUsuarioCites(){
+		
+		FormateadorFecha fechaFormateada = new FormateadorFecha();
+		String nombre = null;
+		String codigo = null;
+	 
+		codigo = getCodigoUsuario();
+		nombre = getNombreUsuario();
+		
+		// this should be gone in a logger
+		System.out.println("DATOS BUSQUEDA DE USUARIO " + codigo + ": " + nombre);
+		
+		listaUsuarios= new ArrayList<>();
+		try {
+			listaUsuariosDB = usuarioServices.buscarUsuarioCite(codigo, nombre);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for (UsuarioBO usuario : listaUsuariosDB) {
+			UsuarioModel user = new UsuarioModel();
+			user.setIdUsuario(usuario.getIdUsuario());
+			user.setCodUsuario(usuario.getCodUsuario());
+			user.setNombres(usuario.getNombres() + usuario.getApellidoPaterno()); 
+			 
+			listaUsuarios.add(user);
+		}
+		setDatosUsuarioModelGrid(listaUsuarios);
+	}
+	
+	public void eliminarUsuario(UsuarioModel usuarioModel)
+			throws Exception {
+		if (usuarioModel != null) {
+			int flatDelete = usuarioServices.eliminarUsuario(Integer.parseInt(usuarioModel.getIdUsuario()));
+			//actulizarGridDespuesDeEliminar(flatDelete);
+		}
+	}
+	
+	public void actualizarUsuario(UsuarioModel usuarioModel) {
+		
+		
+		/*try {
+			 
+			servMBean.validarCampos(inforModel.getTitulo(),
+					inforModel.getDescripcionCorta(),
+					inforModel.getDescripcion());
+			
+			/*if (inforModel != null) {
+				ServicioInformativoBO infoBO = new ServicioInformativoBO();
+				infoBO.setId(Integer.parseInt(inforModel.getId()));				
+				infoBO.setTituloInformativo((inforModel.getTitulo()!=null)?inforModel.getTitulo():"");
+				infoBO.setDescCortaInformativo((inforModel.getDescripcionCorta()!=null)?inforModel.getDescripcionCorta():"");
+				infoBO.setDescInformativo((inforModel.getDescripcion()!=null)?inforModel.getDescripcion():"");
+				if(inforModel.getFechaCalendario()!=null){
+					infoBO.setFecha(inforModel.getFechaCalendario());
+				}else{
+					try {
+						Date fecha = formato.parse(inforModel.getFecha());
+						infoBO.setFecha(fecha);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}				
+				infoBO.setArchivoInformativo(archivoInformativo);
+				informativoServices.actualizarInformativo(infoBO, tipo);
+				buscarInformativo(tipo);
+			}
+		} catch (Exception e) {
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al actualizar " + usuarioModel.getCodUsuario());
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+*/
+	}
+	public void actulizarGridDespuesDeEliminar(int flatDelete) {
+		if (flatDelete > 0) {
+			for (Iterator<UsuarioModel> iter = listaUsuarios
+					.listIterator(); iter.hasNext();) {
+				UsuarioModel infor = iter.next();
+				if (infor.getIdUsuario() == usuarioModel.getIdUsuario()) {
+					iter.remove();
+				}
+			}
+			setDatosUsuarioModelGrid(listaUsuarios);
+		}else{
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al eliminar");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+
 
 	public String cancelarRegistrarNuevoUsuario(int modo) throws Exception {
 		String pagina = "";
@@ -454,6 +525,10 @@ public class UsuarioMBean extends GenericoController {
 									: validaCadena(getUsuarioModel().getCargo()) == true ? getUsuarioModel()
 											.getCargo() : "invalido"; 
 															
+			String telefonoJefe = getUsuarioModel().getTelefonoJefe(); 
+			String jefe = getUsuarioModel().getJefe(); 
+															
+													
 											
 			String emailItp = getUsuarioModel().getEmailAdmin() == null ? ""
 					: validaCorreo(getUsuarioModel().getEmailAdmin()) == true ? getUsuarioModel()
@@ -487,6 +562,8 @@ public class UsuarioMBean extends GenericoController {
 				usuarioNuevo.setTelefono2(telefonoPersonal); 
 				usuarioNuevo.setCodCITE(codCite);
 				usuarioNuevo.setCodSede(codSede); 
+				usuarioNuevo.setTelefonoJefeInmediato(telefonoJefe); 
+				usuarioNuevo.setJefeInmediato(jefe); 
 				usuarioNuevo.setCodDependencia(codDependencia); 
 				//falta telefono personal
 				usuarioNuevo.setEmail1(emailpersonal); 
@@ -887,4 +964,30 @@ public class UsuarioMBean extends GenericoController {
 	public void setBtnGuardar(UIComponent btnGuardar) {
 		this.btnGuardar = btnGuardar;
 	}
+
+	public String getCodigoUsuario() {
+		return codigoUsuario;
+	}
+
+	public void setCodigoUsuario(String codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
+
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
+	public List<UsuarioModel> getDatosUsuarioModelGrid() {
+		return datosUsuarioModelGrid;
+	}
+
+	public void setDatosUsuarioModelGrid(List<UsuarioModel> datosUsuarioModelGrid) {
+		this.datosUsuarioModelGrid = datosUsuarioModelGrid;
+	}
+	
+	
 }

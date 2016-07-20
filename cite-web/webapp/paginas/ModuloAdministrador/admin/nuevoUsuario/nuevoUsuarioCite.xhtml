@@ -56,7 +56,7 @@
 							value="#{usuarioMBean.usuarioModel.tipoDoc}">
 							<f:selectItem itemLabel="Seleccione Tipo Doc " />
 							<f:selectItem itemLabel="DNI" itemValue="1" />
-							<f:selectItem itemLabel="Carne de Extranjeria" itemValue="2" />
+							<!-- f:selectItem itemLabel="Carne de Extranjeria" itemValue="2" / -->
 						</p:selectOneMenu>
 
 						<p:message for="tipoDoc" />
@@ -185,7 +185,7 @@
 					</p:column>
 
 					<p:column>
-						<p:inputText id="idUsuario" size="25"  
+						<p:inputText id="idUsuario" size="10"  
 							value="#{usuarioMBean.usuarioModel.idUsuario}" />
 							<p:message for="idUsuario" />
 							
@@ -255,8 +255,31 @@
 
 
 				</p:row>
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblJefe"
+							value="Jefe Inmediato :" />
+					</p:column>
 
+					<p:column styleClass="styleAlignLeftColumn">
+						<p:inputText id="jefe" size="25"    
+							value="#{usuarioMBean.usuarioModel.jefe}" />
+						<p:message for="jefe" />
+					</p:column> 
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblTelefonoJefe"
+							value="Telefono de contacto :" />
+					</p:column>
 
+					<p:column colspan="3">
+						<p:inputMask id="telefonoJefe" size="10" maxlength="9"  
+							value="#{usuarioMBean.usuarioModel.telefonoJefe}" mask="999-999-999" />
+								<p:message for="telefonoJefe" />	
+						 
+					</p:column>
+
+				</p:row>
+				
 
 			</p:panelGrid>
 		</p:panel>
@@ -267,7 +290,7 @@
 					<p:commandButton id="botonGuardar" value="Registrar Usuario"
 						styleClass="buttonMarginNormal"
 						actionListener="#{usuarioMBean.guardarNuevoUsuario}"
-						update="pnlGridLoginAcceso,nombre, tipoDoc, dni, cargo, cite, sede, dependencia, idUsuario, emailPersonal , emailAdmin, clave,confirmarclave, telefonoUsuario2, telefonoUsuario, rol"
+						update="pnlGridLoginAcceso,nombre, tipoDoc, dni, telefonoJefe, jefe, cargo, cite, sede, dependencia, idUsuario, emailPersonal , emailAdmin, clave,confirmarclave, telefonoUsuario2, telefonoUsuario, rol"
 						ajax="true" />
 				</p:column>
 

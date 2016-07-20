@@ -70,11 +70,15 @@
 				<p:menuitem 
 					value="Nuevo Usuario CITE" action="#{usuarioMBean.registraNuevoUsuarioCite}"
 					icon="ui-icon-arrowrefresh-1-w" /> 
+				<p:menuitem 
+					value="Buscar Usuario CITE" action="#{usuarioMBean.buscarUsuarioCite}"
+					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
 			<p:submenu label="Cerrar Sesion">
             	<p:menuitem 
             		value="Cerrar Sesion" url="#{request.contextPath}/j_spring_security_logout"
-					icon="ui-icon-arrowrefresh-1-w" />			 
+					icon="ui-icon-arrowrefresh-1-w" />	
+						 
 			</p:submenu>	
 			
 							

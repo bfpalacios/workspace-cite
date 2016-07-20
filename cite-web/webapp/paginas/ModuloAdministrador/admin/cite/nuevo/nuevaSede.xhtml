@@ -23,7 +23,25 @@
 					<p:column colspan="6">Datos de la Nueva Sede - UTT</p:column>
 				</p:row>
 			</f:facet>
+			
+			
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblTSede" value="CITE :" />
+				</p:column>
 
+				<p:column colspan="4">
+					<p:selectOneMenu id="cite"
+						value="#{citesMBean.usuarioModelSelect.codCite}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione la CITE " />
+						<f:selectItems value="#{citesMBean.servicioModel.listarCITE}"
+							var="citeU" itemLabel="#{citeU.descripcion}"
+							itemValue="#{citeU.codigo}" />
+					</p:selectOneMenu>
+					<p:message for="cite" />
+				</p:column>
+			</p:row>
 
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -104,25 +122,6 @@
 					<p:message for="direccionSede" />
 				</p:column>	
 			</p:row>
-			
-			<p:row>
-				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-					<h:outputText id="lblTSede" value="CITE :" />
-				</p:column>
-
-				<p:column colspan="4">
-					<p:selectOneMenu id="cite"
-						value="#{citesMBean.usuarioModelSelect.codCite}"
-						styleClass="ui-column-label-spij styleAlignRightColumn">
-						<f:selectItem itemLabel="Seleccione la CITE " />
-						<f:selectItems value="#{citesMBean.servicioModel.listarCITE}"
-							var="citeU" itemLabel="#{citeU.descripcion}"
-							itemValue="#{citeU.codigo}" />
-					</p:selectOneMenu>
-					<p:message for="cite" />
-				</p:column>
-			</p:row>
-			
 
 	
 

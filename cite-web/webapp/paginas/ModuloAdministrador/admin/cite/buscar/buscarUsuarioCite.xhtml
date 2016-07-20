@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeBuscarUsuario"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panel header="#{mensaje['produccion.buscar.usuario.label.titulo']}"
+			style="width: 400px;">
+			<p:panelGrid id="pnlGridBuscarUsuario">
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lNombre"
+							value="#{mensaje['produccion.buscar.usuario.label.buscarpornombre']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="nombreUsuario" value="#{usuarioMBean.nombreUsuario}"
+							size="20" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lCodigo"
+							value="#{mensaje['produccion.buscar.usuario.label.buscarporcodigo']}" />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{usuarioMBean.codigoUsuario}" id="codigoUsuario"
+							 size="20" />
+					</p:column>
+				</p:row>
+
+
+				<p:row id="filaBuscar">
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Buscar" id="botonBuscar"
+							actionListener="#{usuarioMBean.buscarUsuarioCites}" ajax="true"
+							update="tablaUsuario" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<p:spacer width="10px" />
+
+		<p:panelGrid id="pnlGridResultadoBuscarUsuarioCites">
+
+			<p:row>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.usuario.label.usuariosencontradas']}</p:column>
+			</p:row>
+
+			<p:row id="filaTabla">
+				<p:column id="colTabla"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
+
+					<p:dataTable id="tablaUsuario" widgetVar="usuarioTabla"
+						var="registro" value="#{usuarioMBean.datosUsuarioModelGrid}"
+						selectionMode="single" rowKey="#{registro.idUsuario}" binding="#{tabla}"
+						emptyMessage="No se encuentra informacion" paginator="true"
+						rows="10">
+
+						<!-- <p:column headerText="Codigo(*)"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.idUsuario}" />
+						</p:column> -->
+
+						<p:column headerText="Codigo de usuario(*)"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.codUsuario}" />
+						</p:column>
+
+						<p:column headerText="Nombres "
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.nombres}" />
+						</p:column>
+						  
+						<p:column headerText="Edición"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<p:commandButton value="Editar"
+								update=":formPrincipal:edicionDetalle"
+								oncomplete="PF('edicionDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{usuarioMBean.usuarioModel}" />
+							</p:commandButton>
+
+							<p:commandButton value="Eliminar"
+								update=":formPrincipal:eliminarDetalle"
+								oncomplete="PF('eliminarDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{usuarioMBean.usuarioModel}" />
+							</p:commandButton>
+
+						</p:column>
+					</p:dataTable>
+
+					<p:dialog widgetVar="edicionDialog" header="Editar noticia"
+						width="800" showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="edicionDetalle" style="text-align:left;">
+							<p:panelGrid style="width:100%" columns="2"
+								rendered="#{not empty usuarioMBean.usuarioModel}"
+								columnClasses="label,value">
+								<p:outputLabel for="idUsuario" value="Id Usuario:" />
+								<p:inputText style="width:100%" id="idUsuario"
+									value="#{usuarioMBean.usuarioModel.idUsuario}" />
+
+								<p:outputLabel for="codUsuario" value="Codigo Usuario:" />
+								<p:inputText style="width:100%" id="codUsuario"
+									value="#{usuarioMBean.usuarioModel.codUsuario}" />
+								
+								<p:spacer></p:spacer>
+								
+								<p:outputLabel for="nombre" value="Nombres Usuario:" />
+								<p:inputText style="width:100%" id="nombre"
+									value="#{usuarioMBean.usuarioModel.nombres}" />
+								
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="addButton" value="Guardar"
+											actionListener="#{usuarioMBean.actualizarUsuario(usuarioMBean.usuarioModel)}"
+											update="tablaUsuario" ajax="false" oncomplete="PF('edicionDialog').hide();" />										
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelButton" value="Cancelar"
+											oncomplete="PF('edicionDialog').hide();" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+					<p:dialog widgetVar="eliminarDialog" header="Eliminar Usuario"
+						showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="eliminarDetalle" style="text-align:center;">
+							<h:panelGrid columns="2"
+								rendered="#{not empty usuarioMBean.usuarioModel}">
+								<p:spacer></p:spacer>
+								<p:outputLabel
+									value="Esta seguro que desea eliminar este usuario?" />
+								<p:spacer></p:spacer>
+								<p:outputLabel style="font-weight: bold;"
+									value="#{usuarioMBean.usuarioModel.codUsuario}" />
+								<p:spacer></p:spacer>
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="deleteButton" value="Eliminar"
+											actionListener="#{usuarioMBean.eliminarUsuario(usuarioMBean.usuarioModel)}"
+											update="tablaUsuario" ajax="false" oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelDeleteButton" value="Cancelar"
+											oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+								</p:row>
+							</h:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+
+				</p:column>
+			</p:row>
+
+		</p:panelGrid>
+
+	</ui:define>
+</ui:composition>
+</html>

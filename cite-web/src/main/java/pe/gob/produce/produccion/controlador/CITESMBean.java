@@ -586,7 +586,7 @@ public class CITESMBean {
 	public void actualizarCite(CITEBO cite) {
 		try {
 
-			String codigoDpto = getUsuarioModelSelect().getCodDepartamento() == null ? "invalido"
+			/*String codigoDpto = getUsuarioModelSelect().getCodDepartamento() == null ? "invalido"
 					: getUsuarioModelSelect().getCodDepartamento();
 			String codigoProvincia = getUsuarioModelSelect().getCodProvincia() == null ? "invalido"
 					: getUsuarioModelSelect().getCodProvincia();
@@ -595,22 +595,22 @@ public class CITESMBean {
 			String codigoUbigeo = codigoDpto + codigoProvincia + codigoDistrito;
 
 			codigoUbigeo = codigoUbigeo.equals("") ? "0" : codigoUbigeo;
-
+*/
 			System.out.println("ACTUALIZAR CITE: ");
 			System.out.println("codigoCite " + cite.getCodigo());
 			System.out.println("nombreCite " + cite.getDescripcion());
-			System.out.println("codigo ubigeo " + codigoUbigeo);
+			System.out.println("codigo ubigeo " + cite.getCodigoUbigeo());
 			System.out.println("fechaCite" + cite.getFecha());
 
-			if (validarCamposCite(cite.getCodigo(), cite.getDescripcion(), codigoDpto,
-					codigoProvincia, codigoDistrito, codigoUbigeo)){
+			if (validarCamposCite(cite.getCodigo(), cite.getDescripcion(), "test",
+					"test", "test", cite.getCodigoUbigeo())){
 
-				cite.setCodigoUbigeo(codigoUbigeo);
+				//cite.setCodigoUbigeo(codigoUbigeo);
 				int rs = citeServices.actualizarCite(cite);
 				if(rs < 1){
 					mostrarMensaje(16);
 				}
-				citeActual.setCodigoUbigeo(codigoUbigeo);
+				//citeActual.setCodigoUbigeo(codigoUbigeo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -249,9 +249,9 @@ Connection con = null;
 			pstmt = con.prepareStatement("{call dbo.ActualizarCite(?,?,?,?,?,?)}");
 			
 			pstmt.setString(1, cite.getCodigo());
-			pstmt.setString(2, cite.getDescripcion());
-			pstmt.setDate(3, new java.sql.Date(cite.getFecha().getTime()));
-			pstmt.setString(4, cite.getEstado());
+			pstmt.setString(2, cite.getDescripcion());			
+			pstmt.setString(3, cite.getEstado());
+			pstmt.setDate(4, new java.sql.Date(cite.getFecha().getTime()));
 			pstmt.setString(5, cite.getCodigoUbigeo());
 			pstmt.setInt(6, cite.getId());
 			rs = pstmt.executeUpdate();			

@@ -103,7 +103,7 @@
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<p:calendar id="fecha_tabla"
 									value="#{registro.fecha}"
-									pattern="dd/MM/yyyy" readonlyInput="true"/>
+									pattern="dd/MM/yyyy" readonly="true"/>
 						</p:column>
 						
 						<p:column headerText="código de Sede"  id="ubigeo_tabla" 
@@ -130,7 +130,7 @@
 						</p:column>
 					</p:dataTable>
 
-					<p:dialog widgetVar="edicionDialog" header="Editar noticia"
+					<p:dialog widgetVar="edicionDialog" header="Editar Cite"
 						width="800" showEffect="clip" hideEffect="clip">
 						<p:outputPanel id="cite_editar" style="text-align:left;">
 							<p:panelGrid style="width:100%" columns="2"
@@ -154,7 +154,9 @@
 									pattern="dd/MM/yyyy" />
 
 								<p:outputLabel for="sede" value="Sede del Cite:" />
-								<p:row id="sede">
+								<p:inputText style="width:100%" id="sede"
+									value="#{citesMBean.citeActual.codigoUbigeo}" />
+								<!-- <p:row id="sede">
 									<h:outputText id="edit_ubigeo"
 											value="#{citesMBean.citeActual.codigoUbigeo}" />
 									<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -212,7 +214,7 @@
 										</p:selectOneMenu>
 									</p:column>
 				
-								</p:row>
+								</p:row> -->
 
 								<p:spacer></p:spacer>
 								<p:row>
@@ -232,7 +234,7 @@
 						</p:outputPanel>
 					</p:dialog>
 
-					<p:dialog widgetVar="eliminarDialog" header="Eliminar noticia"
+					<p:dialog widgetVar="eliminarDialog" header="Eliminar Cite"
 						showEffect="clip" hideEffect="clip">
 						<p:outputPanel id="cite_eliminar" style="text-align:center;">
 							<h:panelGrid columns="2"

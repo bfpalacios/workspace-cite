@@ -10,7 +10,7 @@
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
 
-		<p:outputPanel id="mensajeNuevoServicioInformativo"
+		<p:outputPanel id="mensajeNuevoServicioNoticia"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
@@ -50,26 +50,26 @@
 						styleClass="ui-column-label-spij styleAlignCenterColumn">
 						<p:commandButton value="Buscar" id="botonBuscar"
 							actionListener="#{informativoMBean.buscarNoticias}" ajax="true"
-							update="tablaNoticias" />
+							update="noticia_tabla" />
 					</p:column>
 				</p:row>
 			</p:panelGrid>
 		</p:panel>
 		<p:spacer width="10px" />
 
-		<p:panelGrid id="pnlGridResultadoBuscarInformativo">
+		<p:panelGrid id="pnlGridResultadoBuscarNoticia">
 
 			<p:row>
 				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.noticia.label.noticiasencontradas']}</p:column>
 			</p:row>
 
-			<p:row id="filaTabla">
-				<p:column id="colTabla"
+			<p:row id="filaTablaNoticia">
+				<p:column id="colTablaNoticia"
 					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
 
-					<p:dataTable id="tablaNoticias" widgetVar="noticiaTabla"
+					<p:dataTable id="noticia_tabla" widgetVar="noticiaTabla"
 						var="registro" value="#{informativoMBean.datosInformativoModelGrid}"
-						selectionMode="single" rowKey="#{registro.id}" binding="#{tabla}"
+						selectionMode="single" rowKey="#{registro.id}"
 						emptyMessage="No se encuentra informacion" paginator="true"
 						rows="10">
 
@@ -101,7 +101,7 @@
 						<p:column headerText="Edición"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<p:commandButton value="Editar"
-								update=":formPrincipal:edicionDetalle"
+								update=":formPrincipal:noticia_detalle"
 								oncomplete="PF('edicionDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{informativoMBean.informativoModel}" />
@@ -119,7 +119,7 @@
 
 					<p:dialog widgetVar="edicionDialog" header="Editar noticia"
 						width="800" showEffect="clip" hideEffect="clip">
-						<p:outputPanel id="edicionDetalle" style="text-align:left;">
+						<p:outputPanel id="noticia_detalle" style="text-align:left;">
 							<p:panelGrid style="width:100%" columns="2"
 								rendered="#{not empty informativoMBean.informativoModel}"
 								columnClasses="label,value">
@@ -165,7 +165,7 @@
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="addButton" value="Guardar"
 											actionListener="#{informativoMBean.actualizarNoticia(informativoMBean.informativoModel)}"
-											update="tablaNoticias" ajax="false" oncomplete="PF('edicionDialog').hide();" />										
+											update="noticia_tabla" ajax="false" oncomplete="PF('edicionDialog').hide();" />										
 									</p:column>
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -194,7 +194,7 @@
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="deleteButton" value="Eliminar"
 											actionListener="#{informativoMBean.eliminarNoticia(informativoMBean.informativoModel)}"
-											update="tablaNoticias" ajax="false" oncomplete="PF('eliminarDialog').hide();" />
+											update="noticia_tabla" ajax="false" oncomplete="PF('eliminarDialog').hide();" />
 									</p:column>
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">

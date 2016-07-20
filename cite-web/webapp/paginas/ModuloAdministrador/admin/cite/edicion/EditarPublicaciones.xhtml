@@ -10,7 +10,7 @@
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
 
-		<p:outputPanel id="mensajeNuevoServicioInformativoub"
+		<p:outputPanel id="mensajeNuevoServicioPublic"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
@@ -19,7 +19,7 @@
 
 		<p:panel header="#{mensaje['produccion.buscar.publicacion.label.titulo']}"
 			style="width: 400px;">
-			<p:panelGrid id="pnlGridBuscarNoticiasPub">
+			<p:panelGrid id="pnlGridBuscarPub">
 
 				<p:row>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -27,7 +27,7 @@
 							value="#{mensaje['produccion.buscar.publicacion.label.buscarportitulo']}" />
 					</p:column>
 					<p:column>
-						<p:inputText id="tituloNoticia" value="#{informativoMBean.titulo}"
+						<p:inputText id="tituloPublic" value="#{informativoMBean.titulo}"
 							size="20" />
 					</p:column>
 				</p:row>
@@ -50,26 +50,26 @@
 						styleClass="ui-column-label-spij styleAlignCenterColumn">
 						<p:commandButton value="Buscar" id="botonBuscar"
 							actionListener="#{informativoMBean.buscarPublicaciones}" ajax="true"
-							update="tablaPublicaciones" />
+							update="publicac_tabla" />
 					</p:column>
 				</p:row>
 			</p:panelGrid>
 		</p:panel>
 		<p:spacer width="10px" />
 
-		<p:panelGrid id="pnlGridResultadoBuscarInformativoPub">
+		<p:panelGrid id="pnlGridResultadoBuscarPublic">
 
 			<p:row>
 				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.publicacion.label.noticiasencontradas']}</p:column>
 			</p:row>
 
-			<p:row id="filaTablaPub">
-				<p:column id="colTabla"
+			<p:row id="filaTablaPublic">
+				<p:column id="colTablaPublic"
 					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
 
-					<p:dataTable id="tablaPublicaciones" widgetVar="publicacionTabla"
+					<p:dataTable id="publicac_tabla" widgetVar="publicacionTabla"
 						var="registro" value="#{informativoMBean.datosInformativoModelGrid}"
-						selectionMode="single" rowKey="#{registro.id}" binding="#{tabla}"
+						selectionMode="single" rowKey="#{registro.id}"
 						emptyMessage="No se encuentra informacion" paginator="true"
 						rows="10">
 
@@ -101,15 +101,15 @@
 						<p:column headerText="Edición"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<p:commandButton value="Editar"
-								update=":formPrincipal:edicionDetallePub"
+								update=":formPrincipal:pub_detalle"
 								oncomplete="PF('edicionDialogPub').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{informativoMBean.informativoModel}" />
 							</p:commandButton>
 
 							<p:commandButton value="Eliminar"
-								update=":formPrincipal:eliminarDetallePub"
-								oncomplete="PF('eliminarDialog').show()">
+								update=":formPrincipal:eliminar_det"
+								oncomplete="PF('eliminarDialogPub').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{informativoMBean.informativoModel}" />
 							</p:commandButton>
@@ -119,7 +119,7 @@
 
 					<p:dialog widgetVar="edicionDialogPub" header="Editar noticia"
 						width="800" showEffect="clip" hideEffect="clip">
-						<p:outputPanel id="edicionDetallePub" style="text-align:left;">
+						<p:outputPanel id="pub_detalle" style="text-align:left;">
 							<p:panelGrid style="width:100%" columns="2"
 								rendered="#{not empty informativoMBean.informativoModel}"
 								columnClasses="label,value">
@@ -165,7 +165,7 @@
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="addButton" value="Guardar"
 											actionListener="#{informativoMBean.actualizarPublicacion(informativoMBean.informativoModel)}"
-											update="tablaPublicaciones" ajax="false" oncomplete="PF('edicionDialogPub').hide();" />											
+											update="publicac_tabla" ajax="false" oncomplete="PF('edicionDialogPub').hide();" />											
 											
 									</p:column>
 									<p:column
@@ -178,14 +178,14 @@
 						</p:outputPanel>
 					</p:dialog>
 
-					<p:dialog widgetVar="eliminarDialog" header="Eliminar publicacion"
+					<p:dialog widgetVar="eliminarDialogPub" header="Eliminar publicacion"
 						showEffect="clip" hideEffect="clip">
-						<p:outputPanel id="eliminarDetallePub" style="text-align:center;">
+						<p:outputPanel id="eliminar_det" style="text-align:center;">
 							<h:panelGrid columns="2"
 								rendered="#{not empty informativoMBean.informativoModel}">
 								<p:spacer></p:spacer>
 								<p:outputLabel
-									value="Esta seguro que desea eliminar esta publicacion" />
+									value="Esta seguro que desea eliminar esta publicacion?" />
 								<p:spacer></p:spacer>
 								<p:outputLabel style="font-weight: bold;"
 									value="#{informativoMBean.informativoModel.titulo}" />
@@ -195,12 +195,12 @@
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="deleteButton" value="Eliminar"
 											actionListener="#{informativoMBean.eliminarPublicacion(informativoMBean.informativoModel)}"
-											update="tablaPublicaciones" ajax="false" oncomplete="PF('eliminarDialog').hide();" />
+											update="publicac_tabla" ajax="false" oncomplete="PF('eliminarDialogPub').hide();" />
 									</p:column>
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="cancelDeleteButton" value="Cancelar"
-											oncomplete="PF('eliminarDialog').hide();" />
+											oncomplete="PF('eliminarDialogPub').hide();" />
 									</p:column>
 								</p:row>
 							</h:panelGrid>

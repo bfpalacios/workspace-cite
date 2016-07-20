@@ -77,15 +77,19 @@ public class NoticiaImagen {
 		} else {
 			String publicacionIdUi = context.getExternalContext()
 					.getRequestParameterMap().get("publicacionId");
-			this.id = Integer.parseInt(publicacionIdUi);
-			ServicioInformativoBO informativo = informativoService
-					.obtenerInformativo(Integer.parseInt(publicacionIdUi),
-							TipoInformativo.PUBLICACION);
-			if (informativo != null) {
-				return new DefaultStreamedContent(new ByteArrayInputStream(
-						informativo.getArchivoInformativo()));
+			if (StringUtils.isNotEmpty(publicacionIdUi)) {
+				this.id = Integer.parseInt(publicacionIdUi);
+				ServicioInformativoBO informativo = informativoService
+						.obtenerInformativo(Integer.parseInt(publicacionIdUi),
+								TipoInformativo.PUBLICACION);
+				if (informativo != null) {
+					return new DefaultStreamedContent(new ByteArrayInputStream(
+							informativo.getArchivoInformativo()));
+				} else {
+					throw new IOException("Error cargando archivo pdf");
+				}
 			} else {
-				throw new IOException("Error cargando archivo pdf");
+				return new DefaultStreamedContent();
 			}
 		}
 	}

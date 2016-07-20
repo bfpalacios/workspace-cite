@@ -16,7 +16,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.io.IOUtils;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -61,6 +60,7 @@ public class InformativoMBean {
 		}
 		this.informativoModel = new InformativoModel();
 		setInformativoModel(new InformativoModel());
+		this.datosInformativoModelGrid = new ArrayList<>();
 	}
 
 	public void buscarNoticias() throws Exception {
@@ -218,13 +218,8 @@ public class InformativoMBean {
 		String pagina = "/paginas/ModuloAdministrador/admin/cite/edicion/EditarNoticias.xhtml";
 		System.out.println("editarServicioNoticias:FIN");
 		return pagina;
-	}
+	}	
 	
-	public void reset() {
-		RequestContext.getCurrentInstance().reset(
-				"formPrincipal:edicionDetalle");
-
-	}
 	public String editarServicioPublicaciones() throws Exception {
 		System.out.println("editarServicioPublicaciones:INICIO");
 		inicializarClases();

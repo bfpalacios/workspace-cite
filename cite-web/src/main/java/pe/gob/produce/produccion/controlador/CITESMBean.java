@@ -583,10 +583,57 @@ public class CITESMBean {
 		}
 	}
 	
+	public void actualizarCite(CITEBO cite) {
+		try {
+
+			String codigoDpto = getUsuarioModelSelect().getCodDepartamento() == null ? "invalido"
+					: getUsuarioModelSelect().getCodDepartamento();
+			String codigoProvincia = getUsuarioModelSelect().getCodProvincia() == null ? "invalido"
+					: getUsuarioModelSelect().getCodProvincia();
+			String codigoDistrito = getUsuarioModelSelect().getCodDistrito() == null ? "invalido"
+					: getUsuarioModelSelect().getCodDistrito();
+			String codigoUbigeo = codigoDpto + codigoProvincia + codigoDistrito;
+
+			codigoUbigeo = codigoUbigeo.equals("") ? "0" : codigoUbigeo;
+
+			System.out.println("ACTUALIZAR CITE: ");
+			System.out.println("codigoCite " + cite.getCodigo());
+			System.out.println("nombreCite " + cite.getDescripcion());
+			System.out.println("codigo ubigeo " + codigoUbigeo);
+			System.out.println("fechaCite" + cite.getFecha());
+
+			if (validarCamposCite(cite.getCodigo(), cite.getDescripcion(), codigoDpto,
+					codigoProvincia, codigoDistrito, codigoUbigeo)){
+
+				cite.setCodigoUbigeo(codigoUbigeo);
+				int rs = citeServices.actualizarCite(cite);
+				if(rs < 1){
+					mostrarMensaje(16);
+				}
+				citeActual.setCodigoUbigeo(codigoUbigeo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mostrarMensaje(16);
+		}
+	}
+	
+	public void eliminarCite(CITEBO cite) {
+		try {
+
+			int rs = citeServices.eliminarCite(cite.getId());
+			if(rs < 1){
+				mostrarMensaje(17);
+			}
+			buscarCites();
+		} catch (Exception e) {
+			e.printStackTrace();
+			mostrarMensaje(17);
+		}
+	}
+	
 	public void buscarCites(){
 		
-		FormateadorFecha fechaFormateada = new FormateadorFecha();
-
 		String nombre = getNombreBusqueda();
 		String codigo = getCodigoBusqueda();
 		Date fecha = getFechaBusqueda();
@@ -944,7 +991,18 @@ public class CITESMBean {
 					"Debe ingresar en el campo - " + "Codigo de la UTT ");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
-
+		case 16:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al actualizar CITE");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 17:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al eliminar CITE");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
 		}
 	}
 

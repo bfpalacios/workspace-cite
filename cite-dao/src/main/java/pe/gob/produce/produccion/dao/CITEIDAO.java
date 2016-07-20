@@ -17,5 +17,7 @@ public interface CITEIDAO {
 	public void grabarInformativo(ServicioInformativoBO servicioInformativo) throws Exception;
 	public void grabarPublicaciones(ServicioInformativoBO servicioInformativo) throws Exception;
 	public void grabarNuevaCite(CITEBO cite) throws Exception;
-	public List<CITEBO> buscarCites(String codigo,String nombre, Date fecha)  throws Exception;
+	List<CITEBO> buscarCites(String codigo,String nombre, Date fecha)  throws Exception;
+	Integer actualizarCite(CITEBO cite)  throws Exception;
+	Integer eliminarCite(Integer id) throws Exception;
 }

@@ -20,6 +20,7 @@ import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
+import pe.gob.produce.produccion.core.util.TipoInformativo;
 import pe.gob.produce.produccion.dao.CITEIDAO;
 
 
@@ -235,6 +236,54 @@ Connection con = null;
 			this.cerrarConexion(con);
 		}
 		return listaCites;
+	}
+
+	@Override
+	public Integer actualizarCite(CITEBO cite) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.ActualizarCite(?,?,?,?,?,?)}");
+			
+			pstmt.setString(1, cite.getCodigo());
+			pstmt.setString(2, cite.getDescripcion());
+			pstmt.setDate(3, new java.sql.Date(cite.getFecha().getTime()));
+			pstmt.setString(4, cite.getEstado());
+			pstmt.setString(5, cite.getCodigoUbigeo());
+			pstmt.setInt(6, cite.getId());
+			rs = pstmt.executeUpdate();			
+			
+		} catch (Exception e) {
+			System.out.println("No Cite updated for: " + cite.getDescripcion() + " " + cite.getFecha());
+			throw new Exception(e);
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
+	}
+
+	@Override
+	public Integer eliminarCite(Integer id) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.EliminarCite(?)}");			
+			pstmt.setInt(1, id);
+			rs = pstmt.executeUpdate();			
+		} catch (Exception e) {
+			System.out.println("No Cite deleted for: " + id);
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
 	}
 
 	

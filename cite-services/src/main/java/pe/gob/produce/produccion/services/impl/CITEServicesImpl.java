@@ -78,7 +78,16 @@ public class CITEServicesImpl implements CITEServices{
 			throws Exception {
 		return citeDAO.buscarCites(codigo, nombre, fecha);
 	}
-	
-	
 
+
+	@Override
+	public Integer actualizarCite(CITEBO cite) throws Exception {
+		return citeDAO.actualizarCite(cite);
+	}
+
+
+	@Override
+	public Integer eliminarCite(Integer id) throws Exception {
+		return citeDAO.eliminarCite(id);
+	}
 }

@@ -13,6 +13,7 @@ public interface ComunServices {
 	public List<UbigeoBO> listUbigeo() throws Exception;
 	public List<SedeBO> listarSedes(String codCite) throws Exception;
 	public List<UbigeoBO> listarProvincia(String codDepartamento) throws Exception;
+	public UbigeoBO buscarUbigeo(String codigoUbigeo) throws Exception;
 	public List<UbigeoBO> listarDistrito(String codDepartamento, String codProvincia) throws Exception;
 	public UsuarioBO buscarUsuario(String codUsuario)  throws Exception;
 

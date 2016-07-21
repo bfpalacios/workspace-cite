@@ -17,6 +17,8 @@ public interface ComunIDAO {
 	public List<UbigeoBO> listarDistrito(String codDepartamento, String codProvincia) throws Exception;
 	public UsuarioBO buscarUsuario(String codUsuario)  throws Exception;
 	public List<DependenciaBO> listarDependencias(String codigoSede) throws Exception;
-
+	
+	public UbigeoBO buscarUbigeo(String codigoUbigeo) throws Exception;
+	
 
 }

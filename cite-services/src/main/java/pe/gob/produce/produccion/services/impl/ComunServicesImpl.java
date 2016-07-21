@@ -68,6 +68,13 @@ public class ComunServicesImpl implements ComunServices{
 		// TODO Auto-generated method stub
 		return comunDAO.listarDependencias(codigoSede);
 	}
+
+
+	@Override
+	public UbigeoBO buscarUbigeo(String codigoUbigeo) throws Exception {
+		// TODO Auto-generated method stub
+		return comunDAO.buscarUbigeo(codigoUbigeo);
+	}
 	
 	
 

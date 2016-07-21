@@ -17,6 +17,7 @@ public class CITEBO implements Serializable {
 	private SedeBO sede;
 	private String estado;
 	private String codigoUbigeo;
+	private UbigeoBO ubigeo;
 	
 	public SedeBO getSede() {
 		return sede;
@@ -59,6 +60,12 @@ public class CITEBO implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public UbigeoBO getUbigeo() {
+		return ubigeo;
+	}
+	public void setUbigeo(UbigeoBO ubigeo) {
+		this.ubigeo = ubigeo;
 	}	
-
+	
 }

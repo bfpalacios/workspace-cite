@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
  
 
+
 import org.springframework.stereotype.Component;
 
 import pe.gob.produce.cite.bo.CITEBO;
@@ -273,6 +274,46 @@ public class ComunDAOImpl extends BaseDAO implements ComunIDAO{
 	public List<UsuarioBO> obtenerRoles(int proceso) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public UbigeoBO buscarUbigeo(String codigoUbigeo) throws Exception {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		CallableStatement cstm = null;
+		ResultSet rs = null;
+
+		UbigeoBO ubigeo = new UbigeoBO();
+
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = con.prepareStatement("{call dbo.SP_Buscar_Ubigeo(?)}");
+			pstmt.setString(1, codigoUbigeo);
+			
+		    rs = pstmt.executeQuery();
+
+		    while (rs.next()) {
+		        System.out.println("codigoUbigeo " + rs.getString("IDUBIGEO"));
+		        ubigeo.setDepartamento(rs.getString(2));
+			    ubigeo.setProvincia(rs.getString(3));			     
+		        ubigeo.setDistrito(rs.getString(4));
+			     
+				 
+			          
+		    }
+		      
+		     
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			this.cerrarResultSet(rs);
+			this.cerrarStatement(cstm);
+			this.cerrarConexion(con);
+		}
+	
+
+		return ubigeo;
 	}
 
 }

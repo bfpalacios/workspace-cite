@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -186,6 +187,9 @@ public class CITESMBean {
 		System.out.println("editarCites:INICIO");
 
 		inicializarClases();
+		// carga el combo para los departamentos, provincia y distrito
+		cargarUbigeo();
+		
 		String pagina = "/paginas/ModuloAdministrador/admin/cite/edicion/EditarCites.xhtml";
 		System.out.println("editarCites:FIN");
 		return pagina;
@@ -194,8 +198,9 @@ public class CITESMBean {
 	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
 		String codDepartamento = (String) (e.getNewValue() == null ? "" : e
 				.getNewValue());
-
-		codDepartamento = codDepartamento.substring(0, 2);
+		if (!codDepartamento.equals("")){
+			codDepartamento = codDepartamento.substring(0, 2);
+		}	
 		System.out.println("codigo de departamento " + codDepartamento);
 		List<UbigeoBO> listarProvincia = new ArrayList<UbigeoBO>();
 		List<UbigeoModel> listaUbigeoModel = new ArrayList<UbigeoModel>();
@@ -218,12 +223,17 @@ public class CITESMBean {
 	public void actualizarlistDistrito(ValueChangeEvent e) throws Exception {
 		String codDepartamento = getUsuarioModelSelect().getCodDepartamento() == null ? ""
 				: getUsuarioModelSelect().getCodDepartamento();
-
+		if (codDepartamento != null){
+			codDepartamento = codDepartamento.substring(0, 2);
+		}
+		
 		String codProvincia = (String) (e.getNewValue() == null ? "" : e
 				.getNewValue());
-
-		codDepartamento = codDepartamento.substring(0, 2);
-		codProvincia = codProvincia.substring(2, 4);
+		if (!codProvincia.equals("") ){
+			codProvincia = codProvincia.substring(2, 4);
+		}
+		//codDepartamento = codDepartamento.substring(0, 2);
+		
 		System.out.println("codigo de departamento " + codDepartamento);
 		System.out.println("codigo de provincia " + codProvincia);
 
@@ -245,7 +255,20 @@ public class CITESMBean {
 
 		getUsuarioModel().setListDistrito(listaUbigeoModel);
 	}
+	
+	
+	
+	public void actualizarSede(ValueChangeEvent e) throws Exception {
+		
+		String codigoUbigeo = (String) (e.getNewValue() == null ? "" : e
+				.getNewValue());
 
+		System.out.println("codigo de ubigeo " + codigoUbigeo); 
+
+		citeActual.setCodigoUbigeo(codigoUbigeo);
+ 
+	}
+	
 	public void handleFileUpload(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
@@ -595,7 +618,9 @@ public class CITESMBean {
 			String codigoUbigeo = codigoDpto + codigoProvincia + codigoDistrito;
 
 			codigoUbigeo = codigoUbigeo.equals("") ? "0" : codigoUbigeo;
-*/
+*/	
+			int contador=0;
+			UbigeoBO ubigeoCite = new UbigeoBO();
 			System.out.println("ACTUALIZAR CITE: ");
 			System.out.println("codigoCite " + cite.getCodigo());
 			System.out.println("nombreCite " + cite.getDescripcion());
@@ -607,6 +632,19 @@ public class CITESMBean {
 
 				//cite.setCodigoUbigeo(codigoUbigeo);
 				int rs = citeServices.actualizarCite(cite);
+				
+				for(CITEBO citebo: getListaCites()){
+					
+					if(cite.getCodigoUbigeo().equals(citebo.getCodigoUbigeo())){
+					
+						ubigeoCite = comunServices.buscarUbigeo(cite.getCodigoUbigeo());
+						listaCites.get(contador).setUbigeo(ubigeoCite); 
+					}
+					contador ++;
+				}
+				// carga el combo para los departamentos, provincia y distrito
+				//cargarUbigeo();
+				//mostrarMensaje(18);
 				if(rs < 1){
 					mostrarMensaje(16);
 				}
@@ -637,18 +675,36 @@ public class CITESMBean {
 		String nombre = getNombreBusqueda();
 		String codigo = getCodigoBusqueda();
 		Date fecha = getFechaBusqueda();
+		UbigeoBO ubigeoCite = new UbigeoBO(); 
+		int contador =0;
+		// carga el combo para los departamentos, provincia y distrito
+		cargarUbigeo();
+		getUsuarioModelSelect().setCodDepartamento("25");	 
 		
 		// this should be gone in a logger
 		System.out.println("DATOS BUSQUEDA DE CITES: " + nombre + " " + codigo + " " + fecha);
 		listaCites = new ArrayList<>();
 		try {
 			listaCites = citeServices.buscarCites(codigo, nombre, fecha);
+			
+			for(CITEBO cite: listaCites){
+				
+
+				
+				ubigeoCite = comunServices.buscarUbigeo(cite.getCodigoUbigeo());
+				listaCites.get(contador).setUbigeo(ubigeoCite); 
+				
+				contador ++;
+			}
+			
 		} catch (Exception e) {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_FATAL, "",
 					"Hubo un error en la busqueda de Cites "  + nombre + " " + codigo + " " + fecha);
 			FacesContext.getCurrentInstance().addMessage(null, message);
-		}		
+		}
+		
+		
 		this.setListaCites(listaCites);
 	}
 
@@ -1001,6 +1057,12 @@ public class CITESMBean {
 			message = new FacesMessage(
 					FacesMessage.SEVERITY_FATAL, "",
 					"Hubo un error al eliminar CITE");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+			
+		case 18:
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+					"Se actualizo correctamente ");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
 		}

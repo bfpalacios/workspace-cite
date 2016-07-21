@@ -31,7 +31,7 @@
 							size="20" />
 					</p:column>
 				</p:row>
-				
+
 				<p:row>
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lCodigo"
@@ -78,38 +78,49 @@
 				<p:column id="colTablaCite"
 					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
 
-					<p:dataTable id="cite_tabla" widgetVar="citeTabla"
-						var="registro" value="#{citesMBean.listaCites}"
-						selectionMode="single" rowKey="#{registro.id}"
-						emptyMessage="No se encuentra informacion" paginator="true"
-						rows="10">
+					<p:dataTable id="cite_tabla" widgetVar="citeTabla" var="registro"
+						value="#{citesMBean.listaCites}" selectionMode="single"
+						rowKey="#{registro.id}" emptyMessage="No se encuentra informacion"
+						paginator="true" rows="12">
 
-						<p:column headerText="código(*)" id="codigo_tabla" 
+						<p:column headerText="código(*)" id="codigo_tabla"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.codigo}" />
 						</p:column>
 
-						<p:column headerText="Nombre(*)"  id="nombre_tabla" 
+						<p:column headerText="Nombre(*)" id="nombre_tabla"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.descripcion}" />
 						</p:column>
 
-						<p:column headerText="Estado"  id="estado_tabla" 
+						<p:column headerText="Estado" id="estado_tabla"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.estado}" />
-						</p:column>				
+						</p:column>
 
 						<p:column headerText="Fecha"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<p:calendar id="fecha_tabla"
-									value="#{registro.fecha}"
-									pattern="dd/MM/yyyy" readonly="true"/>
+							<p:calendar id="fecha_tabla" value="#{registro.fecha}"
+								pattern="dd/MM/yyyy" readonly="true" />
 						</p:column>
 						
 						<p:column headerText="código de Sede"  id="ubigeo_tabla" 
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<h:outputText value="#{registro.codigoUbigeo}" />
-						</p:column>							
+						</p:column>
+						<p:column headerText="Departamento" id="depaetamento_tabla"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+						 	<h:outputText value="#{registro.ubigeo.departamento}" />
+
+						</p:column>
+
+						<p:column headerText="Provincia" id="provincia_tabla">
+							<h:outputText value="#{registro.ubigeo.provincia}" />
+						</p:column>
+
+						<p:column headerText="Distrito" id="distrito_tabla">
+							<h:outputText value="#{registro.ubigeo.distrito}" />
+						</p:column>
 
 						<p:column headerText="Edición"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -149,72 +160,73 @@
 									value="#{citesMBean.citeActual.estado}" />
 
 								<p:outputLabel for="fecha" value="Fecha:" />
-								<p:calendar id="fecha"
-									value="#{citesMBean.citeActual.fecha}"
+								<p:calendar id="fecha" value="#{citesMBean.citeActual.fecha}"
 									pattern="dd/MM/yyyy" />
 
-								<p:outputLabel for="sede" value="Sede del Cite:" />
-								<p:inputText style="width:100%" id="sede"
+
+								<p:column
+									styleClass="ui-column-label-spij styleAlignRightColumn">
+									<h:outputText id="edit_lblDpto"
+										value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
+								</p:column>
+								<p:column>
+									<p:selectOneMenu id="edit_dpto"
+										value="#{citesMBean.usuarioModelSelect.codDepartamento}"
+										valueChangeListener="#{citesMBean.actualizarlistProvincia}"
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<f:selectItem itemLabel="Seleccione el departamento:" />
+										<f:selectItems value="#{citesMBean.usuarioModel.listUbigeo}"
+											var="dptoE" itemLabel="#{dptoE.departamento}"
+											itemValue="#{dptoE.idUbigeo}" />
+										<f:ajax event="change" execute="@this" render="edit_provincia" />
+									</p:selectOneMenu>
+
+								</p:column>
+
+								<p:column
+									styleClass="ui-column-label-spij styleAlignRightColumn">
+									<h:outputText id="edit_lblProvincia"
+										value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
+								</p:column>
+
+								<p:column>
+									<p:selectOneMenu id="edit_provincia"
+										value="#{citesMBean.usuarioModelSelect.codProvincia}"
+										valueChangeListener="#{citesMBean.actualizarlistDistrito}"
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<f:selectItem itemLabel="Seleccione la provincia " />
+										<f:selectItems
+											value="#{citesMBean.usuarioModel.listProvincia}" var="prov"
+											itemLabel="#{prov.provincia}" itemValue="#{prov.idUbigeo}" />
+
+										<f:ajax event="change" execute="@this" render="edit_distrito" />
+									</p:selectOneMenu>
+								</p:column>
+
+
+								<p:column
+									styleClass="ui-column-label-spij styleAlignRightColumn">
+									<h:outputText id="edit_lblDistrito"
+										value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
+								</p:column>
+
+								<p:column>
+									<p:selectOneMenu id="edit_distrito"
+										value="#{citesMBean.usuarioModelSelect.codDistrito}"
+										valueChangeListener="#{citesMBean.actualizarSede}"
+										
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<f:selectItem itemLabel="Seleccione el distrito " />
+										<f:selectItems value="#{citesMBean.usuarioModel.listDistrito}"
+											var="dist" itemLabel="#{dist.distrito}"
+											itemValue="#{dist.idUbigeo}" />
+										<f:ajax event="change" execute="@this" render="edit_ubigeo" />
+									</p:selectOneMenu>
+								</p:column>
+								<p:outputLabel for="edit_ubigeo" value="Sede del Cite:" />
+								<p:inputText style="width:100%" id="edit_ubigeo"
 									value="#{citesMBean.citeActual.codigoUbigeo}" />
-								<!-- <p:row id="sede">
-									<h:outputText id="edit_ubigeo"
-											value="#{citesMBean.citeActual.codigoUbigeo}" />
-									<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-										<h:outputText id="edit_lblDpto"
-											value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
-									</p:column>
-									<p:column>
-										<p:selectOneMenu id="edit_dpto"
-											value="#{citesMBean.usuarioModelSelect.codDepartamento}"
-											valueChangeListener="#{citesMBean.actualizarlistProvincia}"
-											styleClass="ui-column-label-spij styleAlignRightColumn">
-											<f:selectItem itemLabel="Seleccione el departamento:" />
-											<f:selectItems value="#{citesMBean.usuarioModel.listUbigeo}"
-												var="dpto" itemLabel="#{dpto.departamento}"
-												itemValue="#{dpto.idUbigeo}" />
-											<f:ajax event="change" execute="@this" render="edit_provincia" />
-										</p:selectOneMenu>
-					
-									</p:column>
-					
-									<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-										<h:outputText id="edit_lblProvincia"
-											value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
-									</p:column>
-					
-									<p:column>
-										<p:selectOneMenu id="edit_provincia"
-											value="#{citesMBean.usuarioModelSelect.codProvincia}"
-											valueChangeListener="#{citesMBean.actualizarlistDistrito}"
-											styleClass="ui-column-label-spij styleAlignRightColumn">
-											<f:selectItem itemLabel="Seleccione la provincia " />
-											<f:selectItems value="#{citesMBean.usuarioModel.listProvincia}"
-												var="prov" itemLabel="#{prov.provincia}"
-												itemValue="#{prov.idUbigeo}" />
-					
-											<f:ajax event="change" execute="@this" render="edit_distrito" />
-										</p:selectOneMenu>
-									</p:column>
-					
-					
-									<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-										<h:outputText id="edit_lblDistrito"
-											value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
-									</p:column>
-					
-									<p:column>
-										<p:selectOneMenu id="edit_distrito"
-											value="#{citesMBean.usuarioModelSelect.codDistrito}"
-											styleClass="ui-column-label-spij styleAlignRightColumn">
-											<f:selectItem itemLabel="Seleccione el distrito " />
-											<f:selectItems value="#{citesMBean.usuarioModel.listDistrito}"
-												var="distrito" itemLabel="#{distrito.distrito}"
-												itemValue="#{distrito.idUbigeo}" />
-											<f:ajax event="change" execute="@this" render="edit_ubigeo" />
-										</p:selectOneMenu>
-									</p:column>
-				
-								</p:row> -->
+								
 
 								<p:spacer></p:spacer>
 								<p:row>
@@ -222,7 +234,8 @@
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="addButton" value="Guardar"
 											actionListener="#{citesMBean.actualizarCite(citesMBean.citeActual)}"
-											update="codigo_tabla,nombre_tabla,estado_tabla,fecha_tabla,ubigeo_tabla,cite_tabla" ajax="false" oncomplete="PF('edicionDialog').hide();" />										
+											update="codigo_tabla,nombre_tabla,estado_tabla,fecha_tabla,edit_ubigeo, depaetamento_tabla, provincia_tabla, distrito_tabla, cite_tabla"
+											ajax="false" oncomplete="PF('edicionDialog').hide();" />
 									</p:column>
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -240,8 +253,7 @@
 							<h:panelGrid columns="2"
 								rendered="#{not empty citesMBean.citeActual}">
 								<p:spacer></p:spacer>
-								<p:outputLabel
-									value="Esta seguro que desea eliminar este CITE?" />
+								<p:outputLabel value="Esta seguro que desea eliminar este CITE?" />
 								<p:spacer></p:spacer>
 								<p:outputLabel style="font-weight: bold;"
 									value="#{citesMBean.citeActual.descripcion}" />
@@ -251,7 +263,8 @@
 										styleClass="ui-column-label-spij styleAlignRightColumn">
 										<p:commandButton id="deleteButton" value="Eliminar"
 											actionListener="#{citesMBean.eliminarCite(citesMBean.citeActual)}"
-											update="cite_tabla" ajax="false" oncomplete="PF('eliminarDialog').hide();" />
+											update="cite_tabla" ajax="false"
+											oncomplete="PF('eliminarDialog').hide();" />
 									</p:column>
 									<p:column
 										styleClass="ui-column-label-spij styleAlignRightColumn">

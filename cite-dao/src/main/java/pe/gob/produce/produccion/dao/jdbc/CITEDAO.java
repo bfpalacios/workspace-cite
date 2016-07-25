@@ -20,7 +20,6 @@ import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
-import pe.gob.produce.produccion.core.util.TipoInformativo;
 import pe.gob.produce.produccion.dao.CITEIDAO;
 
 
@@ -279,6 +278,177 @@ Connection con = null;
 			rs = pstmt.executeUpdate();			
 		} catch (Exception e) {
 			System.out.println("No Cite deleted for: " + id);
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
+	}
+
+	@Override
+	public List<SedeBO> buscarSedes(String codigoUbigeo, String nombre,
+			String codigo) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		List<SedeBO> listaSedes = new ArrayList<>();
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.BuscarSedes(?,?,?)}");
+			pstmt.setString(1, codigoUbigeo);
+			pstmt.setString(2, nombre);
+			pstmt.setString(3, codigo);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				SedeBO sede = new SedeBO();
+				sede.setId(rs.getInt(1));
+				sede.setCodigoCite(rs.getString(2));
+				sede.setCodigo(rs.getString(3));
+				sede.setDescripcion(rs.getString(4));
+				sede.setTelefono(rs.getString(5));
+				sede.setCelular(rs.getString(6));
+				sede.setJefatura(rs.getString(7));
+				sede.setEmail(rs.getString(8));
+				listaSedes.add(sede);
+			}
+		} catch (Exception e) {
+			System.out.println("No Sede found for: " + codigoUbigeo + " " + nombre + " " + codigo);
+		} finally {
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return listaSedes;
+	}
+
+	@Override
+	public Integer actualizarSede(SedeBO sede) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.ActualizarSede(?,?,?,?,?,?,?,?)}");
+			
+			pstmt.setString(1, sede.getCodigoCite());
+			pstmt.setString(2, sede.getCodigo());
+			pstmt.setString(3, sede.getDescripcion());			
+			pstmt.setString(4, sede.getTelefono());
+			pstmt.setString(5, sede.getCelular());
+			pstmt.setString(6, sede.getJefatura());			
+			pstmt.setString(7, sede.getEmail());
+			pstmt.setInt(8, sede.getId());
+			rs = pstmt.executeUpdate();			
+			
+		} catch (Exception e) {
+			System.out.println("No Sede updated for: " + sede.getDescripcion() + " " + sede.getCodigo());
+			throw new Exception(e);
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
+	}
+
+	@Override
+	public Integer eliminarSede(Integer id) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.EliminarSede(?)}");			
+			pstmt.setInt(1, id);
+			rs = pstmt.executeUpdate();			
+		} catch (Exception e) {
+			System.out.println("No Sede deleted for: " + id);
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
+	}
+
+	@Override
+	public List<DependenciaBO> buscarDependencias(String codigo, String nombre,
+			String codigoSede) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		List<DependenciaBO> listaDependencias = new ArrayList<>();
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.BuscarDependencias(?,?,?)}");			
+			pstmt.setString(1, codigo);
+			pstmt.setString(2, nombre);
+			pstmt.setString(3, codigoSede);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				DependenciaBO dep = new DependenciaBO();
+				dep.setId(rs.getInt(1));
+				dep.setDescripcion(rs.getString(2));
+				dep.setCodigo(rs.getString(3));
+				String codSede = rs.getString(4);
+				List<SedeBO> listaSedes = this.buscarSedes("","",codSede);
+				if(listaSedes.size() > 0){
+					dep.setSede(listaSedes.get(0));
+				}
+				listaDependencias.add(dep);
+			}
+		} catch (Exception e) {
+			System.out.println("No Dependencia found for: " + codigo + " " + nombre + " " + codigoSede);
+		} finally {
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return listaDependencias;
+	}
+
+	@Override
+	public Integer actualizarDependencia(DependenciaBO dependencia)
+			throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.ActualizarDependencia(?,?,?,?)}");
+			
+			pstmt.setString(1, dependencia.getCodigo());
+			pstmt.setString(2, dependencia.getDescripcion());
+			pstmt.setString(3, dependencia.getSede().getCodigo());	
+			pstmt.setInt(4, dependencia.getId());
+			rs = pstmt.executeUpdate();			
+			
+		} catch (Exception e) {
+			System.out.println("No Dependencia updated for: " + dependencia.getDescripcion() + " " + dependencia.getCodigo());
+			throw new Exception(e);
+		} finally {
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}
+		return rs;
+	}
+
+	@Override
+	public Integer eliminarDependencia(Integer id) throws Exception {
+		Connection con = null;
+		Statement statement = null;
+		int rs = 0;
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.EliminarDependencia(?)}");			
+			pstmt.setInt(1, id);
+			rs = pstmt.executeUpdate();			
+		} catch (Exception e) {
+			System.out.println("No Dependencia deleted for: " + id);
 		} finally {
 			this.cerrarSentenceStatement(statement);
 			this.cerrarConexion(con);

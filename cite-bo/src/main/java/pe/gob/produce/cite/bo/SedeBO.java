@@ -8,9 +8,11 @@ public class SedeBO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int id;
 	private String codigo;
 	private String codigoCite;
 	private String descripcion;
+	private String descripcionCite;
 	private String telefono;
 	private String celular;
 	private String jefatura;
@@ -72,5 +74,18 @@ public class SedeBO implements Serializable {
 	}
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
-	}	
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getDescripcionCite() {
+		return descripcionCite;
+	}
+	public void setDescripcionCite(String descripcionCite) {
+		this.descripcionCite = descripcionCite;
+	}
+	
 }

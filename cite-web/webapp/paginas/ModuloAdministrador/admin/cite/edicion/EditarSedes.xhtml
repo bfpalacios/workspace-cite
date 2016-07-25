@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeEditarSede"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panel header="#{mensaje['produccion.buscar.sede.label.titulo']}"
+			style="width: 400px;">
+			<p:panelGrid id="pnlGridBuscarSedes">
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lCite"
+							value="#{mensaje['produccion.buscar.sede.label.buscarporcite']}" />
+					</p:column>
+					<p:column colspan="4">
+						<p:selectOneMenu id="cite_busqueda"
+							value="#{citesMBean.usuarioModelSelect.codCite}"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<f:selectItem itemLabel="Seleccione la CITE " />
+							<f:selectItems value="#{citesMBean.servicioModel.listarCITE}"
+								var="citeE" itemLabel="#{citeE.descripcion}"
+								itemValue="#{citeE.codigo}" />
+						</p:selectOneMenu>
+						<p:message for="cite_busqueda" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lNombre"
+							value="#{mensaje['produccion.buscar.sede.label.buscarpornombre']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="nombreSede"
+							value="#{citesMBean.servicioModel.nombre}" size="20" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lCodigo"
+							value="#{mensaje['produccion.buscar.sede.label.buscarporcodigo']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="codigoSede"
+							value="#{citesMBean.servicioModel.codigo}" size="20" />
+					</p:column>
+				</p:row>
+
+				<p:row id="filaBuscar">
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Buscar" id="botonBuscar"
+							actionListener="#{citesMBean.buscarSedes}" ajax="true"
+							update="sede_tabla" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<p:spacer width="10px" />
+
+		<p:panelGrid id="pnlGridResultadoBuscarSede">
+
+			<p:row>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.sede.label.sedesencontradas']}</p:column>
+			</p:row>
+
+			<p:row id="filaTablaSede">
+				<p:column id="colTablaSede"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
+
+					<p:dataTable id="sede_tabla" widgetVar="sedeTabla" var="registro"
+						value="#{citesMBean.listaSedes}" selectionMode="single"
+						rowKey="#{registro.id}" emptyMessage="No se encuentra informacion"
+						paginator="true" rows="12">
+						
+						<p:column headerText="Código(*)" id="codSede_tabla"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.codigo}" />
+						</p:column>
+						
+						<p:column headerText="Nombre(*)" id="nombre_tabla"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.descripcion}" />
+						</p:column>	
+						
+						<p:column headerText="Cite" id="descCite_tabla"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText value="#{registro.descripcionCite}" />
+						</p:column>										
+
+						<p:column headerText="Teléfono"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText id="telefono_tabla" value="#{registro.telefono}" />
+						</p:column>
+
+						<p:column headerText="Celular"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText id="celular_tabla" value="#{registro.celular}" />
+						</p:column>
+
+						<p:column headerText="Jefatura"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText id="jefatura_tabla" value="#{registro.jefatura}" />
+						</p:column>
+
+						<p:column headerText="Email"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText id="email_tabla" value="#{registro.email}" />
+						</p:column>
+
+						<p:column headerText="Edición"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<p:commandButton value="Editar"
+								update=":formPrincipal:sede_editar"
+								oncomplete="PF('edicionDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{citesMBean.sedeActual}" />
+							</p:commandButton>
+
+							<p:commandButton value="Eliminar"
+								update=":formPrincipal:sede_eliminar"
+								oncomplete="PF('eliminarDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{citesMBean.sedeActual}" />
+							</p:commandButton>
+
+						</p:column>
+					</p:dataTable>
+
+					<p:dialog widgetVar="edicionDialog" header="Editar Sede"
+						width="800" showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="sede_editar" style="text-align:left;">
+							<p:panelGrid style="width:100%" columns="2"
+								rendered="#{not empty citesMBean.sedeActual}"
+								columnClasses="label,value">
+								<p:outputLabel for="codigoUbig" value="Código CITE:" />
+
+								<p:outputPanel>
+									<p:row>
+										<p:column colspan="4">
+											<h:outputText id="codigoUbig"
+												value="#{citesMBean.sedeActual.descripcionCite}" />
+										</p:column>
+									</p:row>
+									<br />
+									<p:row>
+										<p:column colspan="4">
+											<p:selectOneMenu id="cite_editar"
+												value="#{citesMBean.usuarioModelSelect.codCite}"
+												styleClass="ui-column-label-spij styleAlignRightColumn">
+												<f:selectItem itemLabel="Seleccione la CITE " />
+												<f:selectItems
+													value="#{citesMBean.servicioModel.listarCITE}" var="citeEd"
+													itemLabel="#{citeEd.descripcion}"
+													itemValue="#{citeEd.codigo}" />
+											</p:selectOneMenu>
+											<p:message for="cite_editar" />
+										</p:column>
+									</p:row>
+								</p:outputPanel>
+
+								<p:outputLabel for="nombre" value="Nombre:" />
+								<p:inputText style="width:100%" id="nombre"
+									value="#{citesMBean.sedeActual.descripcion}" />
+
+								<p:outputLabel for="codigo" value="Código:" />
+								<p:inputText style="width:100%" id="codigo"
+									value="#{citesMBean.sedeActual.codigo}" />
+
+								<p:outputLabel for="telefono" value="Teléfono:" />
+								<p:inputText style="width:100%" id="telefono"
+									value="#{citesMBean.sedeActual.telefono}" />
+
+								<p:outputLabel for="celular" value="Celular:" />
+								<p:inputText style="width:100%" id="celular"
+									value="#{citesMBean.sedeActual.celular}" />
+
+								<p:outputLabel for="jefatura" value="Jefatura:" />
+								<p:inputText style="width:100%" id="jefatura"
+									value="#{citesMBean.sedeActual.jefatura}" />
+
+								<p:outputLabel for="email" value="Email:" />
+								<p:inputText style="width:100%" id="email"
+									value="#{citesMBean.sedeActual.email}" />
+
+								<p:spacer></p:spacer>
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="addButton" value="Guardar"
+											actionListener="#{citesMBean.actualizarSede(citesMBean.sedeActual)}"
+											update="descCite_tabla,nombre_tabla,codigoSede_tabla,telefono_tabla,celular_tabla,jefatura_tabla,email_tabla,cite_tabla"
+											ajax="false" oncomplete="PF('edicionDialog').hide();" />
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelButton" value="Cancelar"
+											oncomplete="PF('edicionDialog').hide();" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+					<p:dialog widgetVar="eliminarDialog" header="Eliminar Sede"
+						showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="sede_eliminar" style="text-align:center;">
+							<h:panelGrid columns="2"
+								rendered="#{not empty citesMBean.sedeActual}">
+								<p:spacer></p:spacer>
+								<p:outputLabel value="Esta seguro que desea eliminar esta Sede?" />
+								<p:spacer></p:spacer>
+								<p:outputLabel style="font-weight: bold;"
+									value="#{citesMBean.sedeActual.descripcion}" />
+								<p:spacer></p:spacer>
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="deleteButton" value="Eliminar"
+											actionListener="#{citesMBean.eliminarSede(citesMBean.sedeActual)}"
+											update="sede_tabla" ajax="false"
+											oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelDeleteButton" value="Cancelar"
+											oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+								</p:row>
+							</h:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+
+				</p:column>
+			</p:row>
+
+		</p:panelGrid>
+
+	</ui:define>
+</ui:composition>
+</html>

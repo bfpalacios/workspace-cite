@@ -9,6 +9,7 @@ public class DependenciaBO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int id; 
 	private String codigo;
 	private String descripcion;
 	private String estado;
@@ -36,6 +37,12 @@ public class DependenciaBO implements Serializable{
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

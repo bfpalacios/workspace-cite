@@ -21,4 +21,10 @@ public interface CITEServices {
 	List<CITEBO> buscarCites(String codigo,String nombre, Date fecha)  throws Exception;
 	Integer actualizarCite(CITEBO cite)  throws Exception;
 	Integer eliminarCite(Integer id) throws Exception;
+	List<SedeBO> buscarSedes(String codigoUbigeo,String nombre, String codigo)  throws Exception;
+	Integer actualizarSede(SedeBO sede)  throws Exception;
+	Integer eliminarSede(Integer id) throws Exception;
+	List<DependenciaBO> buscarDependencias(String codigo,String nombre, String codigoSede)  throws Exception;
+	Integer actualizarDependencia(DependenciaBO dependencia)  throws Exception;
+	Integer eliminarDependencia(Integer id) throws Exception;
 }

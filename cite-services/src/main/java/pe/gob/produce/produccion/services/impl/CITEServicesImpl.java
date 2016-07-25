@@ -90,4 +90,43 @@ public class CITEServicesImpl implements CITEServices{
 	public Integer eliminarCite(Integer id) throws Exception {
 		return citeDAO.eliminarCite(id);
 	}
+
+
+	@Override
+	public List<SedeBO> buscarSedes(String codigoUbigeo, String nombre,
+			String codigo) throws Exception {
+		return citeDAO.buscarSedes(codigoUbigeo, nombre, codigo);
+	}
+
+
+	@Override
+	public Integer actualizarSede(SedeBO sede) throws Exception {
+		return citeDAO.actualizarSede(sede);
+	}
+
+
+	@Override
+	public Integer eliminarSede(Integer id) throws Exception {
+		return citeDAO.eliminarSede(id);
+	}
+
+
+	@Override
+	public List<DependenciaBO> buscarDependencias(String codigo, String nombre,
+			String codigoSede) throws Exception {
+		return citeDAO.buscarDependencias(codigo, nombre, codigoSede);
+	}
+
+
+	@Override
+	public Integer actualizarDependencia(DependenciaBO dependencia)
+			throws Exception {
+		return citeDAO.actualizarDependencia(dependencia);
+	}
+
+
+	@Override
+	public Integer eliminarDependencia(Integer id) throws Exception {
+		return citeDAO.eliminarDependencia(id);
+	}
 }

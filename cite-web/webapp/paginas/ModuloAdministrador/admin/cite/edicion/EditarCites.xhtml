@@ -71,7 +71,7 @@
 		<p:panelGrid id="pnlGridResultadoBuscarCite">
 
 			<p:row>
-				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.noticia.label.noticiasencontradas']}</p:column>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.cite.label.citesencontradas']}</p:column>
 			</p:row>
 
 			<p:row id="filaTablaCite">
@@ -100,8 +100,7 @@
 
 						<p:column headerText="Fecha"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
-							<p:calendar id="fecha_tabla" value="#{registro.fecha}"
-								pattern="dd/MM/yyyy" readonly="true" />
+							<h:outputText id="fecha_tabla" value="#{registro.fecha}"/>
 						</p:column>
 						
 						<p:column headerText="código de Sede"  id="ubigeo_tabla" 

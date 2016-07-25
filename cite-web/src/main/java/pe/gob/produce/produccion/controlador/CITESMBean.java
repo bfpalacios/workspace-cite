@@ -1,11 +1,9 @@
 package pe.gob.produce.produccion.controlador;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -20,9 +18,9 @@ import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,13 +29,10 @@ import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioBO;
-import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.produccion.core.util.Convertidor;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
 import pe.gob.produce.produccion.core.util.ObtenerNumeroAleatorio;
-import pe.gob.produce.produccion.core.util.TipoInformativo;
-import pe.gob.produce.produccion.model.InformativoModel;
 import pe.gob.produce.produccion.model.ServicioModel;
 import pe.gob.produce.produccion.model.UbigeoModel;
 import pe.gob.produce.produccion.model.UsuarioModel;
@@ -84,8 +79,12 @@ public class CITESMBean {
 	private String codigoBusqueda; 
 	private Date fechaBusqueda;
 	private List<CITEBO> listaCites;
+	private List<SedeBO> listaSedes;
+	private List<DependenciaBO> listaDependencias;
 	
 	private CITEBO citeActual;
+	private SedeBO sedeActual;
+	private DependenciaBO depActual;
 
 	// constructor
 	public CITESMBean() {
@@ -194,6 +193,28 @@ public class CITESMBean {
 		System.out.println("editarCites:FIN");
 		return pagina;
 	}
+	
+	public String editarSedes() throws Exception {
+		System.out.println("editarSedes:INICIO");
+
+		inicializarClases();
+		// carga las cites de la BD
+		listarCITE();
+		String pagina = "/paginas/ModuloAdministrador/admin/cite/edicion/EditarSedes.xhtml";
+		System.out.println("editarSedes:FIN");
+		return pagina;
+	}
+	
+	public String editarDependencias() throws Exception {
+		System.out.println("editarDependencias:INICIO");
+
+		inicializarClases();
+		// carga las sedes de la BD
+		listarSedes();
+		String pagina = "/paginas/ModuloAdministrador/admin/cite/edicion/EditarDependencias.xhtml";
+		System.out.println("editarDependencias:FIN");
+		return pagina;
+	}
 
 	public void actualizarlistProvincia(ValueChangeEvent e) throws Exception {
 		String codDepartamento = (String) (e.getNewValue() == null ? "" : e
@@ -223,7 +244,7 @@ public class CITESMBean {
 	public void actualizarlistDistrito(ValueChangeEvent e) throws Exception {
 		String codDepartamento = getUsuarioModelSelect().getCodDepartamento() == null ? ""
 				: getUsuarioModelSelect().getCodDepartamento();
-		if (codDepartamento != null){
+		if (StringUtils.isNotEmpty(codDepartamento)){
 			codDepartamento = codDepartamento.substring(0, 2);
 		}
 		
@@ -663,10 +684,118 @@ public class CITESMBean {
 			if(rs < 1){
 				mostrarMensaje(17);
 			}
-			buscarCites();
+			for (Iterator<CITEBO> iter = listaCites.listIterator(); iter.hasNext(); ) {
+				CITEBO sd = iter.next();
+			    if (sd.getId() == cite.getId()) {
+			        iter.remove();
+			        break;
+			    }
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			mostrarMensaje(17);
+		}
+	}
+	
+	public void actualizarSede(SedeBO sede) {
+		try {
+			System.out.println("ACTUALIZAR SEDE: ");
+			System.out.println("codigo sede " + sede.getCodigo());
+			System.out.println("nombre sede " + sede.getDescripcion());
+			System.out.println("codigo ubigeo " + sede.getCodigoCite());
+			System.out.println("Telefono " + sede.getTelefono());
+			System.out.println("Celular " + sede.getCelular());
+			System.out.println("Jefatura " + sede.getJefatura());
+			System.out.println("Email " + sede.getEmail());
+
+			if (validarCamposCite(sede.getCodigo(), sede.getDescripcion(), "test",
+					"test", "test", sede.getCodigoCite())){
+				int rs = citeServices.actualizarSede(sede);
+				if(rs < 1){
+					mostrarMensaje(19);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mostrarMensaje(19);
+		}
+	}
+	
+	public void eliminarSede(SedeBO sede) {
+		try {
+
+			int rs = citeServices.eliminarSede(sede.getId());
+			if(rs < 1){
+				mostrarMensaje(20);
+			}
+			for (Iterator<SedeBO> iter = listaSedes.listIterator(); iter.hasNext(); ) {
+				SedeBO sd = iter.next();
+			    if (sd.getId() == sede.getId()) {
+			        iter.remove();
+			        break;
+			    }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mostrarMensaje(20);
+		}
+	}
+	
+	public void actualizarDependencia(DependenciaBO dep) {
+		try {
+			System.out.println("ACTUALIZAR DEPENDENCIA: ");
+			String codigoUTT = getUsuarioModelSelect().getCodigoDependencia() == null ? "invalido"
+					: getUsuarioModelSelect().getCodigoDependencia();
+
+			System.out.println("codigoDependencia " + dep.getCodigo());
+			System.out.println("nombreDependencia " + dep.getDescripcion());
+			System.out.println("Codigo UTT" + codigoUTT);
+			
+			if (validarCamposDepedencia(dep.getCodigo(), dep.getDescripcion(), codigoUTT)){
+				dep.setSede(new SedeBO());
+				dep.getSede().setCodigo(codigoUTT);
+				int rs = citeServices.actualizarDependencia(dep);				
+				if(rs < 1){
+					mostrarMensaje(21);
+				}else{
+					for (DependenciaBO depen : listaDependencias) {
+						if(dep.getId() == depen.getId()){
+							String desc = "";
+							for (SedeBO sede : getUsuarioModel().getListarSedes()) {
+								if(sede.getCodigo().equals(codigoUTT)){
+									desc = sede.getDescripcion();
+									break;
+								}
+							}
+							depen.getSede().setDescripcion(desc);
+							break;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mostrarMensaje(21);
+		}
+	}
+	
+	public void eliminarDependencia(DependenciaBO dep) {
+		try {
+
+			int rs = citeServices.eliminarDependencia(dep.getId());
+			if(rs < 1){
+				mostrarMensaje(22);
+			}
+			for (Iterator<DependenciaBO> iter = listaDependencias.listIterator(); iter.hasNext(); ) {
+				DependenciaBO depen = iter.next();
+			    if (depen.getId() == dep.getId()) {
+			        iter.remove();
+			        break;
+			    }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mostrarMensaje(22);
 		}
 	}
 	
@@ -685,27 +814,82 @@ public class CITESMBean {
 		System.out.println("DATOS BUSQUEDA DE CITES: " + nombre + " " + codigo + " " + fecha);
 		listaCites = new ArrayList<>();
 		try {
-			listaCites = citeServices.buscarCites(codigo, nombre, fecha);
-			
-			for(CITEBO cite: listaCites){
-				
-
-				
+			listaCites = citeServices.buscarCites(codigo, nombre, fecha);			
+			for(CITEBO cite: listaCites){				
 				ubigeoCite = comunServices.buscarUbigeo(cite.getCodigoUbigeo());
-				listaCites.get(contador).setUbigeo(ubigeoCite); 
-				
+				listaCites.get(contador).setUbigeo(ubigeoCite); 				
 				contador ++;
-			}
-			
+			}			
 		} catch (Exception e) {
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_FATAL, "",
 					"Hubo un error en la busqueda de Cites "  + nombre + " " + codigo + " " + fecha);
 			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-		
-		
+		}		
 		this.setListaCites(listaCites);
+	}
+	
+	public void buscarSedes(){
+		try {			
+			String codigoSede = getServicioModel().getCodigo() == null ? "invalido"
+					: getServicioModel().getCodigo();
+			String nombreSede = getServicioModel().getNombre() == null ? "invalido"
+					: getServicioModel().getNombre();
+			String codigoCite = getUsuarioModelSelect().getCodCite() == null ? "invalido"
+					: getUsuarioModelSelect().getCodCite();
+			// this should be gone in a logger
+			System.out.println("DATOS BUSQUEDA DE SEDES: " + codigoCite + " " + nombreSede + " " + codigoSede);
+			System.out.println("codigoSede" + codigoSede);
+			System.out.println("nombreSede" + nombreSede);
+			System.out.println("Codigo cite" + codigoCite);
+			
+			if(StringUtils.isNotEmpty(codigoCite)){
+				listaCites = citeServices.buscarCites(codigoCite, "", null);
+			}
+			String codSede_cite = "";
+			if(listaCites.size() > 0){
+				codSede_cite = listaCites.get(0).getCodigoUbigeo();
+				codigoCite = "";
+			}
+			listaSedes = citeServices.buscarSedes(codigoCite, nombreSede, codSede_cite);
+			for (SedeBO sede : listaSedes) {
+				if(listaCites.size() > 0){
+					sede.setDescripcionCite(listaCites.get(0).getDescripcion());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error en la busqueda de Sedes " );
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		this.setListaSedes(listaSedes);
+	}
+	
+	public void buscarDependencias(){
+		try {			
+			String codigoDep = getServicioModel().getCodigo() == null ? "invalido"
+					: getServicioModel().getCodigo();
+			String nombreDep = getServicioModel().getNombre() == null ? "invalido"
+					: getServicioModel().getNombre();
+			String codigoSede = getUsuarioModelSelect().getCodigoDependencia() == null ? "invalido"
+					: getUsuarioModelSelect().getCodigoDependencia();
+			// this should be gone in a logger
+			System.out.println("DATOS BUSQUEDA DE DEPENDENCIAS: " + codigoDep + " " + nombreDep + " " + codigoSede);
+			System.out.println("codigoSede" + codigoSede);
+			System.out.println("nombre Dependenia" + nombreDep);
+			System.out.println("Codigo Dependencia" + codigoDep);
+			
+			listaDependencias = citeServices.buscarDependencias(codigoDep, nombreDep, codigoSede);
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error en la busqueda de Dependencias " );
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		this.setListaDependencias(listaDependencias);
 	}
 
 	public void guardarNuevaDependencia() {
@@ -1065,7 +1249,32 @@ public class CITESMBean {
 					"Se actualizo correctamente ");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
+		case 19:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al actualizar Sede");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 20:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al eliminar Sede");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 21:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al actualizar Dependencia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 22:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error al eliminar Dependencia");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
 		}
+		
 	}
 
 	public void setServicioModelbi(ServicioModel servicioModel) {
@@ -1155,6 +1364,38 @@ public class CITESMBean {
 
 	public void setCiteActual(CITEBO citeActual) {
 		this.citeActual = citeActual;
+	}
+
+	public List<SedeBO> getListaSedes() {
+		return listaSedes;
+	}
+
+	public void setListaSedes(List<SedeBO> listaSedes) {
+		this.listaSedes = listaSedes;
+	}
+
+	public SedeBO getSedeActual() {
+		return sedeActual;
+	}
+
+	public void setSedeActual(SedeBO sedeActual) {
+		this.sedeActual = sedeActual;
+	}
+
+	public List<DependenciaBO> getListaDependencias() {
+		return listaDependencias;
+	}
+
+	public void setListaDependencias(List<DependenciaBO> listaDependencias) {
+		this.listaDependencias = listaDependencias;
+	}
+
+	public DependenciaBO getDepActual() {
+		return depActual;
+	}
+
+	public void setDepActual(DependenciaBO depActual) {
+		this.depActual = depActual;
 	}
 	
 }

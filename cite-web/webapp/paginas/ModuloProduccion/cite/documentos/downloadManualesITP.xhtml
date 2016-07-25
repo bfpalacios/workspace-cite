@@ -17,55 +17,89 @@
 
 		</p:outputPanel>
 
-		<p:panelGrid id="pnlGridNuevosManuales">
-			<f:facet name="header">
-				<p:row>
-					<p:column colspan="6">Download  Documentos  </p:column>
-				</p:row>
-			</f:facet> 
-    
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Manuales" action="#{servicioMBean.invocarServletDocumentos}"  icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-     			
-     			</p:column>
-				 		
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Formatos" action="#{servicioMBean.invocarServletDocumentosFormatos}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Procedimientos" action="#{servicioMBean.invocarServletDocumentosProcedimientos}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Instructivos" action="#{servicioMBean.invocarServletDocumentosInstructivos}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
-			</p:row>
-			
-			<p:row>
-				<p:column colspan="2"> 
-				 	<p:commandLink value="Documentos" action="#{servicioMBean.invocarServletDocumentosGeneral}" icon="ui-icon-wrench"
-     					style="border-width:0;background:none;"/>
-				 		 
-				 </p:column>
-			</p:row>
+		<p:panel header="Documentos RED DE CITES "
+				style="width: 95%;border: 0px;">
+				 
+    		
+    		<p:tabView>
+			        <p:tab title="Manuales CITE">
+			         	<h:panelGrid columns="2" style="margin-bottom:20px" cellpadding="3">		         	
+							<h:outputText value="Manuales" />	
+							<p:commandLink id="Manuales"
+								actionListener="#{servicioMBean.invocarServletDocumentos}">
+     							
+     							<h:graphicImage 
+		        		 			id="manuales"
+		        		 			title="Manuales"
+		        		  			value="/Imagenes/carpeta.png"/>
+     						</p:commandLink>
+     						
+    					</h:panelGrid>
+    				</p:tab>
+    				
+    				 <p:tab title="Formatos CITE">
+			         	<h:panelGrid columns="2" style="margin-bottom:20px" cellpadding="3">		         	
+							<h:outputText value="Formatos" />						
+							<p:commandLink id="Formatos" action="#{servicioMBean.invocarServletDocumentosFormatos}">
+     							<h:graphicImage 
+	        		 				id="formatos"
+	        		 				title="Formatos"
+	        		  				value="/Imagenes/carpeta.png"
+	        		  				/>
+     						</p:commandLink>
+     						
+    					</h:panelGrid>
+    				</p:tab>
+    				
+    				<p:tab title="Procedimientos CITE">
+    				 	<h:panelGrid columns="2" style="margin-bottom:20px" cellpadding="3">		         	
+							<h:outputText value="Procedimientos" />						
+							<p:commandLink id="Procedimientos" action="#{servicioMBean.invocarServletDocumentosProcedimientos}" >
+     						
+     						<h:graphicImage 
+	        		 			id="procedimientos"
+	        		 			title="Procedimientos"
+	        		  			value="/Imagenes/carpeta.png"
+	        		  			/>
+     						</p:commandLink>
+     						
+     						
+    					</h:panelGrid>
+    				</p:tab>
+    				
+    				<p:tab title="Instructivos CITE">
+    				 	<h:panelGrid columns="2" style="margin-bottom:20px" cellpadding="3">		         	
+							<h:outputText value="Instructivos" />						
+							<p:commandLink id="Instructivos" action="#{servicioMBean.invocarServletDocumentosInstructivos}">
+     						
+     						<h:graphicImage 
+	        		 			id="instructivos"
+	        		 			title="Instructivos"
+	        		  			value="/Imagenes/carpeta.png"
+	        		  			/>
+     						</p:commandLink>
+     						
+    					</h:panelGrid>
+    				</p:tab>
+    				
+    				<p:tab title="Documentos CITE">
+    				 	<h:panelGrid columns="2" style="margin-bottom:20px" cellpadding="3">		         	
+							<h:outputText value="Documentos" />						
+							<p:commandLink id="Documentos" action="#{servicioMBean.invocarServletDocumentosGeneral}">
+     						
+     					<h:graphicImage 
+	        		 			id="documentos"
+	        		 			title="Documentos"
+	        		  			value="/Imagenes/carpeta.png"
+	        		  			/>
+     						</p:commandLink>
+     						
+    					</h:panelGrid>
+    				</p:tab>
+    				
+    		</p:tabView>
 
-		</p:panelGrid> 
+		</p:panel>
 		
 	</ui:define>
 </ui:composition>

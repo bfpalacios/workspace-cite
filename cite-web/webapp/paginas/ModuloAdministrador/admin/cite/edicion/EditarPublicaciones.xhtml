@@ -152,9 +152,11 @@
 										<p:fileUpload label="Cargar Publicacion ..."  id="docInformativo"
 											uploadLabel="Guardar Publicacion" cancelLabel="Cancelar"
 											fileUploadListener="#{informativoMBean.handleFileUploadInformativo}"
-											mode="advanced" dragDropSupport="false" update="messages"						
-											fileLimit="1" value="Archivo" previewWidth="300"
-											skinSimple="false" />
+											mode="advanced" dragDropSupport="false" update="messages"
+											invalidFileMessage="El archivo tiene que ser un archivo PDF (pdf)"                    			
+                    			
+											fileLimit="1" value="Imagen" previewWidth="300"
+											allowTypes="/(\.|\/)(pdf)$/"  />
 									</p:column>
 									
 								</p:row>

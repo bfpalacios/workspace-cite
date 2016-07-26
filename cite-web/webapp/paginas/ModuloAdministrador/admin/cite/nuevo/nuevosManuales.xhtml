@@ -20,18 +20,51 @@
 		<p:panelGrid id="pnlGridNuevosManuales">
 			<f:facet name="header">
 				<p:row>
-					<p:column colspan="6">Ingresar Documentos de Manuales  </p:column>
+					<p:column colspan="6">Ingresar Documentos CITES  </p:column>
 				</p:row>
 			</f:facet> 
+			
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblTipo" value="Elegir el tipo del Documento CITE" />
+				</p:column>
+
+				<p:column>
+					<p:selectOneMenu id="tipod"
+							value="#{servicioMBean.servicioModel.tituloInformativo}"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<f:selectItem itemLabel="Seleccione el tipo " />
+							<f:selectItems value="#{servicioMBean.servicioModel.tituloInformativo}"
+								var="citeE" itemLabel="#{citeE.descripcion}"
+								itemValue="#{citeE.codigo}" />
+						</p:selectOneMenu>
+						<p:message for="tipod" />
+
+				</p:column>
+
+			</p:row>
+			
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblTitulo" value="Titulo del Documento CITE" />
+				</p:column>
+
+				<p:column>
+					<p:inputText id="titulo" size="25"
+						value="#{servicioMBean.servicioModel.tituloInformativo}" />
+
+				</p:column>
+
+			</p:row>
     
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lDocumentoManuales"
-						value="Ingrese el documento de manuales" />
+						value="Ingrese el documento de CITES" />
 				</p:column>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
 					<p:growl id="messagesManuales" showDetail="true" />
-					<p:fileUpload label="Cargar documento ..."  
+					<!--p:fileUpload label="Cargar documento ..."  
 						id="docManuales"
 						uploadLabel="Cargar documento" 
 						cancelLabel="Cancelar"
@@ -44,7 +77,15 @@
 						value="Adjuntar manuales" 
 						previewWidth="300"
 						style="margin-left: 160px;" 
-						skinSimple="true" />
+						skinSimple="true" /-->
+						
+				<p:fileUpload label="Cargar Documento CITE ..."  id="docInformativo"
+						uploadLabel="Guardar Documento" cancelLabel="Cancelar"
+						fileUploadListener="#{servicioMBean.handleFileUploadPublicaciones}"
+						mode="advanced" dragDropSupport="false" update="messages"		
+						fileLimit="1" value="Imagen" previewWidth="300"
+						style="margin-left: 160px;" 
+						skinSimple="true"  />
 				</p:column>
 			</p:row>
 

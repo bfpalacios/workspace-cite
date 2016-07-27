@@ -14,6 +14,7 @@ public class ServicioInformativoBO implements Serializable{
 	private Integer id;
 	private Date fecha;
 	private String tituloInformativo;
+	private String codigotipoDocumentoCite;
 	private String descInformativo;
 	private String descCortaInformativo; 
 	private byte[] archivoInformativo;
@@ -53,6 +54,12 @@ public class ServicioInformativoBO implements Serializable{
 	}
 	public void setDescCortaInformativo(String descCortaInformativo) {
 		this.descCortaInformativo = descCortaInformativo;
+	}
+	public String getCodigotipoDocumentoCite() {
+		return codigotipoDocumentoCite;
+	}
+	public void setCodigotipoDocumentoCite(String codigotipoDocumentoCite) {
+		this.codigotipoDocumentoCite = codigotipoDocumentoCite;
 	}
 	
 	

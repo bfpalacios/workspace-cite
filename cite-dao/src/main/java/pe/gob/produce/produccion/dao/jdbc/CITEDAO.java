@@ -492,5 +492,26 @@ Connection con = null;
 		return listaTipoDocumentoCiteBO;
 	}
 
+	@Override
+	public void grabarDocumentosCites(ServicioInformativoBO servicioInformativo)
+			throws Exception {
+		Connection con = null;
+		CallableStatement cstm = null;
+		Date dateCite = new Date(servicioInformativo.getFecha().getTime());
+		
+		InputStream informativo = new ByteArrayInputStream(servicioInformativo.getArchivoInformativo());
+		
+		con = Conexion.obtenerConexion();
+		cstm = con.prepareCall("{call SP_Insertar_DocumentosCite(?,?,?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, servicioInformativo.getTituloInformativo());		
+		cstm.setString(2, servicioInformativo.getCodigotipoDocumentoCite());
+		cstm.setDate(3, dateCite);
+		cstm.setBlob(4, informativo, servicioInformativo.getArchivoInformativo().length);
+	
+		cstm.execute();
+		
+	}
+
 	
 }

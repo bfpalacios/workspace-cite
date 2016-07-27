@@ -26,6 +26,17 @@
 			
 			<p:row>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblFecha"
+						value="Fecha" />
+				</p:column>
+				<p:column colspan="5">
+					<p:calendar value="#{servicioMBean.date}" id="fechaServicio"
+						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					</p:calendar>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lblTipo" value="Elegir el tipo del Documento CITE" />
 				</p:column>
 
@@ -102,7 +113,7 @@
 			width="380" appendTo="@(body)" style="z-index: 999 !important"
 			id="dialogManuales" widgetVar="dialogManuales">
 
-			<h4 style="font-size: 16px">¡Los manuales se cargaron correctamente!</h4>
+			<h4 style="font-size: 16px">¡Los documentos se cargaron correctamente!</h4>
 			
 			<input type="button" value="Aceptar"
 					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosManuales.xhtml';" />

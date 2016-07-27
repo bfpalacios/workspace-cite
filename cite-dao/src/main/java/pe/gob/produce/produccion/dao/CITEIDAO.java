@@ -13,6 +13,7 @@ public interface CITEIDAO {
 
 	public List<CITEBO>   listarCites()  throws Exception;
 	public List<TipoDocumentoCiteBO> listarTipoDocumentoCiteBO() throws Exception;
+	public void grabarDocumentosCites(ServicioInformativoBO servicioInformativo) throws Exception;
 	
 	public List<SedeBO>   listarSedes()  throws Exception;
 	public void grabarNuevaSede(SedeBO sede) throws Exception;

@@ -74,7 +74,6 @@ public class ServicioMBean {
 	private List<ServicioModel> datosServiciosModelGrid;
 	private List<ServicioModel> selectedServicios;
 	
-
 	private ServicioModel servicioModelSelect;
 	// constructor
 	public ServicioMBean() {
@@ -87,6 +86,7 @@ public class ServicioMBean {
 		this.usuarioModel = new UsuarioModel();
 		this.usuarioModelSelect = new UsuarioModel();
 		this.servicioModel = new ServicioModel();
+		this.servicioModelSelect  = new ServicioModel();
 		this.setFile(null);
 	}
 
@@ -556,34 +556,30 @@ public class ServicioMBean {
 				Date fecha = getDate();
 	
 				String titulo = getServicioModel().getTituloInformativo() == null
-				 ? "" : getServicioModel().getTituloInformativo();
-				 
-				String descripcionCorta = getServicioModel().getDescripcionCorta() == null ? ""
-						: getServicioModel().getDescripcionCorta();
-				;
-				String descripcion = getServicioModel().getDescripcion();
-	
+						 ? "" : getServicioModel().getTituloInformativo();
+						 
+				String codigotipoDocCite = getServicioModelSelect().getCodigo() == null
+						 ? "" : getServicioModelSelect().getCodigo();
+						 
+						
 				System.out.println("Datos titulo" + titulo);
-				System.out.println("Datos descripcionCorta" + descripcionCorta);
-				System.out.println("Datos descripcion" + descripcion);
 				System.out.println("Datos archivoInformativo" + archivoInformativo);
 				
-				if (validarCampos(titulo, descripcionCorta, descripcion)){
+				if (validarCamposDocCites(titulo)){
 					ServicioInformativoBO servicio = new ServicioInformativoBO();
 		
 						servicio.setTituloInformativo(titulo);
-						servicio.setDescCortaInformativo(descripcionCorta);
-						servicio.setDescInformativo(descripcion);
 						servicio.setArchivoInformativo(archivoInformativo);
+						servicio.setCodigotipoDocumentoCite(codigotipoDocCite);
 						servicio.setFecha(fecha);
 					
-						citeServices.grabarPublicaciones(servicio);
+						citeServices.grabarDocumentosCites(servicio);
 						limpiarObjetos();
 						RequestContext rc = RequestContext.getCurrentInstance();
-						rc.execute("dialogNuevoPublicaciones.show()");
+						rc.execute("dialogManuales.show()");
 				}
 				
-			} else mostrarMensajeDocumento(5);
+			} else mostrarMensajeDocumento(11);
 		} catch (Exception ev) {
 			ev.printStackTrace();
 			mostrarMensajeDocumento(10);
@@ -676,7 +672,8 @@ public class ServicioMBean {
 		/*		
 		*/
 		UploadedFile uploadedPhoto = e.getFile();
-		String filePath = "C:/ITP/DOCUMENTOS_CITE/DOCUMENTOS/";
+		setFile(e.getFile());
+		String filePath = "C:/ITP/TEMPEVENTOS/";
 
 		// String filePath = uploadDirectoryPath;
 		byte[] bytes = null;
@@ -693,8 +690,6 @@ public class ServicioMBean {
 			rutaComprobante = filename;
 		}
 		
-		RequestContext rc = RequestContext.getCurrentInstance();
-		rc.execute("dialogDocumentos.show()");
 
 	}
 	
@@ -1160,6 +1155,16 @@ public class ServicioMBean {
 		} 
 		return apto;
 	}
+	
+	public boolean validarCamposDocCites(String titulo) {
+		boolean apto = true;
+
+		if (titulo == "invalido" || titulo.equals("")) {
+			mostrarMensajeDocumento(1);
+			apto = false;
+		}
+		return apto;
+	}
 
 	private void limpiarObjetos() {
 		setServicioModelbi(null);
@@ -1312,6 +1317,15 @@ public class ServicioMBean {
 					"Hubo un error al guardar la publicacion");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
+		
+		case 11:
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+					"Debe cargar el documento primero - "
+							+ "Ingrese el documento");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+
+		
 		}
 	}
 

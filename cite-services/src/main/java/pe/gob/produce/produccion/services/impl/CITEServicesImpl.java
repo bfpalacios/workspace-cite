@@ -138,4 +138,12 @@ public class CITEServicesImpl implements CITEServices{
 		// TODO Auto-generated method stub
 		return citeDAO.listarTipoDocumentoCiteBO();
 	}
+
+
+	@Override
+	public void grabarDocumentosCites(ServicioInformativoBO servicioInformativo)
+			throws Exception {
+		citeDAO.grabarDocumentosCites(servicioInformativo);
+		
+	}
 }

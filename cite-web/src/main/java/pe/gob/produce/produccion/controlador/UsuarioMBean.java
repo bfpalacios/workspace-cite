@@ -103,9 +103,20 @@ public class UsuarioMBean extends GenericoController {
 		System.out.println("buscarUsuarioCite:INICIO");
 		inicializarClases();
 		String pagina = "/paginas/ModuloAdministrador/admin/cite/buscar/buscarUsuarioCite.xhtml";
+		System.out.println("olvidoContrasenia:FIN");
+		return pagina;
+	}
+	
+	
+	public String olvidoContrasenia() throws Exception {
+		System.out.println("olvidoContrasenia:INICIO");
+		inicializarClases();
+		String pagina ="/admin/nuevo/olvidoContrasenia.xhtml";
 		System.out.println("buscarUsuarioCite:FIN");
 		return pagina;
 	}
+	
+	
 	
 	 
 	 

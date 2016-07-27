@@ -1,0 +1,264 @@
+USE [DBCITE]
+GO
+
+/****** Object:  Table [dbo].[DOCUMENTOS_CITE]    Script Date: 07/27/2016 00:46:59 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[DOCUMENTOS_CITE](
+	[ID_DOCUMENTOS_CITE] [int] IDENTITY(1,1) NOT NULL,
+	[TITULO_DOCUMENTOS_CITE] [varchar](100) NOT NULL,
+	[FECHA] [datetime] NOT NULL,
+	[ARCHIVO_PDOCUMENTOS_CITE] [varbinary](max) NOT NULL,
+	[CODIGO_TIPO_DOCUMENTO_CITE] [varchar](6) NULL,
+ CONSTRAINT [PK_PDOCUMENTOS_CITE] PRIMARY KEY CLUSTERED 
+(
+	[ID_DOCUMENTOS_CITE] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+
+USE [DBCITE]
+GO
+
+/****** Object:  Table [dbo].[TIPO_DOCUMENTO_CITE]    Script Date: 07/26/2016 22:45:47 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[TIPO_DOCUMENTO_CITE](
+	[IDTTIPO_DOCUMENTO_CITE] [tinyint] IDENTITY(1,1) NOT NULL,
+	[NOMBRE_TIPO_DOCUMENTO_CITE] [varchar](30) NOT NULL,
+	[CODIGO_TIPO_DOCUMENTO_CITE] [varchar](6) NOT NULL,
+ CONSTRAINT [PK_IDTTIPO_DOCUMENTO_CITE] PRIMARY KEY CLUSTERED 
+(
+	[IDTTIPO_DOCUMENTO_CITE] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+USE [DBCITE]
+GO
+/****** Object:  StoredProcedure [dbo].[ListarTiposDocumentos]    Script Date: 07/26/2016 22:48:42 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ListarTiposDocumentos]
+AS
+    BEGIN
+        SELECT  *
+        FROM    dbo.TIPO_DOCUMENTO_CITE
+        
+    END
+
+
+
+USE [DBCITE]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Insertar_DocumentosCite]    Script Date: 07/27/2016 00:41:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_Insertar_DocumentosCite]
+    @Titulo_Publicaciones VARCHAR(100) ,
+    @Codigo_Tipo_Documento VARCHAR(6),
+    @Fecha DATETIME ,
+    @Archivo_Publicaciones VARBINARY(MAX)
+AS
+    BEGIN
+        INSERT  dbo.DOCUMENTOS_CITE
+                ( TITULO_DOCUMENTOS_CITE,
+                  FECHA ,
+                  CODIGO_TIPO_DOCUMENTO_CITE,
+                  ARCHIVO_PDOCUMENTOS_CITE
+                )
+        VALUES  ( @Titulo_Publicaciones ,
+                  @Fecha ,
+                  @Codigo_Tipo_Documento,
+                  @Archivo_Publicaciones
+                )
+    END
+
+	
+	USE [DBCITE]
+GO
+
+/****** Object:  StoredProcedure [dbo].[BuscarDocumentos]    Script Date: 07/27/2016 07:00:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[BuscarDocumentos]
+    @titulo VARCHAR(100),
+    @fecha DATE,
+    @cod_tipo VARCHAR(6)
+AS
+BEGIN
+	IF(ISNULL(@cod_tipo,'') = '' and ISNULL(@titulo,'') = '' and ISNULL(@fecha,'1900-01-01') = '1900-01-01')
+	 SELECT	* FROM
+					dbo.DOCUMENTOS_CITE t 
+	ELSE
+		IF(ISNULL(@titulo,'') = '')
+			IF(ISNULL(@cod_tipo,'') = '')
+				SELECT	* FROM
+					dbo.DOCUMENTOS_CITE t WHERE CAST(t.FECHA AS DATE) = CAST(@fecha AS DATE)
+			ELSE
+				IF(ISNULL(@fecha,'1900-01-01') = '1900-01-01')
+					SELECT	* FROM
+						dbo.DOCUMENTOS_CITE t WHERE t.CODIGO_TIPO_DOCUMENTO_CITE like '%' + @cod_tipo + '%'
+				ELSE
+					SELECT	* FROM
+					dbo.DOCUMENTOS_CITE t
+					WHERE t.CODIGO_TIPO_DOCUMENTO_CITE like '%' + @cod_tipo + '%'
+					AND CAST(t.FECHA AS DATE) = CAST(@fecha AS DATE) 
+		ELSE
+			IF(ISNULL(@cod_tipo,'') = '')
+				IF(ISNULL(@titulo,'') = '')
+					SELECT	* FROM
+						dbo.DOCUMENTOS_CITE t WHERE CAST(t.FECHA AS DATE) = CAST(@fecha AS DATE)
+				ELSE
+					IF(ISNULL(@fecha,'1900-01-01') = '1900-01-01')
+						SELECT	* FROM
+							dbo.DOCUMENTOS_CITE t WHERE t.TITULO_DOCUMENTOS_CITE like '%' + @titulo + '%'
+					ELSE
+						SELECT	* FROM
+						dbo.DOCUMENTOS_CITE t
+						WHERE t.TITULO_DOCUMENTOS_CITE like '%' + @titulo + '%'
+						AND CAST(t.FECHA AS DATE) = CAST(@fecha AS DATE) 
+			ELSE
+				IF(ISNULL(@fecha,'1900-01-01') = '1900-01-01')
+					IF(ISNULL(@cod_tipo,'') = '')
+						SELECT	* FROM
+							dbo.DOCUMENTOS_CITE t WHERE t.TITULO_DOCUMENTOS_CITE like '%' + @titulo + '%'
+					ELSE
+						IF(ISNULL(@titulo,'') = '')
+							SELECT	* FROM
+							dbo.DOCUMENTOS_CITE t WHERE t.CODIGO_TIPO_DOCUMENTO_CITE like '%' + @cod_tipo + '%'
+						ELSE
+							SELECT	* FROM
+							dbo.DOCUMENTOS_CITE t
+							WHERE t.CODIGO_TIPO_DOCUMENTO_CITE like '%' + @cod_tipo + '%'
+							AND t.TITULO_DOCUMENTOS_CITE like '%' + @titulo + '%'
+				ELSE
+							SELECT	* FROM
+							dbo.DOCUMENTOS_CITE t
+							WHERE t.CODIGO_TIPO_DOCUMENTO_CITE like '%' + @cod_tipo + '%'
+							AND t.TITULO_DOCUMENTOS_CITE like '%' + @titulo + '%' 
+							AND CAST(t.FECHA AS DATE) = CAST(@fecha AS DATE) 			   
+    END
+
+
+
+GO
+
+
+USE [DBCITE]
+GO
+
+/****** Object:  StoredProcedure [dbo].[ObtenerDocumento]    Script Date: 07/27/2016 07:01:23 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[ObtenerDocumento]
+    @id int
+AS
+    BEGIN     
+				SELECT	* 
+				FROM
+				dbo.DOCUMENTOS_CITE t
+				WHERE 
+				t.ID_DOCUMENTOS_CITE = @id   
+    END
+
+
+GO
+
+
+
+USE [DBCITE]
+GO
+
+/****** Object:  StoredProcedure [dbo].[EliminarDocumento]    Script Date: 07/27/2016 07:01:54 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[EliminarDocumento]
+            @id int
+        AS
+            BEGIN
+	
+                DELETE FROM dbo.DOCUMENTOS_CITE
+				WHERE 
+				ID_DOCUMENTOS_CITE = @id
+            END
+
+
+GO
+
+
+USE [DBCITE]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Insertar_DocumentosCite]    Script Date: 07/27/2016 07:02:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_Insertar_DocumentosCite]
+    @Titulo_Publicaciones VARCHAR(100) ,
+    @Codigo_Tipo_Documento VARCHAR(6),
+    @Fecha DATETIME ,
+    @Archivo_Publicaciones VARBINARY(MAX)
+AS
+    BEGIN
+        INSERT  dbo.DOCUMENTOS_CITE
+                ( TITULO_DOCUMENTOS_CITE,
+                  FECHA ,
+                  CODIGO_TIPO_DOCUMENTO_CITE,
+                  ARCHIVO_PDOCUMENTOS_CITE
+                )
+        VALUES  ( @Titulo_Publicaciones ,
+                  @Fecha ,
+                  @Codigo_Tipo_Documento,
+                  @Archivo_Publicaciones
+                )
+    END

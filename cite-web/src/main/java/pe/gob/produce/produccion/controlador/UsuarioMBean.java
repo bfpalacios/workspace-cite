@@ -99,6 +99,7 @@ public class UsuarioMBean extends GenericoController {
 
 	}
 	
+	
 	public String buscarUsuarioCite() throws Exception {
 		System.out.println("buscarUsuarioCite:INICIO");
 		inicializarClases();

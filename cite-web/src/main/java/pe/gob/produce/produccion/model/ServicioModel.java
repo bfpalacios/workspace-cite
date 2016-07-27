@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
 
 @Component("servicioModel")
 @ViewScoped
@@ -42,8 +43,19 @@ public class ServicioModel {
 	private List<DependenciaBO> listarDependencia;
 	private List<SedeBO> listarSedes;
 	
+	private List<TipoDocumentoCiteBO> listarTipoDocumentoCite;
 	
-	
+	public List<TipoDocumentoCiteBO> getListarTipoDocumentoCite() {
+		return listarTipoDocumentoCite;
+	}
+
+
+	public void setListarTipoDocumentoCite(
+			List<TipoDocumentoCiteBO> listarTipoDocumentoCite) {
+		this.listarTipoDocumentoCite = listarTipoDocumentoCite;
+	}
+
+
 	public String getCelular() {
 		return celular;
 	}

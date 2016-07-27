@@ -10,6 +10,7 @@ import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
 import pe.gob.produce.produccion.dao.CITEIDAO;
 import pe.gob.produce.produccion.services.CITEServices;
 
@@ -128,5 +129,13 @@ public class CITEServicesImpl implements CITEServices{
 	@Override
 	public Integer eliminarDependencia(Integer id) throws Exception {
 		return citeDAO.eliminarDependencia(id);
+	}
+
+
+	@Override
+	public List<TipoDocumentoCiteBO> listarTipoDocumentoCiteBO()
+			throws Exception {
+		// TODO Auto-generated method stub
+		return citeDAO.listarTipoDocumentoCiteBO();
 	}
 }

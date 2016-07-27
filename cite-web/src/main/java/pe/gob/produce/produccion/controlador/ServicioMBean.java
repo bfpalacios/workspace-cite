@@ -56,7 +56,7 @@ public class ServicioMBean {
 
 	@Autowired
 	private ServicioServices servicioServices;
-
+		
 	// datos complementarios de la pantalla
 	private Date date;
 	private UsuarioModel usuarioModelSelect;
@@ -73,7 +73,9 @@ public class ServicioMBean {
 	// ServicioModel
 	private List<ServicioModel> datosServiciosModelGrid;
 	private List<ServicioModel> selectedServicios;
+	
 
+	private ServicioModel servicioModelSelect;
 	// constructor
 	public ServicioMBean() {
 		System.out.println("::::: LOADING ServicioMBean ::::::::");
@@ -241,6 +243,7 @@ public class ServicioMBean {
 		String pagina = "";
 
 		inicializarClases();
+		listarTiposDocumentosCite();
 
 		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosManuales.xhtml";
 		System.out.println("nuevosManuales:FIN");
@@ -541,6 +544,55 @@ public class ServicioMBean {
 	}
 	 
 	
+	public void guardarNuevoDocumentosCite() {
+		byte[] archivoInformativo = null ;
+		
+		try {
+			if(getFile() != null)
+			{	
+				UploadedFile archivoPDF = getFile();
+				archivoInformativo = IOUtils.toByteArray(archivoPDF
+						.getInputstream());
+				Date fecha = getDate();
+	
+				String titulo = getServicioModel().getTituloInformativo() == null
+				 ? "" : getServicioModel().getTituloInformativo();
+				 
+				String descripcionCorta = getServicioModel().getDescripcionCorta() == null ? ""
+						: getServicioModel().getDescripcionCorta();
+				;
+				String descripcion = getServicioModel().getDescripcion();
+	
+				System.out.println("Datos titulo" + titulo);
+				System.out.println("Datos descripcionCorta" + descripcionCorta);
+				System.out.println("Datos descripcion" + descripcion);
+				System.out.println("Datos archivoInformativo" + archivoInformativo);
+				
+				if (validarCampos(titulo, descripcionCorta, descripcion)){
+					ServicioInformativoBO servicio = new ServicioInformativoBO();
+		
+						servicio.setTituloInformativo(titulo);
+						servicio.setDescCortaInformativo(descripcionCorta);
+						servicio.setDescInformativo(descripcion);
+						servicio.setArchivoInformativo(archivoInformativo);
+						servicio.setFecha(fecha);
+					
+						citeServices.grabarPublicaciones(servicio);
+						limpiarObjetos();
+						RequestContext rc = RequestContext.getCurrentInstance();
+						rc.execute("dialogNuevoPublicaciones.show()");
+				}
+				
+			} else mostrarMensajeDocumento(5);
+		} catch (Exception ev) {
+			ev.printStackTrace();
+			mostrarMensajeDocumento(10);
+		}
+		
+
+	}
+	 
+	
 	
 	
 	public void handleFileUploadFormatos(FileUploadEvent e) throws IOException {
@@ -611,7 +663,7 @@ public class ServicioMBean {
 
 	}
 	
-	public void handleFileUploadDocumentos(FileUploadEvent e) throws IOException {
+	public void handleFileUploadDocumentosCite(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
 		System.out.println(new File(".").getAbsolutePath());
@@ -755,6 +807,40 @@ public class ServicioMBean {
 	
 	
 	public void handleFileUploadPublicaciones(FileUploadEvent e) throws IOException {
+
+		System.out.println("RUTA DEL PROYECTO");
+		System.out.println(new File(".").getAbsolutePath());
+
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String deploymentDirectoryPath = servletContext.getRealPath("/");
+		String uploadDirectoryPath = deploymentDirectoryPath + "upload/";
+		System.out.println("RUTA: " + uploadDirectoryPath);
+		/*		
+		*/
+		UploadedFile uploadedPhoto = e.getFile();
+		setFile(e.getFile());
+		String filePath = "C:/ITP/TEMPEVENTOS/";
+
+		// String filePath = uploadDirectoryPath;
+		byte[] bytes = null;
+
+		if (null != uploadedPhoto) {
+			bytes = uploadedPhoto.getContents();
+			String filename = FilenameUtils
+					.getName(uploadedPhoto.getFileName());
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(filePath + filename)));
+			stream.write(bytes);
+			stream.close();
+
+			rutaComprobante = filename;
+		}
+
+	}
+	
+	
+	public void handleFileUploadDocumentos(FileUploadEvent e) throws IOException {
 
 		System.out.println("RUTA DEL PROYECTO");
 		System.out.println(new File(".").getAbsolutePath());
@@ -1088,6 +1174,15 @@ public class ServicioMBean {
 			e.printStackTrace();
 		}
 	}
+	
+	private void listarTiposDocumentosCite() {
+		try {
+
+			getServicioModel().setListarTipoDocumentoCite(citeServices.listarTipoDocumentoCiteBO());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void listarServicios() {
 
@@ -1289,4 +1384,13 @@ public class ServicioMBean {
 		this.titulo = titulo;
 	}
 
+	public ServicioModel getServicioModelSelect() {
+		return servicioModelSelect;
+	}
+
+	public void setServicioModelSelect(ServicioModel servicioModelSelect) {
+		this.servicioModelSelect = servicioModelSelect;
+	}
+
+	
 }

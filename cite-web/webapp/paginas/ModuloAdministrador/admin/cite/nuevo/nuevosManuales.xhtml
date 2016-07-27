@@ -30,15 +30,16 @@
 				</p:column>
 
 				<p:column>
-					<p:selectOneMenu id="tipod"
-							value="#{servicioMBean.servicioModel.tituloInformativo}"
+					
+					<p:selectOneMenu id="tipodoc"
+							value="#{servicioMBean.servicioModelSelect.codigo}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione el tipo " />
-							<f:selectItems value="#{servicioMBean.servicioModel.tituloInformativo}"
-								var="citeE" itemLabel="#{citeE.descripcion}"
-								itemValue="#{citeE.codigo}" />
+							<f:selectItems value="#{servicioMBean.servicioModel.listarTipoDocumentoCite}"
+								var="citeDoc" itemLabel="#{citeDoc.descripcion}"
+								itemValue="#{citeDoc.codigo}" />
 						</p:selectOneMenu>
-						<p:message for="tipod" />
+						<p:message for="tipodoc" />
 
 				</p:column>
 
@@ -64,24 +65,11 @@
 				</p:column>
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">					
 					<p:growl id="messagesManuales" showDetail="true" />
-					<!--p:fileUpload label="Cargar documento ..."  
-						id="docManuales"
-						uploadLabel="Cargar documento" 
-						cancelLabel="Cancelar"
-						fileUploadListener="#{servicioMBean.handleFileUploadManuales}"
-						mode="advanced" 
-						dragDropSupport="false" 
-						update="messages"
-						sizeLimit="2097152"
-						fileLimit="3" 
-						value="Adjuntar manuales" 
-						previewWidth="300"
-						style="margin-left: 160px;" 
-						skinSimple="true" /-->
 						
+				
 				<p:fileUpload label="Cargar Documento CITE ..."  id="docInformativo"
 						uploadLabel="Guardar Documento" cancelLabel="Cancelar"
-						fileUploadListener="#{servicioMBean.handleFileUploadPublicaciones}"
+						fileUploadListener="#{servicioMBean.handleFileUploadDocumentosCite}"
 						mode="advanced" dragDropSupport="false" update="messages"		
 						fileLimit="1" value="Imagen" previewWidth="300"
 						style="margin-left: 160px;" 
@@ -91,7 +79,24 @@
 
 
 		</p:panelGrid>
+		
+		<p:spacer width="5px" />
+		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">
+			<p:row>
+				<p:column colspan="2" styleClass="styleAlignLeftColumn">
+					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
+						value="Guardar Doc CITE"
+						actionListener="#{servicioMBean.guardarNuevoDocumentosCite}"
+						update="titulo,tipod,docInformativo" ajax="false" />
+				</p:column>
 
+				<p:column colspan="2" styleClass="styleAlignRightColumn">
+					<p:commandButton value="Cancelar" id="botonCamcelar"
+						actionListener="#{servicioMBean.cancelar}" ajax="false" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+		
 		<p:spacer width="5px" />  
 		<p:dialog header="Informe del Sistema" modal="true" height="120"
 			width="380" appendTo="@(body)" style="z-index: 999 !important"

@@ -18,6 +18,7 @@ import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
 import pe.gob.produce.produccion.dao.CITEIDAO;
@@ -454,6 +455,41 @@ Connection con = null;
 			this.cerrarConexion(con);
 		}
 		return rs;
+	}
+
+	@Override
+	public List<TipoDocumentoCiteBO> listarTipoDocumentoCiteBO()
+			throws Exception {
+Connection con = null;
+		
+		Statement statement = null;
+		ResultSet rs = null;
+		String query = null;
+		List<TipoDocumentoCiteBO> listaTipoDocumentoCiteBO = new ArrayList<TipoDocumentoCiteBO>();
+		
+		try{
+			con = Conexion.obtenerConexion();
+			query = "SELECT CODIGO_TIPO_DOCUMENTO_CITE, NOMBRE_TIPO_DOCUMENTO_CITE FROM dbo.TIPO_DOCUMENTO_CITE";
+			statement = con.createStatement();	
+			
+			rs = statement.executeQuery(query);
+			
+			while(rs.next()){				
+				TipoDocumentoCiteBO tipoDoc = new TipoDocumentoCiteBO();
+				tipoDoc.setCodigo(rs.getString(1));
+				tipoDoc.setDescripcion(rs.getString(2));
+				listaTipoDocumentoCiteBO.add(tipoDoc);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			this.cerrarResultSet(rs);
+			this.cerrarSentenceStatement(statement);
+			this.cerrarConexion(con);
+		}		
+		return listaTipoDocumentoCiteBO;
 	}
 
 	

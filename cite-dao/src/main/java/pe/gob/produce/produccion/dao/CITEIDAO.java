@@ -7,10 +7,13 @@ import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
 
 public interface CITEIDAO {
 
 	public List<CITEBO>   listarCites()  throws Exception;
+	public List<TipoDocumentoCiteBO> listarTipoDocumentoCiteBO() throws Exception;
+	
 	public List<SedeBO>   listarSedes()  throws Exception;
 	public void grabarNuevaSede(SedeBO sede) throws Exception;
 	public void grabarNuevaDependencia(DependenciaBO dependencia) throws Exception;

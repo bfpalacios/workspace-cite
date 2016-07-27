@@ -23,9 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
 import pe.gob.produce.produccion.core.util.TipoInformativo;
 import pe.gob.produce.produccion.model.InformativoModel;
+import pe.gob.produce.produccion.services.CITEServices;
 import pe.gob.produce.produccion.services.InformativoServices;
 
 @Controller("informativoMBean")
@@ -38,10 +40,18 @@ public class InformativoMBean {
 	private InformativoModel informativoModel;
 	private String titulo;
 	private Date fecha;
+	private String tipoDocumento;
 	private ServicioMBean servMBean;
 	@Autowired
 	private InformativoServices informativoServices;
 	private List<InformativoModel> datosInformativoModelGrid;
+	
+	@Autowired
+	private CITEServices citeServices;
+	private List<TipoDocumentoCiteBO> listaTipoDocumento;
+	private List<InformativoModel> listaDocsDerecha;
+	private List<InformativoModel> listaDocsIzquierda;
+	
 	SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
 	public InformativoMBean() {
@@ -59,52 +69,95 @@ public class InformativoMBean {
 			setInformativoModel(new InformativoModel());
 		}
 		this.informativoModel = new InformativoModel();
-		setInformativoModel(new InformativoModel());
+		this.informativoModel.setTipoDocumento(new TipoDocumentoCiteBO());
+		setInformativoModel(informativoModel);
 		this.datosInformativoModelGrid = new ArrayList<>();
+	}
+	
+	public String mostrarDocumentos() throws Exception {
+		System.out.println("mostrarDocumentos:INICIO");
+
+		inicializarClases();
+		listarTiposDocumentosCite();
+		
+		String pagina = "/paginas/ModuloProduccion/cite/documentos/mostrarDocumentos.xhtml";
+		System.out.println("mostrarDocumentos:FIN");
+		return pagina;
+	}
+	
+	private void listarTiposDocumentosCite() {
+		try {
+			this.setListaTipoDocumento(citeServices.listarTipoDocumentoCiteBO());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void separarDocsEnColumnas(){
+		int count = 1;
+		listaDocsDerecha = new ArrayList<>();
+		listaDocsIzquierda = new ArrayList<>();
+		for (InformativoModel info : listaInformativos) {
+			if(count % 2 ==0){
+				listaDocsDerecha.add(info);
+			}else{
+				listaDocsIzquierda.add(info);
+			}
+			count++;
+		}
+	}
+	
+	public void buscarDocumentos() throws Exception {
+		buscarInformativo(getTipoDocumento(), TipoInformativo.DOCUMENTO);
 	}
 
 	public void buscarNoticias() throws Exception {
-		buscarInformativo(TipoInformativo.NOTICIA);
+		//no aplica tipoDocumento
+		buscarInformativo(null, TipoInformativo.NOTICIA);
 	}
 
 	public void buscarPublicaciones() throws Exception {
-		buscarInformativo(TipoInformativo.PUBLICACION);
+		//no aplica tipoDocumento
+		buscarInformativo(null, TipoInformativo.PUBLICACION);
 	}
 	
-	public void buscarInformativo(TipoInformativo tipo){
+	public void buscarInformativo(String tipoDocumento, TipoInformativo tipo){
 		
 		FormateadorFecha fechaFormateada = new FormateadorFecha();
-		String titulo = null;
-		
-		Date fecha = null;
-		titulo = getTitulo();
-		fecha = getFecha();
+		String titulo = getTitulo();
+		Date fecha = getFecha();
 		
 		// this should be gone in a logger
-		System.out.println("DATOS BUSQUEDA DE INFORMATIVO " + tipo.toString() + ": " + titulo + "-"
-				+ fecha);
+		System.out.println("DATOS BUSQUEDA DE INFORMATIVO " + tipo.toString() + ": " + titulo + " - "
+				+ fecha + " - " + tipoDocumento);
 		listaInformativos = new ArrayList<>();
 		listaInformativosDB = informativoServices.buscarInformativo(titulo,
-				fecha, tipo);
+				fecha, tipoDocumento, tipo);
 		for (ServicioInformativoBO informativo : listaInformativosDB) {
-			InformativoModel noticia = new InformativoModel();
-			noticia.setId(informativo.getId().intValue() + "");
-			noticia.setTitulo(informativo.getTituloInformativo());
-			noticia.setDescripcionCorta(informativo.getDescCortaInformativo());
-			noticia.setDescripcion(informativo.getDescInformativo());
-			noticia.setFechaCalendario(informativo.getFecha());
+			InformativoModel infrtivo = new InformativoModel();
+			infrtivo.setId(informativo.getId().intValue() + "");
+			infrtivo.setTitulo(informativo.getTituloInformativo());
+			infrtivo.setDescripcionCorta(informativo.getDescCortaInformativo());
+			infrtivo.setDescripcion(informativo.getDescInformativo());
+			infrtivo.setFechaCalendario(informativo.getFecha());
 			//String fechaOut = formato.format(informativo.getFecha());
 			String fechaOut = fechaFormateada.formatoFechaDDMMAAAA(informativo.getFecha());
 			
 			
-			noticia.setFecha(fechaOut);
+			infrtivo.setFecha(fechaOut);
 			InputStream archivoDB = new ByteArrayInputStream(
 					informativo.getArchivoInformativo());
-			noticia.setImagen(new DefaultStreamedContent(archivoDB));
+			infrtivo.setImagen(new DefaultStreamedContent(archivoDB));
 			//noticia.setImagen(new DefaultStreamedContent(imagenDB, "image/jpg"));
-			listaInformativos.add(noticia);
+			infrtivo.setTipoDocumento(informativo.getTipoDocumento());
+			listaInformativos.add(infrtivo);
 		}
-		setDatosInformativoModelGrid(listaInformativos);
+		if(tipo == TipoInformativo.DOCUMENTO){
+			separarDocsEnColumnas();
+			setListaInformativos(listaInformativos);
+		}else{
+			setDatosInformativoModelGrid(listaInformativos);
+		}		
 	}
 
 	public void handleFileUploadInformativo(FileUploadEvent e)
@@ -121,6 +174,11 @@ public class InformativoMBean {
 	public void actualizarPublicacion(InformativoModel informativoModel)
 			throws Exception {
 		actualizarInformativo(informativoModel, TipoInformativo.PUBLICACION);
+	}
+	
+	public void actualizarDocumento(InformativoModel informativoModel)
+			throws Exception {
+		actualizarInformativo(informativoModel, TipoInformativo.DOCUMENTO);
 	}
 
 	public void actualizarInformativo(InformativoModel inforModel,
@@ -139,9 +197,14 @@ public class InformativoMBean {
 			} catch (Exception ev) {
 				throw new Exception(ev);
 			}
-			servMBean.validarCampos(inforModel.getTitulo(),
-					inforModel.getDescripcionCorta(),
-					inforModel.getDescripcion());
+			if(tipo == TipoInformativo.DOCUMENTO){
+				servMBean.validarCampos(inforModel.getTitulo(),"test","test");
+			}else{
+				servMBean.validarCampos(inforModel.getTitulo(),
+						inforModel.getDescripcionCorta(),
+						inforModel.getDescripcion());
+			}
+			
 			if (inforModel != null) {
 				ServicioInformativoBO infoBO = new ServicioInformativoBO();
 				infoBO.setId(Integer.parseInt(inforModel.getId()));				
@@ -159,8 +222,10 @@ public class InformativoMBean {
 					}
 				}				
 				infoBO.setArchivoInformativo(archivoInformativo);
+				infoBO.setTipoDocumento(inforModel.getTipoDocumento());
 				informativoServices.actualizarInformativo(infoBO, tipo);
-				buscarInformativo(tipo);
+				//no aplica tipoDocumento
+				buscarInformativo(null, tipo);
 			}
 		} catch (Exception e) {
 			FacesMessage message = new FacesMessage(
@@ -209,6 +274,16 @@ public class InformativoMBean {
 			actulizarGridDespuesDeEliminar(flatDelete);
 		}
 	}
+	
+	public void eliminarDocumento(InformativoModel informativoModel)
+			throws Exception {
+		if (informativoModel != null) {
+			int flatDelete = informativoServices.eliminarInformativo(
+					Integer.parseInt(informativoModel.getId()),
+					TipoInformativo.DOCUMENTO);
+			actulizarGridDespuesDeEliminar(flatDelete);
+		}
+	}
 
 	public String editarServicioNoticias() throws Exception {
 		System.out.println("editarServicioNoticias:INICIO");
@@ -225,6 +300,15 @@ public class InformativoMBean {
 		inicializarClases();
 		String pagina = "/paginas/ModuloAdministrador/admin/cite/edicion/EditarPublicaciones.xhtml";
 		System.out.println("editarServicioPublicaciones:FIN");
+		return pagina;
+	}
+	
+	public String editarDocumentos() throws Exception {
+		System.out.println("editarDocumentos:INICIO");
+		inicializarClases();
+		listarTiposDocumentosCite();
+		String pagina = "/paginas/ModuloAdministrador/admin/cite/edicion/EditarDocumentos.xhtml";
+		System.out.println("editarDocumentos:FIN");
 		return pagina;
 	}
 
@@ -268,4 +352,45 @@ public class InformativoMBean {
 	public void setInformativoServices(InformativoServices informativoServices) {
 		this.informativoServices = informativoServices;
 	}
+
+	public List<TipoDocumentoCiteBO> getListaTipoDocumento() {
+		return listaTipoDocumento;
+	}
+
+	public void setListaTipoDocumento(List<TipoDocumentoCiteBO> listaTipoDocumento) {
+		this.listaTipoDocumento = listaTipoDocumento;
+	}
+
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public List<InformativoModel> getListaDocsDerecha() {
+		return listaDocsDerecha;
+	}
+
+	public void setListaDocsDerecha(List<InformativoModel> listaDocsDerecha) {
+		this.listaDocsDerecha = listaDocsDerecha;
+	}
+
+	public List<InformativoModel> getListaDocsIzquierda() {
+		return listaDocsIzquierda;
+	}
+
+	public void setListaDocsIzquierda(List<InformativoModel> listaDocsIzquierda) {
+		this.listaDocsIzquierda = listaDocsIzquierda;
+	}
+
+	public List<InformativoModel> getListaInformativos() {
+		return listaInformativos;
+	}
+
+	public void setListaInformativos(List<InformativoModel> listaInformativos) {
+		this.listaInformativos = listaInformativos;
+	}
+	
 }

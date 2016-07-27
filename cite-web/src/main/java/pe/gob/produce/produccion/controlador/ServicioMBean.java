@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.ServicioBO;
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.produccion.core.util.Convertidor;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
@@ -570,7 +571,9 @@ public class ServicioMBean {
 		
 						servicio.setTituloInformativo(titulo);
 						servicio.setArchivoInformativo(archivoInformativo);
-						servicio.setCodigotipoDocumentoCite(codigotipoDocCite);
+						TipoDocumentoCiteBO tipoDoc = new TipoDocumentoCiteBO();
+						tipoDoc.setCodigo(codigotipoDocCite);
+						servicio.setTipoDocumento(tipoDoc);
 						servicio.setFecha(fecha);
 					
 						citeServices.grabarDocumentosCites(servicio);
@@ -673,9 +676,9 @@ public class ServicioMBean {
 		*/
 		UploadedFile uploadedPhoto = e.getFile();
 		setFile(e.getFile());
-		String filePath = "C:/ITP/TEMPEVENTOS/";
+		//String filePath = "C:/ITP/TEMPEVENTOS/";
 
-		// String filePath = uploadDirectoryPath;
+		String filePath = uploadDirectoryPath;
 		byte[] bytes = null;
 
 		if (null != uploadedPhoto) {

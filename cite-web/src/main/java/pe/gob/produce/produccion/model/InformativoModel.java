@@ -7,6 +7,8 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.model.StreamedContent;
 import org.springframework.stereotype.Component;
 
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
+
 @Component("informativoModel")
 @ViewScoped
 public class InformativoModel {
@@ -17,6 +19,7 @@ public class InformativoModel {
 	private String fecha;
 	private Date fechaCalendario;
 	private StreamedContent imagen;
+	private TipoDocumentoCiteBO tipoDocumento;
 
 	public InformativoModel() {
 	}
@@ -85,4 +88,13 @@ public class InformativoModel {
 	public void setImagen(StreamedContent imagen) {
 		this.imagen = imagen;
 	}
+
+	public TipoDocumentoCiteBO getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(TipoDocumentoCiteBO tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+	
 }

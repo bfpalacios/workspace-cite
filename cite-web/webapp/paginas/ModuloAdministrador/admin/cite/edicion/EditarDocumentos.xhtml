@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	<ui:define name="contenido">
+
+		<p:outputPanel id="mensajeNuevoServicioDoc"
+			style="width:400px;margin-top:5px;">
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+		</p:outputPanel>
+
+		<p:panel
+			header="#{mensaje['produccion.buscar.documento.label.titulo']}"
+			style="width: 400px;">
+			<p:panelGrid id="pnlGridBuscarDoc">
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lNombre"
+							value="#{mensaje['produccion.buscar.documento.label.buscarportitulo']}" />
+					</p:column>
+					<p:column>
+						<p:inputText id="tituloDoc" value="#{informativoMBean.titulo}"
+							size="20" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lCodigo"
+							value="#{mensaje['produccion.buscar.documento.label.buscarporfecha']}" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{informativoMBean.fecha}" id="fechaDoc"
+							pattern="dd/MM/yyyy" mode="popup" showOn="button">
+						</p:calendar>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lTipo"
+							value="#{mensaje['produccion.buscar.documento.label.buscarportipo']}" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="tipodoc"
+							value="#{informativoMBean.tipoDocumento}" styleClass="selectMenu">
+							<f:selectItem itemLabel="Seleccione el tipo " />
+							<f:selectItems value="#{informativoMBean.listaTipoDocumento}"
+								var="citeDoc" itemLabel="#{citeDoc.descripcion}"
+								itemValue="#{citeDoc.codigo}" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+				<p:row id="filaBuscarDoc">
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignCenterColumn">
+						<p:commandButton value="Buscar" id="botonBuscar"
+							actionListener="#{informativoMBean.buscarDocumentos}" ajax="true"
+							update="doc_tabla" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<p:spacer width="10px" />
+
+		<p:panelGrid id="pnlGridResultadoBuscarDoc">
+
+			<p:row>
+				<p:column colspan="2" style="font-weight:bold;font-size:15px">#{mensaje['produccion.buscar.documento.label.documentosencontradas']}</p:column>
+			</p:row>
+
+			<p:row id="filaTablaDoc">
+				<p:column id="colTablaDoc"
+					styleClass="ui-column-label-spij styleAlignRightColumn" colspan="3">
+
+					<p:dataTable id="doc_tabla" widgetVar="docTabla" var="registro"
+						value="#{informativoMBean.listaInformativos}"
+						selectionMode="single" rowKey="#{registro.id}"
+						emptyMessage="No se encuentra informacion" paginator="true"
+						rows="10">
+
+						<p:column headerText="Título(*)"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText id="titulo_tabla" value="#{registro.titulo}" />
+						</p:column>
+
+						<p:column headerText="Fecha"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText id="fecha_tabla" value="#{registro.fecha}" />
+						</p:column>
+
+						<p:column headerText="Tipo de documento"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<h:outputText id="tipo_tabla" value="#{registro.tipoDocumento.descripcion}" />
+						</p:column>
+
+						<p:column headerText="Edición"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<p:commandButton value="Editar"
+								update=":formPrincipal:doc_editar"
+								oncomplete="PF('edicionDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{informativoMBean.informativoModel}" />
+							</p:commandButton>
+
+							<p:commandButton value="Eliminar"
+								update=":formPrincipal:doc_eliminar"
+								oncomplete="PF('eliminarDialog').show()">
+								<f:setPropertyActionListener value="#{registro}"
+									target="#{informativoMBean.informativoModel}" />
+							</p:commandButton>
+
+						</p:column>
+					</p:dataTable>
+
+					<p:dialog widgetVar="edicionDialog" header="Editar documento"
+						width="800" showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="doc_editar" style="text-align:left;">
+							<p:panelGrid style="width:100%" columns="2"
+								rendered="#{not empty informativoMBean.informativoModel}"
+								columnClasses="label,value">
+								<p:outputLabel for="titulo" value="Título:" />
+								<p:inputText style="width:100%" id="titulo"
+									value="#{informativoMBean.informativoModel.titulo}" />
+
+								<p:outputLabel for="fecha" value="Fecha:" />
+								<p:calendar id="fecha"
+									value="#{informativoMBean.informativoModel.fechaCalendario}"
+									pattern="dd/MM/yyyy" />
+
+								<p:outputLabel for="codigoTipo" value="Tipo de documento:" />
+								<p:outputPanel>
+									<p:row>
+										<p:column colspan="4">
+											<h:outputText id="codigoTipo"
+												value="#{informativoMBean.informativoModel.tipoDocumento.descripcion}" />
+										</p:column>
+									</p:row>
+									<br />
+									<p:row>
+										<p:column colspan="4">
+											<p:selectOneMenu id="tipodoc_edit"
+												value="#{informativoMBean.informativoModel.tipoDocumento.codigo}"
+												styleClass="selectMenu">
+												<f:selectItem itemLabel="Seleccione el tipo " />
+												<f:selectItems
+													value="#{informativoMBean.listaTipoDocumento}"
+													var="citeDocEdit" itemLabel="#{citeDocEdit.descripcion}"
+													itemValue="#{citeDocEdit.codigo}" />
+											</p:selectOneMenu>
+											<p:message for="tipodoc_edit" />
+										</p:column>
+									</p:row>
+								</p:outputPanel>
+
+								<p:outputLabel for="imagen" value="Archivo del Documento" />
+								<p:row id="imagen">
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:media value="#{noticiaImagen.stream}" width="70%"
+											height="80px" player="pdf">
+											<f:param name="documentoId"
+												value="#{informativoMBean.informativoModel.id}" />
+										</p:media>
+										<p:fileUpload label="Cargar Documento CITE ..."
+											id="docInformativo" uploadLabel="Guardar Documento"
+											cancelLabel="Cancelar"
+											fileUploadListener="#{informativoMBean.handleFileUploadInformativo}"
+											mode="advanced" dragDropSupport="false" update="messages"
+											fileLimit="1" value="Imagen" previewWidth="300"
+											skinSimple="true" />
+									</p:column>
+								</p:row>
+
+								<p:spacer></p:spacer>
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="addButton" value="Guardar"
+											actionListener="#{informativoMBean.actualizarDocumento(informativoMBean.informativoModel)}"
+											update="titulo_tabla, fecha_tabla, tipo_tabla,doc_tabla" ajax="false"
+											oncomplete="PF('edicionDialog').hide();" />
+
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelButton" value="Cancelar"
+											oncomplete="PF('edicionDialog').hide();" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+					<p:dialog widgetVar="eliminarDialog"
+						header="Eliminar documento" showEffect="clip" hideEffect="clip">
+						<p:outputPanel id="doc_eliminar" style="text-align:center;">
+							<h:panelGrid columns="2"
+								rendered="#{not empty informativoMBean.informativoModel}">
+								<p:spacer></p:spacer>
+								<p:outputLabel
+									value="Esta seguro que desea eliminar este documento?" />
+								<p:spacer></p:spacer>
+								<p:outputLabel style="font-weight: bold;"
+									value="#{informativoMBean.informativoModel.titulo}" />
+								<p:spacer></p:spacer>
+								<p:row>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="deleteButton" value="Eliminar"
+											actionListener="#{informativoMBean.eliminarDocumento(informativoMBean.informativoModel)}"
+											update="doc_tabla" ajax="false"
+											oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+									<p:column
+										styleClass="ui-column-label-spij styleAlignRightColumn">
+										<p:commandButton id="cancelDeleteButton" value="Cancelar"
+											oncomplete="PF('eliminarDialog').hide();" />
+									</p:column>
+								</p:row>
+							</h:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+
+				</p:column>
+			</p:row>
+
+		</p:panelGrid>
+	</ui:define>
+</ui:composition>
+</html>

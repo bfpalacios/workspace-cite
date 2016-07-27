@@ -505,7 +505,7 @@ Connection con = null;
 		cstm = con.prepareCall("{call SP_Insertar_DocumentosCite(?,?,?,?)}");
 		cstm.setQueryTimeout(3);
 		cstm.setString(1, servicioInformativo.getTituloInformativo());		
-		cstm.setString(2, servicioInformativo.getCodigotipoDocumentoCite());
+		cstm.setString(2, servicioInformativo.getTipoDocumento().getCodigo());
 		cstm.setDate(3, dateCite);
 		cstm.setBlob(4, informativo, servicioInformativo.getArchivoInformativo().length);
 	

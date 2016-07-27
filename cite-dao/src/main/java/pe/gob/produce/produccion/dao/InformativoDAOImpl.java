@@ -1,8 +1,5 @@
 package pe.gob.produce.produccion.dao;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.gob.produce.cite.bo.ServicioInformativoBO;
+import pe.gob.produce.cite.bo.TipoDocumentoCiteBO;
 import pe.gob.produce.produccion.core.dao.jdbc.BaseDAO;
 import pe.gob.produce.produccion.core.dao.jdbc.Conexion;
 import pe.gob.produce.produccion.core.util.TipoInformativo;
@@ -184,10 +182,17 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 		try {
 			con = Conexion.obtenerConexion();
 			PreparedStatement pstmt = null;
+			
+			CITEDAO citeDao = null;
+			List<TipoDocumentoCiteBO> tiposDoc = null;			
 			if (tipo == TipoInformativo.NOTICIA) {
 				pstmt = con.prepareStatement("{call dbo.ObtenerNoticia(?)}");
 			} else if (tipo == TipoInformativo.PUBLICACION) {
 				pstmt = con.prepareStatement("{call dbo.ObtenerPublicacion(?)}");
+			} else if (tipo == TipoInformativo.DOCUMENTO) {
+				pstmt = con.prepareStatement("{call dbo.ObtenerDocumento(?)}");
+				citeDao = new CITEDAO();
+				tiposDoc = citeDao.listarTipoDocumentoCiteBO();
 			}
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
@@ -195,10 +200,24 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				informativo = new ServicioInformativoBO();
 				informativo.setId(rs.getInt(1));
 				informativo.setTituloInformativo(rs.getString(2));
-				informativo.setDescInformativo(rs.getString(3));
-				informativo.setDescCortaInformativo(rs.getString(4));
-				informativo.setFecha(rs.getDate(5));
-				informativo.setArchivoInformativo(rs.getBytes(6));
+				if(tipo == TipoInformativo.DOCUMENTO){
+					informativo.setFecha(rs.getDate(3));
+					informativo.setArchivoInformativo(rs.getBytes(4));
+					TipoDocumentoCiteBO tipoDoc = new TipoDocumentoCiteBO();
+					tipoDoc.setCodigo(rs.getString(5));
+					for (TipoDocumentoCiteBO tipoDocumentoCiteBO : tiposDoc) {
+						if(tipoDoc.getCodigo().equals(tipoDocumentoCiteBO.getCodigo())){
+							tipoDoc.setDescripcion(tipoDocumentoCiteBO.getDescripcion());
+							break;
+						}
+					}
+					informativo.setTipoDocumento(tipoDoc);
+				}else {
+					informativo.setDescInformativo(rs.getString(3));
+					informativo.setDescCortaInformativo(rs.getString(4));
+					informativo.setFecha(rs.getDate(5));
+					informativo.setArchivoInformativo(rs.getBytes(6));
+				}				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -212,7 +231,7 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 
 	@Override
 	public List<ServicioInformativoBO> buscarInformativo(String titulo,
-			Date fecha, TipoInformativo tipo) {
+			Date fecha, String tipoDocumento, TipoInformativo tipo) {
 		Connection con = null;
 		Statement statement = null;
 		ResultSet rs = null;
@@ -220,10 +239,18 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 		try {
 			con = Conexion.obtenerConexion();
 			PreparedStatement pstmt = null;
+			
+			CITEDAO citeDao = null;
+			List<TipoDocumentoCiteBO> tiposDoc = null;
 			if (tipo == TipoInformativo.NOTICIA) {
 				pstmt = con.prepareStatement("{call dbo.BuscarNoticias(?,?)}");
 			} else if (tipo == TipoInformativo.PUBLICACION) {
 				pstmt = con.prepareStatement("{call dbo.BuscarPublicaciones(?,?)}");
+			} else if (tipo == TipoInformativo.DOCUMENTO) {
+				pstmt = con.prepareStatement("{call dbo.BuscarDocumentos(?,?,?)}");
+				pstmt.setString(3, tipoDocumento);
+				citeDao = new CITEDAO();
+				tiposDoc = citeDao.listarTipoDocumentoCiteBO();
 			}
 			pstmt.setString(1, titulo);
 			if(fecha != null){
@@ -236,10 +263,24 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				ServicioInformativoBO informativo = new ServicioInformativoBO();
 				informativo.setId(rs.getInt(1));
 				informativo.setTituloInformativo(rs.getString(2));
-				informativo.setDescInformativo(rs.getString(3));
-				informativo.setDescCortaInformativo(rs.getString(4));
-				informativo.setFecha(rs.getDate(5));
-				informativo.setArchivoInformativo(rs.getBytes(6));
+				if(tipo == TipoInformativo.DOCUMENTO){
+					informativo.setFecha(rs.getDate(3));
+					informativo.setArchivoInformativo(rs.getBytes(4));
+					TipoDocumentoCiteBO tipoDoc = new TipoDocumentoCiteBO();
+					tipoDoc.setCodigo(rs.getString(5));
+					for (TipoDocumentoCiteBO tipoDocumentoCiteBO : tiposDoc) {
+						if(tipoDoc.getCodigo().equals(tipoDocumentoCiteBO.getCodigo())){
+							tipoDoc.setDescripcion(tipoDocumentoCiteBO.getDescripcion());
+							break;
+						}
+					}
+					informativo.setTipoDocumento(tipoDoc);
+				}else {
+					informativo.setDescInformativo(rs.getString(3));
+					informativo.setDescCortaInformativo(rs.getString(4));
+					informativo.setFecha(rs.getDate(5));
+					informativo.setArchivoInformativo(rs.getBytes(6));
+				}				
 				listaInformativo.add(informativo);
 			}
 		} catch (Exception e) {
@@ -282,6 +323,8 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				dao.grabarInformativo(informativo);
 			} else if (tipo == TipoInformativo.PUBLICACION) {
 				dao.grabarPublicaciones(informativo);
+			} else if (tipo == TipoInformativo.DOCUMENTO) {
+				dao.grabarDocumentosCites(informativo);
 			}
 			
 		} catch (Exception e) {
@@ -306,6 +349,8 @@ public class InformativoDAOImpl extends BaseDAO implements InformativoDAO {
 				pstmt = con.prepareStatement("{call dbo.EliminarNoticia(?)}");
 			} else if (tipo == TipoInformativo.PUBLICACION) {
 				pstmt = con.prepareStatement("{call dbo.EliminarPublicacion(?)}");
+			} else if (tipo == TipoInformativo.DOCUMENTO) {
+				pstmt = con.prepareStatement("{call dbo.EliminarDocumento(?)}");
 			}
 			pstmt.setInt(1, id);
 			rs = pstmt.executeUpdate();			

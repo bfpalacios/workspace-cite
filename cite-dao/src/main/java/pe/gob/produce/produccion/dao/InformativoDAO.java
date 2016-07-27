@@ -12,7 +12,7 @@ public interface InformativoDAO {
 	List<ServicioInformativoBO> listarPublicaciones(int numNoticias);
 	List<ServicioInformativoBO> listarPublicacionesPorMes(int anio, int mes);
 	ServicioInformativoBO obtenerInformativo(int id, TipoInformativo tipo);
-	List<ServicioInformativoBO> buscarInformativo(String titulo, Date fecha, TipoInformativo tipo);
+	List<ServicioInformativoBO> buscarInformativo(String titulo, Date fecha, String tipoDocumento, TipoInformativo tipo);
 	Integer actualizarInformativo(ServicioInformativoBO informativo, TipoInformativo tipo) throws Exception;
 	Integer eliminarInformativo(Integer id, TipoInformativo tipo);
 }

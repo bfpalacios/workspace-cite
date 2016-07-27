@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition
+	template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">
+	<ui:define name="contenido">
+		<p:outputPanel id="pnlGridMensajes"
+			style="width:400px;margin-top:5px;">
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</p:column>
+			</p:row>
+		</p:outputPanel>
+		<div
+			style="background-color: #BDBDBD; text-align: right; padding: 5px 25px 5px 0px;">
+			<span
+				style="text-align: left; float: left; font-size: 130%; padding-left: 10px; font-weight: bold;">Buscar
+				documentos</span>
+			<p:row>
+				<p:column>
+					<p:inputText id="titulo" value="#{informativoMBean.titulo}"
+						size="20" />
+					<p:watermark for="titulo" value="Ingresar Título" />
+				</p:column>
+			</p:row>
+
+			<p:selectOneMenu id="tipodoc"
+				value="#{informativoMBean.tipoDocumento}" styleClass="selectMenu">
+				<f:selectItem itemLabel="Seleccione el tipo " />
+				<f:selectItems value="#{informativoMBean.listaTipoDocumento}"
+					var="citeDoc" itemLabel="#{citeDoc.descripcion}"
+					itemValue="#{citeDoc.codigo}" />
+			</p:selectOneMenu>
+
+			<p:commandButton value="Buscar" update="documento"
+				actionListener="#{informativoMBean.buscarDocumentos}" />
+		</div>
+		<br />
+		<h:panelGroup id="documento">
+			<div style="width: 50%; float: left;">
+				<ui:repeat var="docu" value="#{informativoMBean.listaDocsIzquierda}"
+					varStatus="status">
+					<div style="padding-left: 10px;">
+						<div class="fondoInformativo">
+							<p class="tituloinformativo">#{docu.titulo}</p>
+							<br />
+							<h:graphicImage style="width: 200px; height: 150px;"
+								value="/Imagenes/docIcon.png" />
+							<div class="descripcionInformativo">
+								<span>Fecha: </span><span>#{docu.fecha}</span> <br />
+								<p:media value="#{noticiaImagen.stream}" width="100%"
+									height="100px" player="pdf">
+									<f:param name="documentoId" value="#{docu.id}" />
+								</p:media>
+								<p:commandButton value="Descargar" ajax="false"
+									onclick="PrimeFaces.monitorDownload(start, stop);"
+									icon="ui-icon-arrowthick-1-s"
+									action="#{noticiaImagen.setId(docu.id)}">
+									<f:param name="documentoId" value="#{docu.id}" />
+									<p:fileDownload value="#{noticiaImagen.getStreamPdf(docu.id)}" />
+								</p:commandButton>
+							</div>
+							<P />
+						</div>
+					</div>
+					<br />
+				</ui:repeat>
+			</div>
+
+			<div style="width: 50%; float: right;">
+				<ui:repeat var="docu" value="#{informativoMBean.listaDocsDerecha}"
+					varStatus="status">
+					<div style="padding-left: 10px;">
+						<div class="fondoInformativo">
+							<p class="tituloinformativo">#{docu.titulo}</p>
+							<br />
+							<h:graphicImage style="width: 200px; height: 150px;"
+								value="/Imagenes/docIcon.png" />
+							<div class="descripcionInformativo">
+								<span>Fecha: </span><span>#{docu.fecha}</span> <br />
+								<p:media value="#{noticiaImagen.stream}" width="100%"
+									height="100px" player="pdf">
+									<f:param name="documentoId" value="#{docu.id}" />
+								</p:media>
+								<p:commandButton value="Descargar" ajax="false"
+									onclick="PrimeFaces.monitorDownload(start, stop);"
+									icon="ui-icon-arrowthick-1-s"
+									action="#{noticiaImagen.setId(docu.id)}">
+									<f:param name="documentoId" value="#{docu.id}" />
+									<p:fileDownload value="#{noticiaImagen.getStreamPdf(docu.id)}" />
+								</p:commandButton>
+							</div>
+							<P />
+						</div>
+					</div>
+					<br />
+				</ui:repeat>
+			</div>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
+</html>

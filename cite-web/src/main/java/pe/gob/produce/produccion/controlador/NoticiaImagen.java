@@ -26,6 +26,7 @@ public class NoticiaImagen {
 	private InformativoServices informativoService;
 
 	private int id;
+	private TipoInformativo tipoInformativo;
 
 	@PostConstruct
 	public void init() {
@@ -59,13 +60,22 @@ public class NoticiaImagen {
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 			return new DefaultStreamedContent();
 		} else {
-			ServicioInformativoBO informativo = informativoService
-					.obtenerInformativo(id, TipoInformativo.PUBLICACION);
+			ServicioInformativoBO informativo = null;
+			if(this.tipoInformativo == TipoInformativo.PUBLICACION){
+				informativo = informativoService
+						.obtenerInformativo(id, TipoInformativo.PUBLICACION);
+			} else if(this.tipoInformativo == TipoInformativo.DOCUMENTO){
+				informativo = informativoService
+						.obtenerInformativo(id, TipoInformativo.DOCUMENTO);
+			} else {
+				throw new IOException("Error cargando archivo: No existe TipoInformativo");
+			}
+			
 			if (informativo != null) {
 				return new DefaultStreamedContent(new ByteArrayInputStream(
 						informativo.getArchivoInformativo()));
 			} else {
-				throw new IOException("Error cargando archivo pdf");
+				throw new IOException("Error cargando archivo");
 			}
 		}
 	}
@@ -77,18 +87,33 @@ public class NoticiaImagen {
 		} else {
 			String publicacionIdUi = context.getExternalContext()
 					.getRequestParameterMap().get("publicacionId");
+			String documentoIdUi = context.getExternalContext()
+					.getRequestParameterMap().get("documentoId");
 			if (StringUtils.isNotEmpty(publicacionIdUi)) {
 				this.id = Integer.parseInt(publicacionIdUi);
+				this.tipoInformativo = TipoInformativo.PUBLICACION;
 				ServicioInformativoBO informativo = informativoService
-						.obtenerInformativo(Integer.parseInt(publicacionIdUi),
+						.obtenerInformativo(id,
 								TipoInformativo.PUBLICACION);
 				if (informativo != null) {
 					return new DefaultStreamedContent(new ByteArrayInputStream(
 							informativo.getArchivoInformativo()));
 				} else {
-					throw new IOException("Error cargando archivo pdf");
+					throw new IOException("Error cargando archivo pdf para publicacion");
 				}
-			} else {
+			} else if (StringUtils.isNotEmpty(documentoIdUi)) {
+				this.id = Integer.parseInt(documentoIdUi);
+				this.tipoInformativo = TipoInformativo.DOCUMENTO;
+				ServicioInformativoBO informativo = informativoService
+						.obtenerInformativo(id,
+								TipoInformativo.DOCUMENTO);
+				if (informativo != null) {
+					return new DefaultStreamedContent(new ByteArrayInputStream(
+							informativo.getArchivoInformativo()));
+				} else {
+					throw new IOException("Error cargando archivo pdf para documento");
+				}
+			}else {
 				return new DefaultStreamedContent();
 			}
 		}
@@ -100,6 +125,14 @@ public class NoticiaImagen {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public TipoInformativo getTipoInformativo() {
+		return tipoInformativo;
+	}
+
+	public void setTipoInformativo(TipoInformativo tipoInformativo) {
+		this.tipoInformativo = tipoInformativo;
 	}
 
 }

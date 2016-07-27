@@ -23,15 +23,15 @@
 					icon="ui-icon-arrowrefresh-1-w" />
 				
 				<p:menuitem 
-					value="Buscar CITE" action="#{citesMBean.editarCites}"
+					value="Editar CITE" action="#{citesMBean.editarCites}"
 					icon="ui-icon-arrowrefresh-1-w" />	
 					
 				<p:menuitem 
-					value="Buscar Sede" action="#{citesMBean.editarSedes}"
+					value="Editar Sede" action="#{citesMBean.editarSedes}"
 					icon="ui-icon-arrowrefresh-1-w" />	
 				
 				<p:menuitem 
-					value="Buscar Dependencia" action="#{citesMBean.editarDependencias}"
+					value="Editar Dependencia" action="#{citesMBean.editarDependencias}"
 					icon="ui-icon-arrowrefresh-1-w" />	
 				
 			</p:submenu> 
@@ -43,15 +43,18 @@
 					value="Nuevas Publicaciones" action="#{servicioMBean.nuevoServicioPublicaciones}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
-					value="Buscar Noticias" action="#{informativoMBean.editarServicioNoticias}"
+					value="Editar Noticias" action="#{informativoMBean.editarServicioNoticias}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				<p:menuitem 
-					value="Buscar Publicaciones" action="#{informativoMBean.editarServicioPublicaciones}"
+					value="Editar Publicaciones" action="#{informativoMBean.editarServicioPublicaciones}"
 					icon="ui-icon-arrowrefresh-1-w" />
 			</p:submenu>
 			<p:submenu label="Modulo - Gestion de Documentos">	
 				<p:menuitem 
 					value="Nuevos Documentos CITE" action="#{servicioMBean.nuevosManuales}"
+					icon="ui-icon-arrowrefresh-1-w" />
+				<p:menuitem 
+					value="Editar Documentos CITE" action="#{informativoMBean.editarDocumentos}"
 					icon="ui-icon-arrowrefresh-1-w" />
 				 <!--p:menuitem 
 					value="Nuevos Formatos" action="#{servicioMBean.nuevosFormatos}"

@@ -48,8 +48,8 @@ public class InformativoServicesImpl implements InformativoServices {
 
 	@Override
 	public List<ServicioInformativoBO> buscarInformativo(String titulo,
-			Date fecha, TipoInformativo tipo) {
-		return informativoDao.buscarInformativo(titulo, fecha, tipo);
+			Date fecha, String tipoDocumento, TipoInformativo tipo) {
+		return informativoDao.buscarInformativo(titulo, fecha, tipoDocumento, tipo);
 	}
 
 	@Override

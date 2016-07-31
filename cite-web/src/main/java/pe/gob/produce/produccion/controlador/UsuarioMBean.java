@@ -96,17 +96,17 @@ public class UsuarioMBean extends GenericoController {
 		properties = new Properties();
 		properties.put("mail.smtp.auth", "true"); 
 		//properties.put("mail.smtp.starttls.enable", "false");
-		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.starttls.enable", "false");
 		properties.put("mail.smtp.host", SMTP_HOST_NAME);
 		properties.put("mail.smtp.port",SMTP_PORT);
 		properties.put("mail.smtp.debug", "true");
 		
-		properties.put("mail.transport.protocol","smtp");
+		/*properties.put("mail.transport.protocol","smtp");
 		
 		properties.put("mail.smtp.socketFactory.port", SMTP_PORT); 
 		properties.put("mail.smtp.socketFactory.class", SSL_FACTORY); 
 		properties.put("mail.smtp.socketFactory.fallback", "false"); 
-	
+	*/
 		
 		session = Session.getInstance(properties,
                 new Authenticator() {

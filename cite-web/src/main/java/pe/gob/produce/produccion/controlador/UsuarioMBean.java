@@ -1,12 +1,9 @@
 package pe.gob.produce.produccion.controlador;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,24 +12,26 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.io.IOUtils;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import pe.gob.produce.cite.bo.CITEBO;
 import pe.gob.produce.cite.bo.DependenciaBO;
 import pe.gob.produce.cite.bo.SedeBO;
-import pe.gob.produce.cite.bo.ServicioInformativoBO;
 import pe.gob.produce.cite.bo.UbigeoBO;
 import pe.gob.produce.cite.bo.UsuarioBO;
 import pe.gob.produce.produccion.core.util.FormateadorFecha;
-import pe.gob.produce.produccion.core.util.TipoInformativo;
 import pe.gob.produce.produccion.model.CITESModel;
-import pe.gob.produce.produccion.model.InformativoModel;
 import pe.gob.produce.produccion.model.UbigeoModel;
 import pe.gob.produce.produccion.model.UsuarioModel;
 import pe.gob.produce.produccion.services.ComunServices;
@@ -68,6 +67,89 @@ public class UsuarioMBean extends GenericoController {
 
 	private boolean esAlumno = true;
 
+	//propiedades de enviar mail
+	private Properties properties = null;
+	
+	//private String password;
+
+	private Session session;
+	
+	
+	private static final String SMTP_HOST_NAME = "smtp.gmail.com"; 
+	//private static final String SMTP_HOST_NAME = "mail.gmail.com"; 
+	//private static final String SMTP_PORT = "465"; 
+	private static final String SMTP_PORT = "587"; 
+	private static final String emailMsgTxt = "Test Message Contents"; 
+	private static final String emailSubjectTxt = "A test from gmail"; 
+	private static final String emailFromAddress = "ITP.SOPORTEAPP@gmail.com"; 
+	private static final String password = "ITP.SOPORTEAPP@@"; 
+	private static final String SSL_FACTORY = 
+	"javax.net.ssl.SSLSocketFactory"; 
+	private static final String[] sendTo = {"bfpalacios@gmail.com"}; 
+	private void init() {
+		properties = new Properties();
+		properties.put("mail.smtp.auth", "true"); 
+		//properties.put("mail.smtp.starttls.enable", "false");
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.host", SMTP_HOST_NAME);
+		properties.put("mail.smtp.port",SMTP_PORT);
+		
+		properties.put("mail.transport.protocol","smtp");
+		properties.put("mail.smtp.debug", "true");
+		
+		/*properties.put("mail.smtp.socketFactory.port", SMTP_PORT); 
+		properties.put("mail.smtp.socketFactory.class", SSL_FACTORY); 
+		properties.put("mail.smtp.socketFactory.fallback", "false"); 
+*/
+		
+		session = Session.getInstance(properties,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(emailFromAddress, password);
+                    }
+                });
+		
+		session.setDebug(true);
+
+		//session = Session.getDefaultInstance(properties);
+	}
+
+	public void enviarContraseniaEmail() throws Exception{
+		System.out.println("inicio:enviarContraseniaEmail");
+		
+		init();
+		try{
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(emailFromAddress));
+			message.setRecipients(Message.RecipientType.TO,
+		                InternetAddress.parse("bfpalacios@gmail.com"));
+		    //message.addRecipient(Message.RecipientType.TO, new InternetAddress("bfpalacios@gmail.com"));
+			message.setSubject("Envio de contrasenia Red de Cites");
+			message.setText("Se le envia su contraseña : ");
+			
+			/*Transport t = session.getTransport("smtps");
+			t.connect((String)properties.get("mail.smtp.host"),587,(String)properties.get("mail.smtp.user"), "ITP.SOPORTEAPP@@");
+			t.sendMessage(message, message.getAllRecipients());
+			t.close();
+			*/
+			
+			Transport.send(message);
+			
+			olvidoContrasenia();
+			
+		}catch (MessagingException me){
+                        //Aqui se deberia o mostrar un mensaje de error o en lugar
+                        //de no hacer nada con la excepcion, lanzarla para que el modulo
+                        //superior la capture y avise al usuario con un popup, por ejemplo.
+			throw new RuntimeException(me);
+		}
+		
+		System.out.println("fin:enviarContraseniaEmail");
+		
+		
+	}
+
+	
 	public UsuarioMBean() {
 		this.usuarioModel = new UsuarioModel();
 

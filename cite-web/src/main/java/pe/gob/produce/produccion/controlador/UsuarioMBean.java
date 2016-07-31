@@ -7,6 +7,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.activation.CommandMap;
+import javax.activation.MailcapCommandMap;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -74,15 +76,19 @@ public class UsuarioMBean extends GenericoController {
 
 	private Session session;
 	
-	
-	private static final String SMTP_HOST_NAME = "smtp.gmail.com"; 
+
+	//private static final String SMTP_HOST_NAME = "smtp.gmail.com";
+	private static final String SMTP_HOST_NAME = "outlook.office365.com"; 
 	//private static final String SMTP_HOST_NAME = "mail.gmail.com"; 
 	//private static final String SMTP_PORT = "465"; 
 	private static final String SMTP_PORT = "587"; 
 	private static final String emailMsgTxt = "Test Message Contents"; 
 	private static final String emailSubjectTxt = "A test from gmail"; 
-	private static final String emailFromAddress = "ITP.SOPORTEAPP@gmail.com"; 
-	private static final String password = "ITP.SOPORTEAPP@@"; 
+	//private static final String emailFromAddress = "ITP.SOPORTEAPP@gmail.com"; 
+	private static final String emailFromAddress = "ITP.SOPORTE@outlook.es"; 
+	
+	//private static final String password = "ITP.SOPORTEAPP@@"; 
+	private static final String password = "itpSOPORTE@@2016"; 
 	private static final String SSL_FACTORY = 
 	"javax.net.ssl.SSLSocketFactory"; 
 	private static final String[] sendTo = {"bfpalacios@gmail.com"}; 
@@ -93,14 +99,14 @@ public class UsuarioMBean extends GenericoController {
 		properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.host", SMTP_HOST_NAME);
 		properties.put("mail.smtp.port",SMTP_PORT);
-		
-		properties.put("mail.transport.protocol","smtp");
 		properties.put("mail.smtp.debug", "true");
 		
-		/*properties.put("mail.smtp.socketFactory.port", SMTP_PORT); 
+		properties.put("mail.transport.protocol","smtp");
+		
+		properties.put("mail.smtp.socketFactory.port", SMTP_PORT); 
 		properties.put("mail.smtp.socketFactory.class", SSL_FACTORY); 
 		properties.put("mail.smtp.socketFactory.fallback", "false"); 
-*/
+	
 		
 		session = Session.getInstance(properties,
                 new Authenticator() {
@@ -125,7 +131,6 @@ public class UsuarioMBean extends GenericoController {
 		                InternetAddress.parse("bfpalacios@gmail.com"));
 		    //message.addRecipient(Message.RecipientType.TO, new InternetAddress("bfpalacios@gmail.com"));
 			message.setSubject("Envio de contrasenia Red de Cites");
-			message.setText("Se le envia su contraseña : ");
 			
 			/*Transport t = session.getTransport("smtps");
 			t.connect((String)properties.get("mail.smtp.host"),587,(String)properties.get("mail.smtp.user"), "ITP.SOPORTEAPP@@");
@@ -133,8 +138,19 @@ public class UsuarioMBean extends GenericoController {
 			t.close();
 			*/
 			
+			/* MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
+		        mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
+		        mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+		        mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+		        mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+		        mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822");
+		        CommandMap.setDefaultCommandMap(mc);
+		      */  
+			message.setText("Se le envia su contraseña : ");
+				//message.setText(htmlBody);
+            message.setContent("Se le envia su contraseña : ", "text/html");
 			Transport.send(message);
-			
+			System.out.println("Done");
 			olvidoContrasenia();
 			
 		}catch (MessagingException me){

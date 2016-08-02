@@ -2,6 +2,7 @@ package pe.gob.produce.produccion.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,8 +41,10 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 	public void grabarUsuario(UsuarioBO usuarioNuevo) throws SQLException {
 
 		int idUsuario;
-		String numeroDocumento = "";
+		String numeroDocumento = usuarioNuevo.getDni();
 		String estado = "1";
+		String ubigeo = usuarioNuevo.getCodigoUbigeo();
+		
 		Connection con = null;
 		CallableStatement cstm = null;
 
@@ -80,8 +83,35 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 			grabarUsuarioDocumentos(idUsuario, numeroDocumento, estado);
 
 		}
+		
+		grabarUsuarioRecupera(idUsuario, 						usuarioNuevo.getIdUsuario(), 
+								usuarioNuevo.getContrasenia(), 	ubigeo,
+								numeroDocumento ,  				usuarioNuevo.getFechaNac());
 
 	}
+	
+	public void grabarUsuarioRecupera(int idUsuario, String codUsuario,String contrasenia, String ubigeo,
+			String dni, java.util.Date date) throws SQLException {
+
+		Connection con = null;
+		CallableStatement cstm = null;
+		Date dateCite = new Date(date.getTime());
+		
+		con = Conexion.obtenerConexion();
+		cstm = con.prepareCall("{call SP_Nuevo_Usuario_Recupera(?,?,?,?,?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setInt(1, idUsuario);
+		cstm.setString(2, codUsuario);
+		cstm.setString(3, contrasenia);
+		cstm.setString(4, ubigeo);
+		cstm.setString(5, dni);
+		cstm.setDate(6, dateCite);
+		
+		cstm.execute();
+
+	}
+	
+
 
 	public void grabarUsuarioDirecciones(int idUsuario, String ubigeo,
 			String direccion) throws SQLException {
@@ -99,7 +129,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 		cstm.execute();
 
 	}
-
+	
 	public void grabarUsuarioDocumentos(int idUsuario, String numeroDocumento,
 			String estado) throws SQLException {
 
@@ -149,9 +179,15 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 				UsuarioBO usuario = new UsuarioBO();
 				usuario.setIdUsuario(rs.getString(1));
 				usuario.setCodUsuario(rs.getString(2));
-				usuario.setNombres(rs.getString(4)); 
-				usuario.setApellidoPaterno(rs.getString(5)); 
-				usuario.setApellidoMaterno(rs.getString(6)); 
+				usuario.setNombres(rs.getString(3));  
+				usuario.setCargo(rs.getString(4));
+				
+				usuario.setNombreCITE(rs.getString(5));  
+				usuario.setNombreDependencia(rs.getString(6));  
+				usuario.setTelefono(rs.getString(7));  
+				usuario.setTelefono2(rs.getString(8));  
+				usuario.setEmail1(rs.getString(9));  
+				usuario.setEmailAdmin(rs.getString(10));  
 				  
 				listaUsuario.add(usuario);
 			}
@@ -165,6 +201,38 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 	public Integer eliminarUsuario(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public String recuperarContrasenia(UsuarioBO usuario) throws Exception {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		String contrasenia="";
+		
+		Date fecNac = new Date(usuario.getFechaNac().getTime());
+		
+		try {
+			con = Conexion.obtenerConexion();
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("{call dbo.RecuperarContrasenia(?,?,?,?)}");
+			
+			
+			
+			pstmt.setString(1, usuario.getIdUsuario());
+			pstmt.setString(2, usuario.getDni());
+			pstmt.setString(3, usuario.getCodigoUbigeo());
+			pstmt.setDate(4, fecNac);
+			
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				contrasenia = rs.getString(1);
+			}
+		} catch (Exception e) {
+			System.out.println("No data found for: " + usuario.getIdUsuario() + usuario.getDni());
+		} 
+		return contrasenia;
 	}
 
 }

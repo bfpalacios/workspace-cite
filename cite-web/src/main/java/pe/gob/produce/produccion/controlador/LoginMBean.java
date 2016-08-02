@@ -112,6 +112,7 @@ public class LoginMBean extends GenericoController{
 
 			ExternalContext context = getFacesContext().getExternalContext();
 			String password = shaPasswordEncoder.encodePassword(loginModel.getClave(),null);
+			//String password = loginModel.getClave(),null);
 			RequestDispatcher requestDispatcher = ((ServletRequest)context.getRequest()).getRequestDispatcher("/j_spring_security_check?j_username="+
 					loginModel.getUsuario()+"&j_password="+password);
 			try {

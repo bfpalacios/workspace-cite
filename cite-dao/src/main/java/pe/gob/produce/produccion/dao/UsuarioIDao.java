@@ -15,5 +15,6 @@ public interface UsuarioIDao {
 	public void grabarUsuario(UsuarioBO usuarioNuevo) throws Exception;
 	public List<UsuarioBO> buscarUsuarioCite(String codUsuario, String nomUsuario) throws Exception;
 	public Integer eliminarUsuario(Integer id);
+	public String recuperarContrasenia(UsuarioBO usuario) throws Exception;
 	
 }

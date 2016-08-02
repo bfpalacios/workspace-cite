@@ -26,37 +26,124 @@
 					<p:column colspan="2"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lUsuarioCite"
-							value="Ingrese usuario cite" />
+							value="Ingrese su nombre de usuario cite :" />
 					</p:column>
 
 					<p:spacer width="10px" />
 					<p:column>
-					<p:inputText id="codUsuario" size="25"
-						value="#{usuarioMBean.usuarioModel.codUsuario}" />
+						<p:inputText id="codUsuario" size="25"
+							value="#{usuarioMBean.usuarioModel.codUsuario}" />
 
 					</p:column>
-					
+
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="ldni" value="Ingrese su dni :" />
+					</p:column>
+
+					<p:spacer width="10px" />
+					<p:column>
+						<p:inputText id="dni" size="25"
+							value="#{usuarioMBean.usuarioModel.dni}" />
+
+					</p:column>
+
+				</p:row>
+				<p:row>
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lFecNac"
+							value="Ingrese su fecha de nacimiento :" />
+					</p:column>
+
+					<p:spacer width="10px" />
+					<p:column>
+						<p:calendar value="#{usuarioMBean.usuarioModel.fechaNac}"
+							id="fechaCite" pattern="dd/MM/yyyy" mode="popup" showOn="button">
+						</p:calendar>
+					</p:column>
+
+				</p:row>
+
+				<p:row>
+					<p:column colspan="2"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblDpto" value="Departamento donde nacio" />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="dpto"
+							value="#{usuarioMBean.usuarioModelSelect.codDepartamento}"
+							valueChangeListener="#{usuarioMBean.actualizarlistProvincia}"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<f:selectItem itemLabel="Seleccione el departamento:" />
+							<f:selectItems value="#{usuarioMBean.usuarioModel.listUbigeo}"
+								var="dpto" itemLabel="#{dpto.departamento}"
+								itemValue="#{dpto.idUbigeo}" />
+							<f:ajax event="change" execute="@this" render="provincia" />
+						</p:selectOneMenu>
+
+					</p:column>
+
+				</p:row>
+				<p:row>
+					<p:column  colspan="2" styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lblProvincia"
+							value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
+					</p:column>
+
+					<p:column>
+						<p:selectOneMenu id="provincia"
+							value="#{usuarioMBean.usuarioModelSelect.codProvincia}"
+							valueChangeListener="#{usuarioMBean.actualizarlistDistrito}"
+							styleClass="ui-column-label-spij styleAlignRightColumn">
+							<f:selectItem itemLabel="Seleccione la provincia " />
+							<f:selectItems value="#{usuarioMBean.usuarioModel.listProvincia}"
+								var="prov" itemLabel="#{prov.provincia}"
+								itemValue="#{prov.idUbigeo}" />
+
+							<f:ajax event="change" execute="@this" render="distrito" />
+						</p:selectOneMenu>
+					</p:column>
+
+				</p:row>
+				<p:row>
+				<p:column colspan="2" styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDistrito"
+						value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
+				</p:column>
+
+				<p:column>
+					<p:selectOneMenu id="distrito"
+						value="#{usuarioMBean.usuarioModelSelect.codDistrito}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione el distrito " />
+						<f:selectItems value="#{usuarioMBean.usuarioModel.listDistrito}"
+							var="distrito" itemLabel="#{distrito.distrito}"
+							itemValue="#{distrito.idUbigeo}" />
+					</p:selectOneMenu>
+				</p:column>
+
 				</p:row>
 
 
 				<p:row>
-					<p:column
-						styleClass="ui-column-label-spij styleAlignCenterColumn">
+					<p:column styleClass="ui-column-label-spij styleAlignCenterColumn">
 						<p:commandButton value="Enviar contrasenia"
 							id="botonenviarContraseniaEmail"
-							action="#{usuarioMBean.enviarContraseniaEmail}"
-							ajax="false" />
+							action="#{usuarioMBean.enviarContraseniaEmail}" ajax="false" />
 					</p:column>
 					<p:column colspan="2"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
 						<p:commandButton value="Cancelar"
 							id="botonCancelarRegistrarCliente"
-							action="#{usuarioMBean.cancelarRegisttro}"
-							ajax="true" />
-						
+							action="#{usuarioMBean.cancelarRegisttro}" ajax="true" />
+
 					</p:column>
-					
-					
+
+
 
 					<p:spacer width="10px" />
 					<!--p:column colspan="2"

@@ -105,12 +105,79 @@
 
 				</p:row>
 
+				<p:row>
+					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+						<h:outputText id="lFecha"
+							value="Fecha de Nacimiento" />
+					</p:column>
+					<p:column>
+						<p:calendar value="#{usuarioMBean.usuarioModel.fechaNac}" id="fechaCite"
+							pattern="dd/MM/yyyy" mode="popup" showOn="button">
+						</p:calendar>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDpto"
+						value="Departamento donde nacio" />
+				</p:column>
+				<p:column>
+					<p:selectOneMenu id="dpto"
+						value="#{usuarioMBean.usuarioModelSelect.codDepartamento}"
+						valueChangeListener="#{usuarioMBean.actualizarlistProvincia}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione el departamento:" />
+						<f:selectItems value="#{usuarioMBean.usuarioModel.listUbigeo}"
+							var="dpto" itemLabel="#{dpto.departamento}"
+							itemValue="#{dpto.idUbigeo}" />
+						<f:ajax event="change" execute="@this" render="provincia" />
+					</p:selectOneMenu>
+
+				</p:column>
+
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblProvincia"
+						value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
+				</p:column>
+
+				<p:column>
+					<p:selectOneMenu id="provincia"
+						value="#{usuarioMBean.usuarioModelSelect.codProvincia}"
+						valueChangeListener="#{usuarioMBean.actualizarlistDistrito}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione la provincia " />
+						<f:selectItems value="#{usuarioMBean.usuarioModel.listProvincia}"
+							var="prov" itemLabel="#{prov.provincia}"
+							itemValue="#{prov.idUbigeo}" />
+
+						<f:ajax event="change" execute="@this" render="distrito" />
+					</p:selectOneMenu>
+				</p:column>
 
 
+				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
+					<h:outputText id="lblDistrito"
+						value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
+				</p:column>
+
+				<p:column>
+					<p:selectOneMenu id="distrito"
+						value="#{usuarioMBean.usuarioModelSelect.codDistrito}"
+						styleClass="ui-column-label-spij styleAlignRightColumn">
+						<f:selectItem itemLabel="Seleccione el distrito " />
+						<f:selectItems value="#{usuarioMBean.usuarioModel.listDistrito}"
+							var="distrito" itemLabel="#{distrito.distrito}"
+							itemValue="#{distrito.idUbigeo}" />
+					</p:selectOneMenu>
+				</p:column>
+
+			</p:row>  
+				
 				<p:row>
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblDpto"
+						<h:outputText id="lblCITE"
 							value="CITE: " />
 					</p:column>
 					<p:column>
@@ -128,7 +195,7 @@
 					</p:column>
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblProvincia"
+						<h:outputText id="lblSede"
 							value="Sede :" />
 					</p:column>
 
@@ -149,7 +216,7 @@
 
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
-						<h:outputText id="lblDistrito"
+						<h:outputText id="lblDependencia"
 							value="Dependencia :" />
 					</p:column>
 
@@ -290,7 +357,7 @@
 					<p:commandButton id="botonGuardar" value="Registrar Usuario"
 						styleClass="buttonMarginNormal"
 						actionListener="#{usuarioMBean.guardarNuevoUsuario}"
-						update="pnlGridLoginAcceso,nombre, tipoDoc, dni, telefonoJefe, jefe, cargo, cite, sede, dependencia, idUsuario, emailPersonal , emailAdmin, clave,confirmarclave, telefonoUsuario2, telefonoUsuario, rol"
+						update="pnlGridLoginAcceso,nombre, tipoDoc, dni, dpto, provincia, distrito, telefonoJefe, jefe, cargo, cite, sede, dependencia, fechaCite, idUsuario, emailPersonal , emailAdmin, clave,confirmarclave, telefonoUsuario2, telefonoUsuario, rol"
 						ajax="true" />
 				</p:column>
 

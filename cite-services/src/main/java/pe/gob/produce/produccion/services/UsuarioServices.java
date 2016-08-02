@@ -15,4 +15,5 @@ public interface UsuarioServices {
 	public void grabarUsuario(UsuarioBO usuarioNuevo) throws Exception;
 	public List<UbigeoBO> listUbigeo() throws Exception;
 	public Integer eliminarUsuario(Integer id);
+	public String recuperarContrasenia(UsuarioBO usuario) throws Exception;
 }

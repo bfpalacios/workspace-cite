@@ -1,5 +1,6 @@
 package pe.gob.produce.produccion.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ViewScoped;
@@ -28,6 +29,9 @@ public class UsuarioModel {
 	private String direccion;
 	private String telefono;
 	private String codCite;
+
+	private String nombreDependencia;
+	private String nombreCITE;
 	private String codSede;
 	private String codDependencia;
 	private String codDepartamento;
@@ -67,6 +71,7 @@ public class UsuarioModel {
 	private DependenciaBO dependencia;
 	private SedeBO sede;	
 	private int dni1;
+	private Date fechaNac;
 	
 	public String getCodCite() {
 		return codCite;
@@ -755,4 +760,29 @@ public class UsuarioModel {
 		this.jefe = jefe;
 	}
 
+	public String getNombreDependencia() {
+		return nombreDependencia;
+	}
+
+	public void setNombreDependencia(String nombreDependencia) {
+		this.nombreDependencia = nombreDependencia;
+	}
+
+	public String getNombreCITE() {
+		return nombreCITE;
+	}
+
+	public void setNombreCITE(String nombreCITE) {
+		this.nombreCITE = nombreCITE;
+	}
+
+	public Date getFechaNac() {
+		return fechaNac;
+	}
+
+	public void setFechaNac(Date fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+	
+	
 }

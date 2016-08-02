@@ -1,6 +1,7 @@
 package pe.gob.produce.produccion.controlador;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -60,7 +61,6 @@ public class UsuarioMBean extends GenericoController {
 	private String nombreUsuario;
 	private List<UsuarioModel> listaUsuarios;
 	private List<UsuarioModel> datosUsuarioModelGrid;
-	
 	private List<UsuarioBO> listaUsuariosDB;
 	
 	private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -202,7 +202,7 @@ public class UsuarioMBean extends GenericoController {
 		System.out.println("buscarUsuarioCite:INICIO");
 		inicializarClases();
 		String pagina = "/paginas/ModuloAdministrador/admin/cite/buscar/buscarUsuarioCite.xhtml";
-		System.out.println("olvidoContrasenia:FIN");
+		System.out.println("uscarUsuarioCite:FIN");
 		return pagina;
 	}
 	
@@ -210,6 +210,8 @@ public class UsuarioMBean extends GenericoController {
 	public String olvidoContrasenia() throws Exception {
 		System.out.println("olvidoContrasenia:INICIO");
 		inicializarClases();
+		cargarUbigeo();
+		cargarCITES();
 		String pagina ="/admin/nuevo/olvidoContrasenia.xhtml";
 		System.out.println("buscarUsuarioCite:FIN");
 		return pagina;
@@ -329,12 +331,18 @@ public class UsuarioMBean extends GenericoController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		 
 		for (UsuarioBO usuario : listaUsuariosDB) {
 			UsuarioModel user = new UsuarioModel();
 			user.setIdUsuario(usuario.getIdUsuario());
 			user.setCodUsuario(usuario.getCodUsuario());
-			user.setNombres(usuario.getNombres() + usuario.getApellidoPaterno()); 
+			user.setNombres(usuario.getNombres()); 
+			user.setCargo(usuario.getCargo()); 
+			user.setNombreCITE(usuario.getNombreCITE()); 
+			user.setNombreDependencia(usuario.getNombreDependencia()); 
+			user.setTelefono(usuario.getTelefono()); 
+			user.setTelefono2(usuario.getTelefono2()); 
+			user.setTelefonoJefe(usuario.getTelefonoJefeInmediato()); 
 			 
 			listaUsuarios.add(user);
 		}
@@ -611,6 +619,7 @@ public class UsuarioMBean extends GenericoController {
 		return pagina;
 	}
 	
+		
 	public void guardarNuevoUsuario() {
 		
 		try {
@@ -638,7 +647,16 @@ public class UsuarioMBean extends GenericoController {
 			String telefonoJefe = getUsuarioModel().getTelefonoJefe(); 
 			String jefe = getUsuarioModel().getJefe(); 
 															
-													
+			String codigoDpto = getUsuarioModelSelect().getCodDepartamento() == null ? "invalido"
+					: getUsuarioModelSelect().getCodDepartamento();
+			String codigoProvincia = getUsuarioModelSelect().getCodProvincia() == null ? "invalido"
+					: getUsuarioModelSelect().getCodProvincia();
+			String codigoDistrito = getUsuarioModelSelect().getCodDistrito() == null ? "invalido"
+					: getUsuarioModelSelect().getCodDistrito();
+			String codigoUbigeo = codigoDistrito; //codigoDpto + codigoProvincia + codigoDistrito;
+
+			codigoUbigeo = codigoUbigeo.equals("") ? "0" : codigoUbigeo;
+										
 											
 			String emailItp = getUsuarioModel().getEmailAdmin() == null ? ""
 					: validaCorreo(getUsuarioModel().getEmailAdmin()) == true ? getUsuarioModel()
@@ -661,8 +679,14 @@ public class UsuarioMBean extends GenericoController {
 					: validaCadena(getUsuarioModel().getIdUsuario()) == true ? getUsuarioModel()
 							.getIdUsuario() : "invalido";
 			
-			System.out.println("Nombres " + nombres);
-							
+			Date fechaNacimiento= getUsuarioModel().getFechaNac();
+			
+					System.out.println("Nombres " + nombres);
+					System.out.println("dpto " + codigoDpto);
+					System.out.println("provincia " + codigoProvincia);
+					System.out.println("distrito " + codigoDistrito);
+					System.out.println("ubigeo " + codigoUbigeo);
+													
 			if (validarCamposUsuarioCite(nombres, contrasenia, confirmaClave, idRol, codCite, codDependencia, dni, idUsuario, emailItp, codSede) == true) {
 				UsuarioBO usuarioNuevo = new UsuarioBO();
 				usuarioNuevo.setIdUsuario(idUsuario);
@@ -677,14 +701,19 @@ public class UsuarioMBean extends GenericoController {
 				usuarioNuevo.setCodDependencia(codDependencia); 
 				//falta telefono personal
 				usuarioNuevo.setEmail1(emailpersonal); 
+				usuarioNuevo.setCodigoUbigeo(codigoUbigeo);
 				usuarioNuevo.setEmailAdmin(emailItp);
 				usuarioNuevo.setDni(dni);
 				usuarioNuevo.setCargo(cargo);
 				usuarioNuevo.setIdRol(idRol); 
+				usuarioNuevo.setFechaNac(fechaNacimiento);
 
 				usuarioServices.grabarUsuario(usuarioNuevo);
 				limpiarCampos();
+				cargarUbigeo();
+				cargarCITES();
 				mostrarMensajeNuevoUsuario(13);
+						
 				
 				RequestContext rc = RequestContext.getCurrentInstance();
 				rc.execute("dialogNuevoUsuarioCite.show()");
@@ -1015,7 +1044,7 @@ public class UsuarioMBean extends GenericoController {
 
 		getUsuarioModel().setListCite(listaCiteModel);
 	}
-	 
+	
 	
 	public void cargarUbigeo(){
 		

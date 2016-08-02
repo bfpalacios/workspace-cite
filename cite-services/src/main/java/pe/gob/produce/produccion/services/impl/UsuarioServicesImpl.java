@@ -99,4 +99,10 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		// TODO Auto-generated method stub
 		return usuarioDao.eliminarUsuario(id);
 	}
+
+	@Override
+	public String recuperarContrasenia(UsuarioBO usuario) throws Exception {
+		// TODO Auto-generated method stub
+		return usuarioDao.recuperarContrasenia(usuario);
+	}
 }

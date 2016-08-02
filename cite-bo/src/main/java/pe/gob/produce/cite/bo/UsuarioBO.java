@@ -1,6 +1,7 @@
 package pe.gob.produce.cite.bo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class UsuarioBO implements Serializable {
@@ -19,6 +20,7 @@ public class UsuarioBO implements Serializable {
 	private String telefonoJefeInmediato;
 	private String apellidoPaterno;
 	private String apellidoMaterno;
+	private String codigoUbigeo;
 	private String correo;
 	private String direccion;
 	private String telefono;
@@ -29,13 +31,17 @@ public class UsuarioBO implements Serializable {
 	private String rubro;
 	private String email1;
 	private String email2;
-	private String codCITE;	
+	private String codCITE;
+	private String nombreCITE;
 	private String codSede;	
-	private String codDependencia;	
+	private String codDependencia;
+	private String nombreDependencia;	
 	private String emailAdmin;	
 	private UbigeoBO ubigeo;
 	private List<UbigeoBO> listUbigeo;
 	private List<RolBO> listRol;
+
+	private Date fechaNac; 
 
 	public UsuarioBO() {
 	}
@@ -418,6 +424,47 @@ public class UsuarioBO implements Serializable {
 
 	public void setTelefonoJefeInmediato(String telefonoJefeInmediato) {
 		this.telefonoJefeInmediato = telefonoJefeInmediato;
+	}
+
+
+	public String getNombreCITE() {
+		return nombreCITE;
+	}
+
+
+	public void setNombreCITE(String nombreCITE) {
+		this.nombreCITE = nombreCITE;
+	}
+
+
+	public String getNombreDependencia() {
+		return nombreDependencia;
+	}
+
+
+	public void setNombreDependencia(String nombreDependencia) {
+		this.nombreDependencia = nombreDependencia;
+	}
+
+
+	public Date getFechaNac() {
+		return fechaNac;
+	}
+
+
+	public void setFechaNac(Date fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+
+
+	public String getCodigoUbigeo() {
+		return codigoUbigeo;
+	}
+
+
+	public void setCodigoUbigeo(String codigoUbigeo) {
+		this.codigoUbigeo = codigoUbigeo;
 	}	
+
 	
 }

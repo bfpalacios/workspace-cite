@@ -752,6 +752,7 @@ public class UsuarioMBean extends GenericoController {
 
 				usuarioServices.grabarUsuario(usuarioNuevo);
 				limpiarCampos();
+				inicializarClases();
 				cargarUbigeo();
 				cargarCITES();
 				mostrarMensajeNuevoUsuario(13);

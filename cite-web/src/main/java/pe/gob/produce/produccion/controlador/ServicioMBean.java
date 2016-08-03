@@ -5,8 +5,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
@@ -578,6 +581,7 @@ public class ServicioMBean {
 					
 						citeServices.grabarDocumentosCites(servicio);
 						limpiarObjetos();
+						listarTiposDocumentosCite();
 						RequestContext rc = RequestContext.getCurrentInstance();
 						rc.execute("dialogManuales.show()");
 				}
@@ -1171,8 +1175,9 @@ public class ServicioMBean {
 
 	private void limpiarObjetos() {
 		setServicioModelbi(null);
-		setServicioModelbi(new ServicioModel());
-	}
+		setServicioModelbi(new ServicioModel()); 
+		//setServiciomodel	
+	}		 
 
 	private void listarCITE() {
 		try {

@@ -50,7 +50,7 @@ CREATE TABLE [dbo].[USUARIO_RECUPERA](
 	[CONTRASENIA] [VARBINARY](MAX) NOT NULL,
 	[IDUBIGEO] [varchar](6) NULL,
 	[NUMERO_DOC] [varchar](45) NULL,
-	[FECHA_NAC] [date] NULL,
+	[FECHA_NAC] [datetime] NULL,
  CONSTRAINT [PK_USUARIO_RECUPERA] PRIMARY KEY CLUSTERED 
 (
 	[IDUSUARIORECUPERA] ASC
@@ -95,7 +95,7 @@ CREATE PROCEDURE [dbo].[SP_Nuevo_Usuario_Recupera]
                                                               @Contrasenia)),  
                                                   3, 40) AS VARCHAR(MAX))  
             */
-            --Ac√° es donde va a encriptar tu contrase√±a
+            --Ac· es donde va a encriptar tu contraseÒa
             SELECT  @NuevaContrasenia = ENCRYPTBYPASSPHRASE('CITE.ITP',@Contrasenia)
             FROM    #DUAL    
        
@@ -147,6 +147,136 @@ ALTER PROCEDURE [dbo].[RecuperarContrasenia]
             SELECT @Contrasenia FROM #DUAL
  END
   
- --exec dbo.RecuperarContrasenia 'ADMINCITE' --ya est√† B
+ --exec dbo.RecuperarContrasenia 'ADMINCITE' --ya est‡ B
+ -- CUANDO YO CREO UN NUEVO USUARIO YA LO CREA CON SU USER ASI ? 
+ --
+ 
+ USE [DBCITE]
+GO
+/****** Object:  StoredProcedure [dbo].[RecuperarContrasenia]    Script Date: 08/02/2016 23:17:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[RecuperarContrasenia]
+@CodUsuario VARCHAR(20),
+@NumeroDoc VARCHAR(40),
+@CodUsbigeo VARCHAR(6),
+@FecNac date
+ AS 
+ DECLARE @Contrasenia VARCHAR(MAX)
+ BEGIN
+	CREATE TABLE #DUAL ( DUMMY VARCHAR(1) )  
+  
+            INSERT  INTO #DUAL  
+                    ( DUMMY )  
+            VALUES  ( 'X' ) 
+            
+            SELECT  @Contrasenia = DECRYPTBYPASSPHRASE('CITE.ITP',CONTRASENIA)
+            FROM    USUARIO_RECUPERA 
+            WHERE ID_USUARIO = @CodUsuario AND 
+            NUMERO_DOC = @NumeroDoc AND 
+            IDUBIGEO = @CodUsbigeo AND 
+            CAST(FECHA_NAC AS DATE) = CAST(@FecNac AS DATE)
+            
+            SELECT @Contrasenia FROM #DUAL
+ END
+  
+ --exec dbo.RecuperarContrasenia 'ADMINCITE' --ya est‡ B
+ -- CUANDO YO CREO UN NUEVO USUARIO YA LO CREA CON SU USER ASI ? 
+ --
+ 
+ 
+ USE [DBCITE]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Nuevo_Usuario_Recupera]    Script Date: 08/03/2016 00:48:17 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_Nuevo_Usuario_Recupera]  
+        @IdUsuario int,
+        @CodUsuario VARCHAR(20),  
+        @Contrasenia VARCHAR(MAX),  
+        @CodUbigeo VARCHAR(6),   
+        @dni VARCHAR(8),   
+        @FecNac VARCHAR(10)           
+          
+          
+    AS  
+        DECLARE @NuevaContrasenia VARBINARY(MAX)
+        
+        BEGIN  
+      
+                 
+            CREATE TABLE #DUAL ( DUMMY VARCHAR(1) )  
+  
+            INSERT  INTO #DUAL  
+                    ( DUMMY )  
+            VALUES  ( 'X' )  
+    
+            /*SELECT  @Contrasenia = CAST(SUBSTRING(master.dbo.fn_varbintohexstr(HASHBYTES('SHA1',  
+                                                              @Contrasenia)),  
+                                                  3, 40) AS VARCHAR(MAX))  
+            */
+            --Ac· es donde va a encriptar tu contraseÒa
+            SELECT  @NuevaContrasenia = ENCRYPTBYPASSPHRASE('CITE.ITP',@Contrasenia)
+            FROM    #DUAL    
+       
+            INSERT  INTO dbo.USUARIO_RECUPERA  
+                    ( ID_USUARIO ,  
+                      CONTRASENIA ,  
+                      IDUBIGEO,
+                      NUMERO_DOC,
+                      FECHA_NAC
+              )  
+            VALUES  ( @CodUsuario , -- COD_USUARIO - varchar(20)  
+                      @NuevaContrasenia , -- CONTRASENIA - varchar(max)  
+                      @CodUbigeo , -- CODIGO DEL CITE 
+                      @dni , 
+                      @FecNac                       
+              )  
+ 
+     
+END
+
+
+USE [DBCITE]
+GO
+/****** Object:  StoredProcedure [dbo].[RecuperarContrasenia]    Script Date: 08/03/2016 01:23:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[RecuperarContrasenia]
+@CodUsuario VARCHAR(20),
+@NumeroDoc VARCHAR(40),
+@CodUsbigeo VARCHAR(6),
+@FecNac DATE,
+
+@ContraseniaN VARCHAR(50) out
+
+ AS 
+ DECLARE @Contrasenia VARCHAR(MAX)
+ BEGIN
+	CREATE TABLE #DUAL ( DUMMY VARCHAR(1) )  
+  
+            INSERT  INTO #DUAL  
+                    ( DUMMY )  
+            VALUES  ( 'X' ) 
+            
+            SELECT  @Contrasenia = DECRYPTBYPASSPHRASE('CITE.ITP',CONTRASENIA)
+            FROM    USUARIO_RECUPERA 
+            WHERE ID_USUARIO = @CodUsuario AND 
+            NUMERO_DOC = @NumeroDoc AND 
+            IDUBIGEO = @CodUsbigeo AND 
+            CAST(FECHA_NAC AS DATE) = CAST(@FecNac AS DATE)
+            
+            SET @ContraseniaN = @Contrasenia 
+            
+             RETURN @ContraseniaN
+ END
+  
+ --exec dbo.RecuperarContrasenia 'ADMINCITE' --ya est‡ B
  -- CUANDO YO CREO UN NUEVO USUARIO YA LO CREA CON SU USER ASI ? 
  --

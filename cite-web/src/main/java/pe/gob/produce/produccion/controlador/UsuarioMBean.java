@@ -164,6 +164,47 @@ public class UsuarioMBean extends GenericoController {
 		
 		
 	}
+	
+	
+	public String enviarContrasenia() {
+		System.out.println("inicio:enviarContrasenia");
+		
+		String pagina = "";
+		UsuarioBO usuario = new UsuarioBO();
+
+		usuario.setCodUsuario(getUsuarioModel().getCodUsuario()); 
+		usuario.setDni(getUsuarioModel().getDni()); 
+		usuario.setCodigoUbigeo(getUsuarioModelSelect().getCodDistrito()); 
+		usuario.setFechaNac(getUsuarioModel().getFechaNac()); 
+		
+		String contrasenia;
+		try {
+			contrasenia = usuarioServices.recuperarContrasenia(usuario);
+			
+			if(contrasenia != null){
+			System.out.println("contrasenia " + contrasenia);
+				getUsuarioModel().setConfirmarClave(contrasenia);
+				
+				pagina ="/admin/nuevo/mostrarContrasenia.xhtml";
+				
+			
+			} else mostrarMensaje(12);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			mostrarMensaje(11);
+		}
+		
+		
+		
+		
+		
+		
+		System.out.println("fin:enviarContrasenia");
+		
+		return pagina;
+	}
 
 	
 	public UsuarioMBean() {
@@ -447,6 +488,7 @@ public class UsuarioMBean extends GenericoController {
 
 	private void inicializarClases() {
 		this.usuarioModel = new UsuarioModel();
+		this.usuarioModelSelect  = new UsuarioModel();
 
 	}  
 
@@ -879,6 +921,18 @@ public class UsuarioMBean extends GenericoController {
 					"Hubo un error al guardar el usuario");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
+		
+		case 11:
+			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "",
+					"Hubo un error de conexion de base de datos ");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+			
+		case 12:
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
+					"Los datos que ingreso no son correctos ");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
 		}
 	}
 	
@@ -969,7 +1023,9 @@ public class UsuarioMBean extends GenericoController {
 	
 	private void limpiarObjetos() {
 		setUsuarioModel(null);
+		setUsuarioModelSelect(null);
 		setUsuarioModel(new UsuarioModel());
+		setUsuarioModelSelect(new UsuarioModel());
 	}
 
 	public String selectorNuevoSede(int modo) throws Exception {

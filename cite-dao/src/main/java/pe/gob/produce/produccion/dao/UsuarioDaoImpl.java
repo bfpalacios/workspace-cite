@@ -105,7 +105,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 		cstm.setString(3, contrasenia);
 		cstm.setString(4, ubigeo);
 		cstm.setString(5, dni);
-		cstm.setDate(6, dateCite);
+		cstm.setString(6, dateCite.toString());
 		
 		cstm.execute();
 
@@ -206,32 +206,36 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 	@Override
 	public String recuperarContrasenia(UsuarioBO usuario) throws Exception {
 		// TODO Auto-generated method stub
+		//Date fecNac = new Date(usuario.getFechaNac().getTime());
+		System.out.println("Fec naci " + usuario.getFechaNac().getTime());
+		System.out.println("Fec nac formato:" + new java.sql.Date(usuario.getFechaNac().getTime()));
+		System.out.println("Fec nac formato to string :" +new java.sql.Date(usuario.getFechaNac().getTime()).toString());
+		System.out.println("codigo ubigeo:" + usuario.getCodigoUbigeo());
+		System.out.println("Usuario DNI: " + usuario.getCodUsuario() + usuario.getDni());
+				
+		
 		Connection con = null;
-		Statement statement = null;
-		ResultSet rs = null;
-		String contrasenia="";
+		CallableStatement cstm = null;
+
+		con = Conexion.obtenerConexion();
+		cstm = con
+				.prepareCall("{call dbo.RecuperarContrasenia(?,?,?,?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, usuario.getCodUsuario());
+		cstm.setString(2, usuario.getDni());
+		cstm.setString(3, usuario.getCodigoUbigeo());
+		cstm.setDate(4, new java.sql.Date(usuario.getFechaNac().getTime()));
 		
-		Date fecNac = new Date(usuario.getFechaNac().getTime());
 		
-		try {
-			con = Conexion.obtenerConexion();
-			PreparedStatement pstmt = null;
-			pstmt = con.prepareStatement("{call dbo.RecuperarContrasenia(?,?,?,?)}");
-			
-			
-			
-			pstmt.setString(1, usuario.getIdUsuario());
-			pstmt.setString(2, usuario.getDni());
-			pstmt.setString(3, usuario.getCodigoUbigeo());
-			pstmt.setDate(4, fecNac);
-			
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				contrasenia = rs.getString(1);
-			}
-		} catch (Exception e) {
-			System.out.println("No data found for: " + usuario.getIdUsuario() + usuario.getDni());
-		} 
+		cstm.registerOutParameter(5, java.sql.Types.VARCHAR);
+
+		cstm.execute();
+
+		String contrasenia = cstm.getString(5);
+		
+		System.out.println("contrasenia: " + contrasenia);
+		
+		
 		return contrasenia;
 	}
 

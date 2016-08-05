@@ -237,7 +237,7 @@ public class UsuarioMBean extends GenericoController {
 	public void reset() {
 		// RequestContext.getCurrentInstance().reset("formLoginPrincipal:panelRegistroUsuario");
 		RequestContext.getCurrentInstance().reset(
-				"formPrincipal:panelRegistroUsuario");
+				"formPrincipal13:panelRegistroUsuario");
 
 	}
 	
@@ -457,26 +457,12 @@ public class UsuarioMBean extends GenericoController {
 	}
 
 
-	public String cancelarRegistrarNuevoUsuario(int modo) throws Exception {
+	public String cancelarRegistrarNuevoUsuario() throws Exception {
 		String pagina = "";
-
 		inicializarClases();
-		/*switch (modo) {
-		//@@ESTE ES EL CASO PARA PERFIL usuario nuevo
-		case 1:
-			pagina = "/admin/nuevo/registrarNuevoUsuario.xhtml";
-			break;
-
-		//@@ESTE ES EL CASO PARA PERFIL CITE 
-		case 2:
-			pagina = "/paginas/ModuloProduccion/principal_cite.xhtml";
-			break;
-
-		}*/
-		
-		pagina = "/admin/nuevo/registrarNuevoUsuario.xhtml";
-		
-		return pagina;
+		cargarUbigeo();
+		cargarCITES();
+		return pagina = "/paginas/ModuloAdministrador/admin/nuevoUsuario/nuevoUsuarioCite.xhtml";
 	}
 
 	public String cancelarRegisttro() throws Exception {

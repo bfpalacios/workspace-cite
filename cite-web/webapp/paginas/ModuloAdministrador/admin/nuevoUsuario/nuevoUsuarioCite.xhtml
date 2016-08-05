@@ -10,7 +10,8 @@
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
 	<h:form id="formPrincipal13">
-		<p:outputPanel id="pnlGridMensajes"
+		
+		<!--  p:outputPanel id="pnlGridMensajes"
 			style="width:500px;margin-top:5px;">
 			<p:row>
 				<p:column colspan="4" rowspan="2">
@@ -18,7 +19,7 @@
 						closable="true" />
 				</p:column>
 			</p:row>
-		</p:outputPanel>
+		</p:outputPanel -->
 
 		<p:spacer width="5px" />
 		<p:panel id="panelRegistroUsuario"
@@ -45,7 +46,10 @@
 					</p:column>
 
 					<p:column>
-						<p:inputText id="nombre" size="25"  required="true"
+						<p:inputText id="nombre" size="25"  
+							required="true"
+							requiredMessage="campo requerido: Nombre"
+						
 							value="#{usuarioMBean.usuarioModel.nombres}" />
 						
 						<p:message for="nombre" />
@@ -59,7 +63,10 @@
 
 					<p:column>
 						<p:selectOneMenu id="tipoDoc"  
-							value="#{usuarioMBean.usuarioModel.tipoDoc}">
+							value="#{usuarioMBean.usuarioModel.tipoDoc}"
+							
+							>
+							
 							<f:selectItem itemLabel="Seleccione Tipo Doc " />
 							<f:selectItem itemLabel="DNI" itemValue="1" />
 							<!-- f:selectItem itemLabel="Carne de Extranjeria" itemValue="2" / -->
@@ -75,7 +82,10 @@
 
 					<p:column> 
 						
-						<p:inputMask id="dni" value="#{usuarioMBean.usuarioModel.dni}" size="10"  maxlength="8" mask="99999999"   />
+						<p:inputMask id="dni" value="#{usuarioMBean.usuarioModel.dni}" size="10"  maxlength="8" mask="99999999" 
+						required="true"
+						requiredMessage="campo requerido: DNI"
+						  />
 						<p:message for="dni" />
 					</p:column> 
 				</p:row>
@@ -89,6 +99,9 @@
 
 					<p:column colspan="2">
 						<p:inputText id="cargo" size="25"  
+							required="true"
+						requiredMessage="campo requerido: Cargo"
+						
 							value="#{usuarioMBean.usuarioModel.cargo}"  />
 								<p:message for="cargo" />	
 					</p:column>
@@ -99,7 +112,10 @@
 
 					<p:column>
 						<p:inputMask id="telefonoUsuario" size="10" maxlength="9"  
-							value="#{usuarioMBean.usuarioModel.telefono}" mask="999-999-999" />
+							value="#{usuarioMBean.usuarioModel.telefono}" mask="999-999-999"
+							required="true"
+						requiredMessage="campo requerido: Telefono Usuario"
+						 />
 								<p:message for="telefonoUsuario" />	
 					</p:column>
 					
@@ -118,8 +134,14 @@
 					</p:column>
 					<p:column>
 						<p:calendar value="#{usuarioMBean.usuarioModel.fechaNac}" id="fechaCite"
-							pattern="dd/MM/yyyy" mode="popup" showOn="button">
+							pattern="dd/MM/yyyy" mode="popup" showOn="button"
+							required="true"
+							requiredMessage="campo requerido: Fecha de Nacimiento"
+						
+							>
+							
 						</p:calendar>
+						<p:message for="fechaCite" />	
 					</p:column>
 				</p:row>
 				
@@ -131,6 +153,8 @@
 				<p:column>
 					<p:selectOneMenu id="dpto"
 						value="#{usuarioMBean.usuarioModelSelect.codDepartamento}"
+						required="true"
+							requiredMessage="campo requerido: Elegir Departamento donde nacio"
 						valueChangeListener="#{usuarioMBean.actualizarlistProvincia}"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
 						<f:selectItem itemLabel="Seleccione el departamento:" />
@@ -139,7 +163,7 @@
 							itemValue="#{dpto.idUbigeo}" />
 						<f:ajax event="change" execute="@this" render="provincia" />
 					</p:selectOneMenu>
-
+						<p:message for="dpto" />	
 				</p:column>
 
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -150,6 +174,8 @@
 				<p:column>
 					<p:selectOneMenu id="provincia"
 						value="#{usuarioMBean.usuarioModelSelect.codProvincia}"
+						required="true"
+							requiredMessage="campo requerido: Elegir Provincia donde nacio"
 						valueChangeListener="#{usuarioMBean.actualizarlistDistrito}"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
 						<f:selectItem itemLabel="Seleccione la provincia " />
@@ -159,6 +185,7 @@
 
 						<f:ajax event="change" execute="@this" render="distrito" />
 					</p:selectOneMenu>
+					<p:message for="provincia" />	
 				</p:column>
 
 
@@ -170,12 +197,16 @@
 				<p:column>
 					<p:selectOneMenu id="distrito"
 						value="#{usuarioMBean.usuarioModelSelect.codDistrito}"
+						required="true"
+							requiredMessage="campo requerido: Elegir Distrito donde nacio"
+						
 						styleClass="ui-column-label-spij styleAlignRightColumn">
 						<f:selectItem itemLabel="Seleccione el distrito " />
 						<f:selectItems value="#{usuarioMBean.usuarioModel.listDistrito}"
 							var="distrito" itemLabel="#{distrito.distrito}"
 							itemValue="#{distrito.idUbigeo}" />
 					</p:selectOneMenu>
+					<p:message for="distrito" />	
 				</p:column>
 
 			</p:row>  
@@ -189,6 +220,10 @@
 					<p:column>
 						<p:selectOneMenu id="cite"  
 							value="#{usuarioMBean.usuarioModelSelect.codCite}"
+							required="true"
+							requiredMessage="campo requerido: Elegir Cite"
+						
+						
 							valueChangeListener="#{usuarioMBean.actualizarlistSedes}"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione la cite:" />
@@ -209,6 +244,10 @@
 						<p:selectOneMenu id="sede"  
 							value="#{usuarioMBean.usuarioModelSelect.codSede}"
 							valueChangeListener="#{usuarioMBean.actualizarlistDependencias}"
+							required="true"
+							requiredMessage="campo requerido: Elegir Sede"
+						
+						
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione la sede " />
 							<f:selectItems value="#{usuarioMBean.usuarioModel.listSedes}"
@@ -229,6 +268,7 @@
 					<p:column>
 						<p:selectOneMenu id="dependencia"  
 							value="#{usuarioMBean.usuarioModelSelect.codDependencia}"
+							
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<f:selectItem itemLabel="Seleccione la dependencia " />
 							<f:selectItems value="#{usuarioMBean.usuarioModel.listDependencia}"
@@ -259,6 +299,10 @@
 
 					<p:column>
 						<p:inputText id="idUsuario" size="10"  
+							required="true"
+							requiredMessage="campo requerido: Ingrese codigo de usuario"
+						
+						
 							value="#{usuarioMBean.usuarioModel.idUsuario}" />
 							<p:message for="idUsuario" />
 							
@@ -269,10 +313,13 @@
 					</p:column>
 
 					<p:column colspan="3">
-						<p:inputText id="emailAdmin" size="20"
-							value="#{usuarioMBean.usuarioModel.emailAdmin}" validatorMessage="#{usuarioMBean.usuarioModel.emailAdmin} is not valid">
+						<h:inputText id="emailAdmin" size="20"
+							value="#{usuarioMBean.usuarioModel.emailAdmin}" required="true" 
+						validatorMessage="El email No es valido"
+						requiredMessage="campo requerido: Email de la Sede">
     						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-    					</p:inputText>
+    					</h:inputText>
+    					<p:message for="emailAdmin" />
     					
 					</p:column>
 				</p:row>
@@ -284,19 +331,25 @@
 
 					<p:column styleClass="styleAlignLeftColumn">
 						<p:password id="clave" size="25"    
+							required="true"
+							requiredMessage="campo requerido: Ingrese su password"
 							value="#{usuarioMBean.usuarioModel.clave}" />
 						<p:message for="clave" />
 					</p:column> 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblEmaiiadmin2"
 							value="Email Personal:" />
+						
 					</p:column>
 
 					<p:column colspan="3">
-						<p:inputText id="emailPersonal" size="20"
-							value="#{usuarioMBean.usuarioModel.email1}" validatorMessage="#{usuarioMBean.usuarioModel.email1} is not valid">
+						<h:inputText id="emailPersonal" size="20"
+							value="#{usuarioMBean.usuarioModel.email1}" required="true" 
+						validatorMessage="El email No es valido"
+						requiredMessage="campo requerido: Email de la Sede">
     						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-    					</p:inputText>
+    					</h:inputText>
+						<p:message for="emailPersonal" />
 					</p:column>
 
 				</p:row>
@@ -308,6 +361,8 @@
 
 					<p:column styleClass="styleAlignLeftColumn">
 						<p:password id="confirmarclave" size="25"  
+							required="true"
+							requiredMessage="campo requerido: Ingrese la confirmacion de su password "
 							value="#{usuarioMBean.usuarioModel.confirmarClave}"  />
 						<p:message for="confirmarclave" />
 					</p:column>
@@ -318,6 +373,8 @@
 
 					<p:column colspan="4" styleClass="styleAlignLeftColumn">
 						<p:selectOneMenu id="rol"  
+							required="true"
+							requiredMessage="campo requerido: Elegir Rol"
 							value="#{usuarioMBean.usuarioModelSelect.rol}">
 							<f:selectItem itemLabel="Seleccione el Perfil" />
 							<f:selectItem itemLabel="Rol Usuario CITE " itemValue="1" />
@@ -369,9 +426,9 @@
 
 
 				<p:column colspan="2" styleClass="styleAlignRightColumn">
-					<p:commandButton value="Cancelar" id="botonCamcelar"
+					<p:commandButton value="Cancelar" id="botonCamcelar" immediate="true"
 						action="#{usuarioMBean.cancelarRegistrarNuevoUsuario}"
-						ajax="true" />
+						ajax="false" />
 				</p:column>
 			</p:row>
 		</p:outputPanel>

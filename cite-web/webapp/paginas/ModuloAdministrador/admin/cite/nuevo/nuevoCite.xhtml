@@ -8,15 +8,27 @@
 
 <ui:composition
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
+	
 	<ui:define name="contenido">
-
-		<p:outputPanel id="mensajeNuevoServicio"
-			style="width:400px;margin-top:5px;">
-			<p:messages id="messages" showDetail="true" autoUpdate="true"
-				closable="true" />
-
-		</p:outputPanel>
-
+	
+		<!--  h:form id="formMensajes">
+			<p:outputPanel id="mensajeNuevoServicio"
+				style="width:400px;margin-top:5px;">
+				
+				<p:row>
+					<p:column colspan="4" rowspan="4">
+						<p:messages id="messages" showDetail="true" autoUpdate="true"
+							closable="true" />
+					</p:column>
+				</p:row>
+				
+	
+			</p:outputPanel>
+		</h:form>-->
+		
+	
+		<h:form id="formu1">
+		<!--p:messages id="messages" />-->
 		<p:panelGrid id="pnlGridNuevoCite">
 			<f:facet name="header">
 				<p:row>
@@ -29,9 +41,13 @@
 					<h:outputText id="lblFecha" value="Fecha" />
 				</p:column>
 				<p:column colspan="5">
-					<p:calendar value="#{servicioMBean.date}" id="fechaCite"
+					<p:calendar value="#{servicioMBean.date}" id="fechaCite" required="true"
+						requiredMessage="campo requerido : Fecha" 
 						pattern="dd/MM/yyyy" mode="popup" showOn="button">
+					
 					</p:calendar>
+					<p:message for="fechaCite" />
+					
 				</p:column>
 			</p:row>
 
@@ -41,8 +57,10 @@
 				</p:column>
 
 				<p:column colspan="2">
-					<p:inputText id="nombreCITE" size="50"
+					<p:inputText id="nombreCITE" size="50" required="true"
+					requiredMessage="campo requerido : Nombre del cite" 
 						value="#{citesMBean.servicioModel.nombre}" />
+					
 					<p:message for="nombreCITE" />
 
 				</p:column>
@@ -51,10 +69,12 @@
 					<h:outputText id="lblCodigoCITE" value="Codigo del CITE" />
 				</p:column>
 
-				<p:column colspan="2">
-					<p:inputMask id="codigoCITE" size="8" maxlength="6" mask="999999"
+				<p:column colspan="3">
+					<p:inputMask id="codigoCITE" size="8" maxlength="6" mask="999999"  required="true" 
+					requiredMessage="campo requerido : Codigo del Cite" 
+					
 						value="#{citesMBean.servicioModel.codigo}" />
-					<p:message for="codigoCITE" />
+						<p:message for="codigoCITE" />
 				</p:column>
 
 			</p:row>
@@ -65,7 +85,8 @@
 						value="#{mensaje['produccion.nuevo.cliente.dpto']}" />
 				</p:column>
 				<p:column>
-					<p:selectOneMenu id="dpto"
+					<p:selectOneMenu id="dpto" required="true"
+						requiredMessage="campo requerido: Elegir el Departamento" 
 						value="#{citesMBean.usuarioModelSelect.codDepartamento}"
 						valueChangeListener="#{citesMBean.actualizarlistProvincia}"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -75,7 +96,7 @@
 							itemValue="#{dpto.idUbigeo}" />
 						<f:ajax event="change" execute="@this" render="provincia" />
 					</p:selectOneMenu>
-
+					<p:message for="dpto" />
 				</p:column>
 
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -84,7 +105,8 @@
 				</p:column>
 
 				<p:column>
-					<p:selectOneMenu id="provincia"
+					<p:selectOneMenu id="provincia" required="true" 
+						requiredMessage="campo requerido: Elegir la Provincia" 
 						value="#{citesMBean.usuarioModelSelect.codProvincia}"
 						valueChangeListener="#{citesMBean.actualizarlistDistrito}"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
@@ -95,6 +117,7 @@
 
 						<f:ajax event="change" execute="@this" render="distrito" />
 					</p:selectOneMenu>
+					<p:message for="provincia" />
 				</p:column>
 
 
@@ -104,7 +127,8 @@
 				</p:column>
 
 				<p:column>
-					<p:selectOneMenu id="distrito"
+					<p:selectOneMenu id="distrito" required="true"
+						requiredMessage="campo requerido: Elegir el distrito" 
 						value="#{citesMBean.usuarioModelSelect.codDistrito}"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
 						<f:selectItem itemLabel="Seleccione el distrito " />
@@ -112,6 +136,7 @@
 							var="distrito" itemLabel="#{distrito.distrito}"
 							itemValue="#{distrito.idUbigeo}" />
 					</p:selectOneMenu>
+					<p:message for="distrito" />
 				</p:column>
 
 			</p:row>  
@@ -122,7 +147,7 @@
 		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">
 			<p:row>
 				<p:column colspan="2" styleClass="styleAlignLeftColumn">
-					<p:commandButton id="botonGuardar" styleClass="buttonMarginNormal"
+					<p:commandButton id="botonGuardarNuevoCite" styleClass="buttonMarginNormal"
 						value="Guardar CITE"
 						actionListener="#{citesMBean.guardarNuevaCite}"
 						update="fechaCite,nombreCITE, codigoCITE,  dpto, provincia, distrito, pnlGridNuevoCite"
@@ -136,6 +161,7 @@
 			</p:row>
 		</p:outputPanel>
 
+		
 		<p:dialog header="Informe del Sistema" modal="true" height="120"
 			width="380" appendTo="@(body)" style="z-index: 999 !important"
 			id="dialogNuevaCite" widgetVar="dialogNuevaCite">
@@ -147,6 +173,10 @@
 				onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoCite.xhtml';" />
 
 		</p:dialog>
+		
+		
+		</h:form>
+		
 	</ui:define>
 </ui:composition>
 </html>

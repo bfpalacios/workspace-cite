@@ -629,17 +629,6 @@ public class CITESMBean {
 	
 	public void actualizarCite(CITEBO cite) {
 		try {
-
-			/*String codigoDpto = getUsuarioModelSelect().getCodDepartamento() == null ? "invalido"
-					: getUsuarioModelSelect().getCodDepartamento();
-			String codigoProvincia = getUsuarioModelSelect().getCodProvincia() == null ? "invalido"
-					: getUsuarioModelSelect().getCodProvincia();
-			String codigoDistrito = getUsuarioModelSelect().getCodDistrito() == null ? "invalido"
-					: getUsuarioModelSelect().getCodDistrito();
-			String codigoUbigeo = codigoDpto + codigoProvincia + codigoDistrito;
-
-			codigoUbigeo = codigoUbigeo.equals("") ? "0" : codigoUbigeo;
-*/	
 			int contador=0;
 			UbigeoBO ubigeoCite = new UbigeoBO();
 			System.out.println("ACTUALIZAR CITE: ");
@@ -664,7 +653,7 @@ public class CITESMBean {
 					contador ++;
 				}
 				// carga el combo para los departamentos, provincia y distrito
-				//cargarUbigeo();
+				cargarUbigeo();
 				//mostrarMensaje(18);
 				if(rs < 1){
 					mostrarMensaje(16);
@@ -847,14 +836,21 @@ public class CITESMBean {
 				listaCites = citeServices.buscarCites(codigoCite, "", null);
 			}
 			String codSede_cite = "";
-			if(listaCites.size() > 0){
-				codSede_cite = listaCites.get(0).getCodigoUbigeo();
-				codigoCite = "";
+			
+			if(listaCites != null){
+			
+				if(listaCites.size() > 0 || listaCites != null){
+					codSede_cite = listaCites.get(0).getCodigoUbigeo();
+					codigoCite = "";
+				}
 			}
 			listaSedes = citeServices.buscarSedes(codigoCite, nombreSede, codSede_cite);
+			
 			for (SedeBO sede : listaSedes) {
-				if(listaCites.size() > 0){
-					sede.setDescripcionCite(listaCites.get(0).getDescripcion());
+				if(listaCites != null){
+					if(listaCites.size() > 0){
+						sede.setDescripcionCite(listaCites.get(0).getDescripcion());
+					}
 				}
 			}
 		} catch (Exception e) {

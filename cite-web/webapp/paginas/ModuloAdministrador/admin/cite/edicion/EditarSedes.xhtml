@@ -9,13 +9,13 @@
 <ui:composition
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
-
-		<p:outputPanel id="mensajeEditarSede"
+	<h:form id="formPrincipal5">
+		<!-- p:outputPanel id="mensajeEditarSede"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
 
-		</p:outputPanel>
+		</p:outputPanel -->
 
 		<p:panel header="#{mensaje['produccion.buscar.sede.label.titulo']}"
 			style="width: 400px;">
@@ -126,14 +126,14 @@
 						<p:column headerText="Edición"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<p:commandButton value="Editar"
-								update=":formPrincipal:sede_editar"
+								update=":formPrincipal5:sede_editar"
 								oncomplete="PF('edicionDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{citesMBean.sedeActual}" />
 							</p:commandButton>
 
 							<p:commandButton value="Eliminar"
-								update=":formPrincipal:sede_eliminar"
+								update=":formPrincipal5:sede_eliminar"
 								oncomplete="PF('eliminarDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{citesMBean.sedeActual}" />
@@ -251,7 +251,7 @@
 			</p:row>
 
 		</p:panelGrid>
-
+	</h:form>
 	</ui:define>
 </ui:composition>
 </html>

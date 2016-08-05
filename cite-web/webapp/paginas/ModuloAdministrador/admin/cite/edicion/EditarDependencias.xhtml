@@ -9,7 +9,7 @@
 <ui:composition
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
-
+	<h:form id="formPrincipal6">
 		<p:outputPanel id="mensajeEditarDep"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
@@ -108,14 +108,14 @@
 						<p:column headerText="Edición"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<p:commandButton value="Editar"
-								update=":formPrincipal:dep_editar"
+								update=":formPrincipal6:dep_editar"
 								oncomplete="PF('edicionDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{citesMBean.depActual}" />
 							</p:commandButton>
 
 							<p:commandButton value="Eliminar"
-								update=":formPrincipal:dep_eliminar"
+								update=":formPrincipal6:dep_eliminar"
 								oncomplete="PF('eliminarDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{citesMBean.depActual}" />
@@ -217,7 +217,7 @@
 			</p:row>
 
 		</p:panelGrid>
-
+	</h:form>
 	</ui:define>
 </ui:composition>
 </html>

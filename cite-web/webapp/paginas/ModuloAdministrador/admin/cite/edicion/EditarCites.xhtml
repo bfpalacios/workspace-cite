@@ -9,14 +9,14 @@
 <ui:composition
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
-
+		<h:form id="formu4">
 		<p:outputPanel id="mensajeEditarCite"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" />
 
 		</p:outputPanel>
-
+		
 		<p:panel header="#{mensaje['produccion.buscar.cite.label.titulo']}"
 			style="width: 400px;">
 			<p:panelGrid id="pnlGridBuscarCites">
@@ -124,14 +124,14 @@
 						<p:column headerText="Edición"
 							styleClass="ui-column-label-spij styleAlignRightColumn">
 							<p:commandButton value="Editar"
-								update=":formPrincipal:cite_editar"
+								update=":formu4:cite_editar"
 								oncomplete="PF('edicionDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{citesMBean.citeActual}" />
 							</p:commandButton>
 
 							<p:commandButton value="Eliminar"
-								update=":formPrincipal:cite_eliminar"
+								update=":formu4:cite_eliminar"
 								oncomplete="PF('eliminarDialog').show()">
 								<f:setPropertyActionListener value="#{registro}"
 									target="#{citesMBean.citeActual}" />
@@ -280,7 +280,8 @@
 			</p:row>
 
 		</p:panelGrid>
-
+		
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

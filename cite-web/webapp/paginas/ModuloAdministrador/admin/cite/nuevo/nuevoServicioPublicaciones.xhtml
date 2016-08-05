@@ -9,7 +9,7 @@
 <ui:composition
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
-
+	<h:form id="formPrincipal8">
 		<p:outputPanel id="mensajeNuevoServicioInformativo"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
@@ -131,7 +131,7 @@
 					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevoServicioPublicaciones.xhtml';" />
 						
 		</p:dialog>
-		
+	</h:form>
 	</ui:define>
 </ui:composition>
 </html>

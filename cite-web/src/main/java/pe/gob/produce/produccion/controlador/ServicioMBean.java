@@ -99,6 +99,13 @@ public class ServicioMBean {
 			setServicioModel(null);
 			setServicioModel(new ServicioModel());
 		}
+		
+		if (getServicioModelSelect() != null) {
+			setServicioModelSelect(null);
+			setServicioModelSelect(new ServicioModel());
+		}
+		this.servicioModelSelect = new ServicioModel();
+		setServicioModelSelect(new ServicioModel());
 		this.servicioModel = new ServicioModel();
 		setServicioModel(new ServicioModel());
 
@@ -1213,7 +1220,21 @@ public class ServicioMBean {
 		inicializarClases();
 
 		listarCITE();
+		
 		pagina = "/paginas/ModuloProduccion/cliente/servicio/nuevo/nuevoServicio.xhtml";
+
+		return pagina;
+	}
+	
+	public String cancelarD() throws Exception {
+		String pagina = "";
+
+		inicializarClases();
+
+		listarCITE();
+		listarTiposDocumentosCite();
+		
+		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevosManuales.xhtml";
 
 		return pagina;
 	}

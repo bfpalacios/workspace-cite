@@ -11,7 +11,7 @@
 </h:head>
 
 <h:body>
-	<h:form id="formPrincipal">
+	<!--h:form id="formPrincipal">-->
 		<p:layout fullPage="true">
 			<p:idleMonitor onactive="sessionTimeOutDialog.show();"
 				timeout="#{session.maxInactiveInterval * 1000}" />
@@ -41,16 +41,17 @@
 				<div id="divPrincipalContenido"
 					style="font-size: 12px; margin: 0px auto; height: 100%;"
 					align="center">
-					<p:messages id="msgContenido" />
+					<p:messages id="msgContenido" autoUpdate="true"
+						closable="true" /> 
 					<ui:insert name="contenido" />
 				</div>
 				<ui:insert name="dialogos" />
 			</p:layoutUnit>
 
-			<p:layoutUnit position="west" size="200">
+			<p:layoutUnit position="west" size="200" collapsible="true" header="Opciones del Administrador" minSize="200">
 				<ui:include src="/plantilla/ModuloAdministrador/Menus/menu_admin.xhtml" />
 			</p:layoutUnit>
 		</p:layout>
-	</h:form>
+	<!--/h:form>-->
 </h:body>
 </html>

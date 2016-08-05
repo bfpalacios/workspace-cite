@@ -10,12 +10,19 @@
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
 
-		<p:outputPanel id="mensajeNuevoServicio"
+		<!--  p:outputPanel id="mensajeNuevoServicio"
 			style="width:400px;margin-top:5px;">
-			<p:messages id="messages" showDetail="true" autoUpdate="true"
+			<p:row>
+				<p:column colspan="4" rowspan="2">
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
+				</p:column>
+			</p:row>
 			
-		</p:outputPanel>
+		</p:outputPanel>-->
+		<h:form id="formu2">
+		<!-- p:messages id="messages" showDetail="true"  autoUpdate="true"
+						closable="true" /--> 
 		
 		<p:panelGrid id="pnlGridNuevaSede">
 			<f:facet name="header">
@@ -33,6 +40,8 @@
 				<p:column colspan="4">
 					<p:selectOneMenu id="cite"
 						value="#{citesMBean.usuarioModelSelect.codCite}"
+						required="true"
+						requiredMessage="campo requerido: Elegir Cite"
 						styleClass="ui-column-label-spij styleAlignRightColumn">
 						<f:selectItem itemLabel="Seleccione la CITE " />
 						<f:selectItems value="#{citesMBean.servicioModel.listarCITE}"
@@ -40,6 +49,7 @@
 							itemValue="#{citeU.codigo}" />
 					</p:selectOneMenu>
 					<p:message for="cite" />
+					
 				</p:column>
 			</p:row>
 
@@ -51,6 +61,8 @@
 
 				<p:column colspan="2">
 					<p:inputText id="nombreSede" size="40" 
+					required="true"
+					requiredMessage="campo requerido: Nombre de la Sede"
 						value="#{citesMBean.servicioModel.nombre}" />
 					
 					<p:message for="nombreSede" />
@@ -63,6 +75,8 @@
 
 				<p:column colspan="2">
 					<p:inputMask id="codigoSede" ize="8" maxlength="6" mask="999999" 
+						required="true"
+						requiredMessage="campo requerido: Codigo de la Sede"
 						value="#{citesMBean.servicioModel.codigo}" />
 					<p:message for="codigoSede" />
 				</p:column>
@@ -76,6 +90,8 @@
 				</p:column>
 				<p:column colspan="2">
 					<p:inputText id="jefaturaSede" size="40" 
+						required="true"
+						requiredMessage="campo requerido: Jefe de la Sede" 
 						value="#{citesMBean.servicioModel.jefaturaSede}" />					
 					<p:message for="jefaturaSede" />
 				</p:column>				
@@ -84,9 +100,15 @@
 						value="Email de la Sede" />
 				</p:column>
 				<p:column colspan="2">
-					<p:inputText id="emailSede" size="20" 
-						value="#{citesMBean.servicioModel.emailSede}" />
-					<p:message for="emailSede" />
+					
+					<h:inputText id="emailSede" size="20" required="true" 
+						validatorMessage="El email No es valido"
+						requiredMessage="campo requerido: Email de la Sede"
+						
+						value="#{citesMBean.servicioModel.emailSede}">
+						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+					</h:inputText>
+					<p:message for="emailSede"/>
 				</p:column>
 			</p:row>
 			
@@ -155,6 +177,9 @@
 					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaSede.xhtml';" />
 						
 		</p:dialog>
+	
+	</h:form>
+	
 	</ui:define>
 </ui:composition>
 </html>

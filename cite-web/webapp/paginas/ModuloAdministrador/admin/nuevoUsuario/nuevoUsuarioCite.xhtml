@@ -9,6 +9,7 @@
 <ui:composition
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
+	<h:form id="formPrincipal13">
 		<p:outputPanel id="pnlGridMensajes"
 			style="width:500px;margin-top:5px;">
 			<p:row>
@@ -38,17 +39,22 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblNombre" 
 							value="#{mensaje['produccion.nuevo.cliente.nombre']}" />
+						<h:outputText id="colorNombre"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column>
-						<p:inputText id="nombre" size="25"  
+						<p:inputText id="nombre" size="25"  required="true"
 							value="#{usuarioMBean.usuarioModel.nombres}" />
+						
 						<p:message for="nombre" />
 					</p:column>
 
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblTipoDoc"
 							value="#{mensaje['produccion.nuevo.cliente.tipodoc']}" />
+						
 					</p:column>
 
 					<p:column>
@@ -380,6 +386,7 @@
 					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/nuevoUsuario/nuevoUsuarioCite.xhtml';" />
 						
 		</p:dialog>
+	</h:form>
 	</ui:define>
 </ui:composition>
 </html>

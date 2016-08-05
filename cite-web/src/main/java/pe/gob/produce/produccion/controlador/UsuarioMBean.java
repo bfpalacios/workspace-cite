@@ -78,8 +78,8 @@ public class UsuarioMBean extends GenericoController {
 	
 
 	//private static final String SMTP_HOST_NAME = "smtp.gmail.com";
-	private static final String SMTP_HOST_NAME = "outlook.office365.com"; 
-	//private static final String SMTP_HOST_NAME = "mail.gmail.com"; 
+	//private static final String SMTP_HOST_NAME = "outlook.office365.com"; 
+	private static final String SMTP_HOST_NAME = "smtp.live.com"; 
 	//private static final String SMTP_PORT = "465"; 
 	private static final String SMTP_PORT = "587"; 
 	private static final String emailMsgTxt = "Test Message Contents"; 
@@ -87,20 +87,23 @@ public class UsuarioMBean extends GenericoController {
 	//private static final String emailFromAddress = "ITP.SOPORTEAPP@gmail.com"; 
 	private static final String emailFromAddress = "ITP.SOPORTE@outlook.es"; 
 	
-	//private static final String password = "ITP.SOPORTEAPP@@"; 
-	private static final String password = "itpSOPORTE@@2016"; 
+	//private static final String password = "ITP.SOPORTEAPP@@"; //gmail
+	private static final String password = "itpSOPORTE@@2016"; //hotmail
 	private static final String SSL_FACTORY = 
 	"javax.net.ssl.SSLSocketFactory"; 
 	private static final String[] sendTo = {"bfpalacios@gmail.com"}; 
 	private void init() {
 		properties = new Properties();
 		properties.put("mail.smtp.auth", "true"); 
-		//properties.put("mail.smtp.starttls.enable", "false");
 		properties.put("mail.smtp.starttls.enable", "false");
+		//properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.host", SMTP_HOST_NAME);
 		properties.put("mail.smtp.port",SMTP_PORT);
 		properties.put("mail.smtp.debug", "true");
 		
+		properties.put("mail.smtp.socketFactory.port", SMTP_PORT); 
+		properties.put("mail.smtp.socketFactory.class", SSL_FACTORY);
+		properties.put("mail.smtp.socketFactory.fallback", "false"); 
 		/*properties.put("mail.transport.protocol","smtp");
 		
 		properties.put("mail.smtp.socketFactory.port", SMTP_PORT); 

@@ -10,13 +10,13 @@
 	template="/plantilla/ModuloAdministrador/Plantillas/plantilla_admin.xhtml">
 	<ui:define name="contenido">
 
-		<p:outputPanel id="mensajeNuevoServicio"
+		<!--p:outputPanel id="mensajeNuevoServicio"
 			style="width:400px;margin-top:5px;">
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 						closable="true" />
 			
-		</p:outputPanel>
-		
+		</p:outputPanel -->
+		<h:form id="formu3">
 		<p:panelGrid id="pnlGridNuevaDependencia">
 			<f:facet name="header">
 				<p:row>
@@ -35,10 +35,13 @@
 
 				<p:column colspan="2">
 					<p:inputMask id="codigoDependencia" size="8" maxlength="6" mask="999999" 
+						required="true"
+						requiredMessage="campo requerido: Codigo de Dependencia"
 						value="#{citesMBean.servicioModel.codigo}" />
-					
+				<p:message for="codigoDependencia" />	
 				</p:column>
-
+				
+				
 			</p:row>
 			
 			<p:row>
@@ -49,10 +52,13 @@
 
 				<p:column colspan="2">
 					<p:inputText id="nombreDependencia" size="40" 
+						required="true"
+						requiredMessage="campo requerido: Nombre de la Dependencia"						
 						value="#{citesMBean.servicioModel.nombre}" />
-					
+				
+					<p:message for="nombreDependencia" />		
 				</p:column>
-
+			
 			</p:row>
 
 			
@@ -66,6 +72,9 @@
 					<p:column>
 							<p:selectOneMenu id="sede"
 								value="#{citesMBean.usuarioModelSelect.codigoDependencia}"
+								required="true"
+								requiredMessage="campo requerido: Elegir la Sede"						
+						
 								styleClass="ui-column-label-spij styleAlignRightColumn">
 								<f:selectItem itemLabel="Seleccione la sede " />
 								<f:selectItems value="#{citesMBean.usuarioModel.listarSedes}"
@@ -106,7 +115,7 @@
 					onclick="window.location='#{facesContext.externalContext.requestContextPath}/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaDependencia.xhtml';" />
 						
 		</p:dialog>
-		
+	</h:form>
 	</ui:define>
 </ui:composition>
 </html>

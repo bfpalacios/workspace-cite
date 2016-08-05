@@ -64,4 +64,8 @@ background: transparent;
 background-image: none;
 }
 
+.carpetasCite { 
+	background-image: url('#{request.contextPath}/Imagenes/Calendar_icon.png');
+}
+
 .selectMenu { display: inline-block; vertical-align: top; width:120px; }

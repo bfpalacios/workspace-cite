@@ -64,7 +64,7 @@
 									icon="ui-icon-arrowthick-1-s"
 									action="#{noticiaImagen.setId(docu.id)}">
 									<f:param name="documentoId" value="#{docu.id}" />
-									<p:fileDownload value="#{noticiaImagen.getStreamPdf(docu.id)}" />
+									<p:fileDownload value="#{noticiaImagen.getStreamPdfDoc(docu.id)}" />
 								</p:commandButton>
 							</div>
 							<P />
@@ -94,7 +94,7 @@
 									icon="ui-icon-arrowthick-1-s"
 									action="#{noticiaImagen.setId(docu.id)}">
 									<f:param name="documentoId" value="#{docu.id}" />
-									<p:fileDownload value="#{noticiaImagen.getStreamPdf(docu.id)}" />
+										<p:fileDownload value="#{noticiaImagen.getStreamPdfDoc(docu.id)}" />
 								</p:commandButton>
 							</div>
 							<P />
@@ -104,6 +104,10 @@
 				</ui:repeat>
 			</div>
 		</h:panelGroup>
+		
+		<!--p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+    		<p:graphicImage name="/Imagenes/ajaxloadingbar.png" />
+		</p:dialog -->
 	</ui:define>
 </ui:composition>
 </html>

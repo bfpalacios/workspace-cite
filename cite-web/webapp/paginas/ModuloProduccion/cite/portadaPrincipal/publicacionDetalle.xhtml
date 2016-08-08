@@ -36,7 +36,7 @@
 						onclick="PrimeFaces.monitorDownload(start, stop);"
 						icon="ui-icon-arrowthick-1-s" action="#{noticiaImagen.setId(publicacion.id)}">
 						<f:param name="publicacionId" value="#{publicacion.id}" />
-						<p:fileDownload value="#{noticiaImagen.getStreamPdf(publicacion.id)}" />						
+						<p:fileDownload value="#{noticiaImagen.getStreamPdfPub(publicacion.id)}" />						
 					</p:commandButton>
 			</div>
 			<div style="width: 62%; float: right; padding-right: 30px;">

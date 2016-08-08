@@ -57,6 +57,10 @@ public class NoticiaImagen {
 
 	public StreamedContent getStreamPdf(int publicacionId) throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
+		id = publicacionId;
+		
+		System.out.println("datos descargar archivo id "+ id + "- " + publicacionId + "-"+ this.tipoInformativo );
+		
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 			return new DefaultStreamedContent();
 		} else {
@@ -73,13 +77,60 @@ public class NoticiaImagen {
 			
 			if (informativo != null) {
 				return new DefaultStreamedContent(new ByteArrayInputStream(
-						informativo.getArchivoInformativo()));
+						informativo.getArchivoInformativo()),"application/pdf", informativo.getTituloInformativo() + ".pdf");
+			} else {
+				throw new IOException("Error cargando archivo");
+			}
+		}
+	}
+	
+	public StreamedContent getStreamPdfPub(int publicacionId) throws IOException {
+		FacesContext context = FacesContext.getCurrentInstance();
+		//id = publicacionId;
+		
+		System.out.println("datos descargar archivo id "+ id + "- " + publicacionId + "-"+ this.tipoInformativo );
+		
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			return new DefaultStreamedContent();
+		} else {
+			ServicioInformativoBO informativo = null;
+			informativo = informativoService
+						.obtenerInformativo(id, TipoInformativo.PUBLICACION);
+			
+			
+			if (informativo != null) {
+				return new DefaultStreamedContent(new ByteArrayInputStream(
+						informativo.getArchivoInformativo()), "application/pdf", informativo.getTituloInformativo() + ".pdf");
+			} else {
+				throw new IOException("Error cargando archivo");
+			}
+		}
+	}
+	
+	public StreamedContent getStreamPdfDoc(int publicacionId) throws IOException {
+		FacesContext context = FacesContext.getCurrentInstance();
+		id = publicacionId;
+		
+		System.out.println("datos descargar archivo id "+ id + "- " + publicacionId);
+		
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			return new DefaultStreamedContent();
+		} else {
+			ServicioInformativoBO informativo = null;
+			informativo = informativoService
+						.obtenerInformativo(id, TipoInformativo.DOCUMENTO);
+			
+			
+			if (informativo != null) {
+				return new DefaultStreamedContent(new ByteArrayInputStream(
+						informativo.getArchivoInformativo()),"application/pdf", informativo.getTituloInformativo() + ".pdf");
 			} else {
 				throw new IOException("Error cargando archivo");
 			}
 		}
 	}
 
+	
 	public StreamedContent getStream() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {

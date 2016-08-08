@@ -85,6 +85,19 @@ public class InformativoMBean {
 		return pagina;
 	}
 	
+	
+	public String listarCarpetasDocumentos() throws Exception {
+
+		System.out.println("documentosITP:INICIO");
+		String pagina = "";
+
+		inicializarClases();
+		pagina = "/paginas/ModuloProduccion/cite/documentos/downloadManualesITP.xhtml";
+		System.out.println("documentosITP:FIN");
+		return pagina;
+
+	}
+	
 	private void listarTiposDocumentosCite() {
 		try {
 			this.setListaTipoDocumento(citeServices.listarTipoDocumentoCiteBO());

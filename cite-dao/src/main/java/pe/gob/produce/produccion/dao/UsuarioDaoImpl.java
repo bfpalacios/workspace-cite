@@ -44,7 +44,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 		String numeroDocumento = usuarioNuevo.getDni();
 		String estado = "1";
 		String ubigeo = usuarioNuevo.getCodigoUbigeo();
-		
+
 		Connection con = null;
 		CallableStatement cstm = null;
 
@@ -69,7 +69,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 		cstm.setInt(14, Integer.parseInt(usuarioNuevo.getIdRol()));
 		cstm.setString(15, usuarioNuevo.getJefeInmediato());
 		cstm.setString(16, usuarioNuevo.getTelefonoJefeInmediato());
-		
+
 		cstm.registerOutParameter(17, java.sql.Types.INTEGER);
 
 		cstm.execute();
@@ -83,20 +83,21 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 			grabarUsuarioDocumentos(idUsuario, numeroDocumento, estado);
 
 		}
-		
-		grabarUsuarioRecupera(idUsuario, 						usuarioNuevo.getIdUsuario(), 
-								usuarioNuevo.getContrasenia(), 	ubigeo,
-								numeroDocumento ,  				usuarioNuevo.getFechaNac());
+
+		grabarUsuarioRecupera(idUsuario, usuarioNuevo.getIdUsuario(),
+				usuarioNuevo.getContrasenia(), ubigeo, numeroDocumento,
+				usuarioNuevo.getFechaNac());
 
 	}
-	
-	public void grabarUsuarioRecupera(int idUsuario, String codUsuario,String contrasenia, String ubigeo,
-			String dni, java.util.Date date) throws SQLException {
+
+	public void grabarUsuarioRecupera(int idUsuario, String codUsuario,
+			String contrasenia, String ubigeo, String dni, java.util.Date date)
+			throws SQLException {
 
 		Connection con = null;
 		CallableStatement cstm = null;
 		Date dateCite = new Date(date.getTime());
-		
+
 		con = Conexion.obtenerConexion();
 		cstm = con.prepareCall("{call SP_Nuevo_Usuario_Recupera(?,?,?,?,?,?)}");
 		cstm.setQueryTimeout(3);
@@ -106,12 +107,10 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 		cstm.setString(4, ubigeo);
 		cstm.setString(5, dni);
 		cstm.setString(6, dateCite.toString());
-		
+
 		cstm.execute();
 
 	}
-	
-
 
 	public void grabarUsuarioDirecciones(int idUsuario, String ubigeo,
 			String direccion) throws SQLException {
@@ -129,7 +128,7 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 		cstm.execute();
 
 	}
-	
+
 	public void grabarUsuarioDocumentos(int idUsuario, String numeroDocumento,
 			String estado) throws SQLException {
 
@@ -170,30 +169,30 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 			con = Conexion.obtenerConexion();
 			PreparedStatement pstmt = null;
 			pstmt = con.prepareStatement("{call dbo.BuscarUsuarioCites(?,?)}");
-			
+
 			pstmt.setString(1, codUsuario);
 			pstmt.setString(2, nomUsuario);
-			
+
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				UsuarioBO usuario = new UsuarioBO();
 				usuario.setIdUsuario(rs.getString(1));
 				usuario.setCodUsuario(rs.getString(2));
-				usuario.setNombres(rs.getString(3));  
+				usuario.setNombres(rs.getString(3));
 				usuario.setCargo(rs.getString(4));
-				
-				usuario.setNombreCITE(rs.getString(5));  
-				usuario.setNombreDependencia(rs.getString(6));  
-				usuario.setTelefono(rs.getString(7));  
-				usuario.setTelefono2(rs.getString(8));  
-				usuario.setEmail1(rs.getString(9));  
-				usuario.setEmailAdmin(rs.getString(10));  
-				  
+
+				usuario.setNombreCITE(rs.getString(5));
+				usuario.setNombreDependencia(rs.getString(6));
+				usuario.setTelefono(rs.getString(7));
+				usuario.setTelefono2(rs.getString(8));
+				usuario.setEmail1(rs.getString(9));
+				usuario.setEmailAdmin(rs.getString(10));
+
 				listaUsuario.add(usuario);
 			}
 		} catch (Exception e) {
 			System.out.println("No data found for: " + codUsuario + nomUsuario);
-		} 
+		}
 		return listaUsuario;
 	}
 
@@ -202,41 +201,90 @@ public class UsuarioDaoImpl extends DAOImpl<Usuario, String> implements
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public String recuperarContrasenia(UsuarioBO usuario) throws Exception {
 		// TODO Auto-generated method stub
-		//Date fecNac = new Date(usuario.getFechaNac().getTime());
+		// Date fecNac = new Date(usuario.getFechaNac().getTime());
 		System.out.println("Fec naci " + usuario.getFechaNac().getTime());
-		System.out.println("Fec nac formato:" + new java.sql.Date(usuario.getFechaNac().getTime()));
-		System.out.println("Fec nac formato to string :" +new java.sql.Date(usuario.getFechaNac().getTime()).toString());
+		System.out.println("Fec nac formato:"
+				+ new java.sql.Date(usuario.getFechaNac().getTime()));
+		System.out
+				.println("Fec nac formato to string :"
+						+ new java.sql.Date(usuario.getFechaNac().getTime())
+								.toString());
 		System.out.println("codigo ubigeo:" + usuario.getCodigoUbigeo());
-		System.out.println("Usuario DNI: " + usuario.getCodUsuario() + usuario.getDni());
-				
-		
+		System.out.println("Usuario DNI: " + usuario.getCodUsuario()
+				+ usuario.getDni());
+
 		Connection con = null;
 		CallableStatement cstm = null;
 
 		con = Conexion.obtenerConexion();
-		cstm = con
-				.prepareCall("{call dbo.RecuperarContrasenia(?,?,?,?,?)}");
+		cstm = con.prepareCall("{call dbo.RecuperarContrasenia(?,?,?,?,?)}");
 		cstm.setQueryTimeout(3);
 		cstm.setString(1, usuario.getCodUsuario());
 		cstm.setString(2, usuario.getDni());
 		cstm.setString(3, usuario.getCodigoUbigeo());
 		cstm.setDate(4, new java.sql.Date(usuario.getFechaNac().getTime()));
-		
-		
+
 		cstm.registerOutParameter(5, java.sql.Types.VARCHAR);
 
 		cstm.execute();
 
 		String contrasenia = cstm.getString(5);
-		
+
 		System.out.println("contrasenia: " + contrasenia);
-		
-		
+
 		return contrasenia;
+	}
+
+	@Override
+	public int validarDNIUsuario(String dni) throws Exception {
+		int idValida;
+
+		Connection con = null;
+		CallableStatement cstm = null;
+
+		con = Conexion.obtenerConexion();
+		cstm = con.prepareCall("{call SP_Validar_DNIUsuario(?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, dni);
+
+		cstm.registerOutParameter(2, java.sql.Types.INTEGER);
+
+		cstm.execute();
+
+		idValida = cstm.getInt(2);
+
+		// si es idValida 0 no existe el codigo a ingresar
+		// si es idValida 1 si existe el codigo a ingresar
+
+		return idValida;
+	}
+
+	@Override
+	public int validarCodigoUsuario(String codUsuario) throws Exception {
+		int idValida;
+
+		Connection con = null;
+		CallableStatement cstm = null;
+
+		con = Conexion.obtenerConexion();
+		cstm = con.prepareCall("{call SP_Validar_CodigoUsuario(?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, codUsuario);
+
+		cstm.registerOutParameter(2, java.sql.Types.INTEGER);
+
+		cstm.execute();
+
+		idValida = cstm.getInt(2);
+
+		// si es idValida 0 no existe el codigo a ingresar
+		// si es idValida 1 si existe el codigo a ingresar
+
+		return idValida;
 	}
 
 }

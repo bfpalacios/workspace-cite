@@ -513,5 +513,34 @@ Connection con = null;
 		
 	}
 
+	@Override
+	public int validarDatosCite(String codCite, String codSede,
+			String codDependencia) throws Exception {
+		
+		int idValida;
+		
+		Connection con = null;
+		CallableStatement cstm = null;
+
+		con = Conexion.obtenerConexion();
+		cstm = con
+				.prepareCall("{call SP_Validar_DatosCite(?,?,?,?)}");
+		cstm.setQueryTimeout(3);
+		cstm.setString(1, codCite );
+		cstm.setString(2, codSede);
+		cstm.setString(3, codDependencia);
+		
+		cstm.registerOutParameter(4, java.sql.Types.INTEGER);
+
+		cstm.execute();
+
+		idValida = cstm.getInt(4);
+		
+		//si es idValida 0 no existe el codigo a ingresar
+		//si es idValida 1 si existe el codigo a ingresar
+		
+		return idValida;
+	}
+
 	
 }

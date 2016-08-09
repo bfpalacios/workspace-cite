@@ -104,6 +104,10 @@ public class CITESMBean {
 		this.usuarioModel = new UsuarioModel();
 		this.usuarioModelSelect = new UsuarioModel();
 
+		setUsuarioModel(new UsuarioModel());
+		setUsuarioModelSelect(new UsuarioModel());
+		setServicioModelbi(new ServicioModel());
+		
 	}
 
 	public String selectorNuevoCite() throws Exception {
@@ -550,27 +554,32 @@ public class CITESMBean {
 
 			System.out.println("Codigo cite" + codigoCite);
 			
-			if (validarCamposSede(codigoSede, nombreSede,
-					jefaturaSede, emailSede, celularSede, codigoCite))
-
+			if (citeServices.validarDatosCite("", codigoSede,"") == 0)
 			{
-				SedeBO sede = new SedeBO();
-
-				sede.setCodigo(codigoSede);
-				sede.setCodigoCite(codigoCite);
-				sede.setDescripcion(nombreSede);
-				sede.setEmail(emailSede);
-				sede.setTelefono(telefonoSede);
-				sede.setJefatura(jefaturaSede);
-				sede.setCelular(celularSede);
-				sede.setDireccion(direccionSede);
-				citeServices.grabarNuevaSede(sede);
-
-				limpiarObjetos();
-				cargarUbigeo();
-				RequestContext rc = RequestContext.getCurrentInstance();
-				rc.execute("dialogNuevaSede.show()");
-			}
+			
+				if (validarCamposSede(codigoSede, nombreSede,
+						jefaturaSede, emailSede, celularSede, codigoCite))
+	
+				{
+					SedeBO sede = new SedeBO();
+	
+					sede.setCodigo(codigoSede);
+					sede.setCodigoCite(codigoCite);
+					sede.setDescripcion(nombreSede);
+					sede.setEmail(emailSede);
+					sede.setTelefono(telefonoSede);
+					sede.setJefatura(jefaturaSede);
+					sede.setCelular(celularSede);
+					sede.setDireccion(direccionSede);
+					citeServices.grabarNuevaSede(sede);
+	
+					limpiarObjetos();
+					//cargarUbigeo();
+					listarCITE();
+					RequestContext rc = RequestContext.getCurrentInstance();
+					rc.execute("dialogNuevaSede.show()");
+				}
+			}else mostrarMensaje(32);
 		} catch (Exception e) {
 			e.printStackTrace();
 			mostrarMensaje(11);
@@ -601,26 +610,33 @@ public class CITESMBean {
 			System.out.println("nombreCite " + nombreCite);
 			System.out.println("codigo ubigeo " + codigoUbigeo);
 			System.out.println("fechaCite" + fechaCite);
-
-			if (validarCamposCite(codigoCite, nombreCite, codigoDpto,
-					codigoProvincia, codigoDistrito, codigoUbigeo))
-
+			
+			
+			if (citeServices.validarDatosCite(codigoCite, "", "") == 0)
 			{
-
-				CITEBO cite = new CITEBO();
-				cite.setCodigo(codigoCite);
-				cite.setDescripcion(nombreCite);
-				cite.setFecha(fechaCite);
-				cite.setEstado("A");
-				cite.setCodigoUbigeo(codigoUbigeo);
-				citeServices.grabarNuevaCite(cite);
-
-				limpiarObjetos();
-				//listarSedes();
-				cargarUbigeo();
-				RequestContext rc = RequestContext.getCurrentInstance();
-				rc.execute("dialogNuevaCite.show()");
-			}
+			
+				if (validarCamposCite(codigoCite, nombreCite, codigoDpto,
+						codigoProvincia, codigoDistrito, codigoUbigeo))
+	
+				{
+	
+					CITEBO cite = new CITEBO();
+					cite.setCodigo(codigoCite);
+					cite.setDescripcion(nombreCite);
+					cite.setFecha(fechaCite);
+					cite.setEstado("A");
+					cite.setCodigoUbigeo(codigoUbigeo);
+					citeServices.grabarNuevaCite(cite);
+	
+					limpiarObjetos();
+					//listarSedes();
+					cargarUbigeo();
+					RequestContext rc = RequestContext.getCurrentInstance();
+					rc.execute("dialogNuevaCite.show()");
+				}
+			
+			}else mostrarMensaje(30);	
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			mostrarMensaje(11);
@@ -901,24 +917,28 @@ public class CITESMBean {
 			System.out.println("codigoDependencia " + codigoDependencia);
 			System.out.println("nombreDependencia " + nombreDependencia);
 			System.out.println("Codigo UTT" + codigoUTT);
-
-			if (validarCamposDepedencia(codigoDependencia, nombreDependencia, codigoUTT))
-
+			
+			if (citeServices.validarDatosCite("",  "",codigoDependencia) == 0)
 			{
-
-				DependenciaBO dependencia = new DependenciaBO();
-				dependencia.setCodigo(codigoDependencia);
-				dependencia.setDescripcion(nombreDependencia);
-				dependencia.setSede(new SedeBO());
-				dependencia.getSede().setCodigo(codigoUTT);
-
-				citeServices.grabarNuevaDependencia(dependencia);
-
-				limpiarObjetos();
-				listarSedes();
-				RequestContext rc = RequestContext.getCurrentInstance();
-				rc.execute("dialogNuevaDependencia.show()");
-			}
+				if (validarCamposDepedencia(codigoDependencia, nombreDependencia, codigoUTT))
+	
+				{
+	
+					DependenciaBO dependencia = new DependenciaBO();
+					dependencia.setCodigo(codigoDependencia);
+					dependencia.setDescripcion(nombreDependencia);
+					dependencia.setSede(new SedeBO());
+					dependencia.getSede().setCodigo(codigoUTT);
+	
+					citeServices.grabarNuevaDependencia(dependencia);
+	
+					limpiarObjetos();
+					listarSedes();
+					RequestContext rc = RequestContext.getCurrentInstance();
+					rc.execute("dialogNuevaDependencia.show()");
+				}
+			}else mostrarMensaje(31);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mostrarMensaje(11);
@@ -1107,6 +1127,7 @@ public class CITESMBean {
 		String pagina = "";
 
 		inicializarClases();
+		limpiarObjetos();
 		// carga el combo para los departamentos, provincia y distrito
 		cargarUbigeo();
 		 
@@ -1120,6 +1141,7 @@ public class CITESMBean {
 
 		// inicializacion de clases
 		inicializarClases();
+		limpiarObjetos();
 		// carga las cites de la BD
 		listarCITE();
 
@@ -1132,7 +1154,8 @@ public class CITESMBean {
 		String pagina = "";
 
 		inicializarClases();
-
+		
+		limpiarObjetos();
 		listarSedes(); 
 		pagina = "/paginas/ModuloAdministrador/admin/cite/nuevo/nuevaDependencia.xhtml";
 			 
@@ -1268,6 +1291,29 @@ public class CITESMBean {
 					FacesMessage.SEVERITY_FATAL, "",
 					"Hubo un error al eliminar Dependencia");
 			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+			
+		case 30:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "Este codigo de cite ya existe, porfavor introduzca otro.",
+					"Este codigo de cite ya existe, porfavor introduzca otro.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			
+			break;
+		
+		case 31:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "Este codigo de dependencia ya existe, porfavor introduzca otro.",
+					"Este codigo de dependencia ya existe, porfavor introduzca otro.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 32:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "Este codigo de sede ya existe, porfavor introduzca otro.",
+					"Este codigo de sede ya existe, porfavor introduzca otro.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			//getServicioModel().setCodigo(null);
 			break;
 		}
 		

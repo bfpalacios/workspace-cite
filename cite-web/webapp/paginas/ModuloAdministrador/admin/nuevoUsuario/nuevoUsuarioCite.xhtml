@@ -20,6 +20,19 @@
 				</p:column>
 			</p:row>
 		</p:outputPanel -->
+		
+		<p:outputPanel id="mensajeNuevoServicio"
+				style="width:400px;margin-top:5px;">
+				
+				<p:row>
+					<p:column colspan="4" rowspan="4">
+						<p:messages id="messages" autoUpdate="true"
+							closable="true" />
+					</p:column>
+				</p:row>
+				
+	
+			</p:outputPanel>
 
 		<p:spacer width="5px" />
 		<p:panel id="panelRegistroUsuario"
@@ -58,7 +71,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblTipoDoc"
 							value="#{mensaje['produccion.nuevo.cliente.tipodoc']}" />
-						
+						<h:outputText id="colorTipoDoc"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column>
@@ -78,6 +93,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblDni"
 							value="#{mensaje['produccion.nuevo.cliente.nrodoc']}" />
+						<h:outputText id="colorDni"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column> 
@@ -131,6 +149,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lFecha"
 							value="Fecha de Nacimiento" />
+						<h:outputText id="colorFecNac"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 					<p:column>
 						<p:calendar value="#{usuarioMBean.usuarioModel.fechaNac}" id="fechaCite"
@@ -138,7 +159,7 @@
 							required="true"
 							requiredMessage="campo requerido: Fecha de Nacimiento"
 						
-							>
+							> (dd/mm/aaaa)
 							
 						</p:calendar>
 						<p:message for="fechaCite" />	
@@ -149,6 +170,9 @@
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lblDpto"
 						value="Departamento donde nacio" />
+					<h:outputText id="colorDpto"
+							value="(*) "
+							style="color:#ff0000" />
 				</p:column>
 				<p:column>
 					<p:selectOneMenu id="dpto"
@@ -169,6 +193,9 @@
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lblProvincia"
 						value="#{mensaje['produccion.nuevo.cliente.provincia']}" />
+					<h:outputText id="colorProv"
+							value="(*) "
+							style="color:#ff0000" />
 				</p:column>
 
 				<p:column>
@@ -192,6 +219,9 @@
 				<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 					<h:outputText id="lblDistrito"
 						value="#{mensaje['produccion.nuevo.cliente.distrito']}" />
+					<h:outputText id="colorDistrito"
+							value="(*) "
+							style="color:#ff0000" />
 				</p:column>
 
 				<p:column>
@@ -216,6 +246,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblCITE"
 							value="CITE: " />
+						<h:outputText id="colorCITE"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 					<p:column>
 						<p:selectOneMenu id="cite"  
@@ -238,6 +271,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblSede"
 							value="Sede :" />
+						<h:outputText id="colorSede"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column>
@@ -263,6 +299,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblDependencia"
 							value="Dependencia :" />
+						<h:outputText id="colorDep"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column>
@@ -295,6 +334,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblCodUsuario"
 							value="#{mensaje['produccion.nuevo.cliente.nombreusuario']}" />
+						<h:outputText id="colorCodUsuario"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column>
@@ -310,6 +352,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblEmaiiadmin"
 							value="Email ITP : " />
+						<h:outputText id="colorEmailItp"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column colspan="3">
@@ -327,6 +372,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblLoginPassword"
 							value="#{mensaje['demo.mantenimiento.usuario.clave']}" />
+						<h:outputText id="colorClave"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column styleClass="styleAlignLeftColumn">
@@ -339,6 +387,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblEmaiiadmin2"
 							value="Email Personal:" />
+						<h:outputText id="colorEmailPers"
+							value="(*) "
+							style="color:#ff0000" />
 						
 					</p:column>
 
@@ -357,6 +408,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblLoginConfirmarPassword"
 							value="#{mensaje['demo.mantenimiento.usuario.confirmaclave']}" />
+						<h:outputText id="colorConfClave"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column styleClass="styleAlignLeftColumn">
@@ -369,6 +423,9 @@
 					<p:column styleClass="ui-column-label-spij styleAlignRightColumn">
 						<h:outputText id="lblPerfil"
 							value="#{mensaje['produccion.nuevo.cliente.perfil']}" />
+						<h:outputText id="colorPerfil"
+							value="(*) "
+							style="color:#ff0000" />
 					</p:column>
 
 					<p:column colspan="4" styleClass="styleAlignLeftColumn">
@@ -410,8 +467,11 @@
 
 				</p:row>
 				
-
+			
 			</p:panelGrid>
+			<h:outputText id="colorDatos"
+							value="(*) Datos obligatorios"
+							style="color:#ff0000" />
 		</p:panel>
 
 		<p:outputPanel id="pnlGuardar" style="width:400x;margin-top:10px;">

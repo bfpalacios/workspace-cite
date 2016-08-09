@@ -30,4 +30,6 @@ public interface CITEIDAO {
 	List<DependenciaBO> buscarDependencias(String codigo,String nombre, String codigoSede)  throws Exception;
 	Integer actualizarDependencia(DependenciaBO dependencia)  throws Exception;
 	Integer eliminarDependencia(Integer id) throws Exception;
+
+	public int validarDatosCite(String codCite, String codSede, String codDependencia) throws Exception;
 }

@@ -717,43 +717,55 @@ public class UsuarioMBean extends GenericoController {
 					System.out.println("provincia " + codigoProvincia);
 					System.out.println("distrito " + codigoDistrito);
 					System.out.println("ubigeo " + codigoUbigeo);
-													
-			if (validarCamposUsuarioCite(nombres, contrasenia, confirmaClave, idRol, codCite, codDependencia, dni, idUsuario, emailItp, codSede) == true) {
-				UsuarioBO usuarioNuevo = new UsuarioBO();
-				usuarioNuevo.setIdUsuario(idUsuario);
-				usuarioNuevo.setContrasenia(contrasenia);
-				usuarioNuevo.setNombres(nombres);  
-				usuarioNuevo.setTelefono(telefonoITP);
-				usuarioNuevo.setTelefono2(telefonoPersonal); 
-				usuarioNuevo.setCodCITE(codCite);
-				usuarioNuevo.setCodSede(codSede); 
-				usuarioNuevo.setTelefonoJefeInmediato(telefonoJefe); 
-				usuarioNuevo.setJefeInmediato(jefe); 
-				usuarioNuevo.setCodDependencia(codDependencia); 
-				//falta telefono personal
-				usuarioNuevo.setEmail1(emailpersonal); 
-				usuarioNuevo.setCodigoUbigeo(codigoUbigeo);
-				usuarioNuevo.setEmailAdmin(emailItp);
-				usuarioNuevo.setDni(dni);
-				usuarioNuevo.setCargo(cargo);
-				usuarioNuevo.setIdRol(idRol); 
-				usuarioNuevo.setFechaNac(fechaNacimiento);
-
-				usuarioServices.grabarUsuario(usuarioNuevo);
-				limpiarCampos();
-				inicializarClases();
-				cargarUbigeo();
-				cargarCITES();
-				mostrarMensajeNuevoUsuario(13);
+					
+			System.out.println("Validando DNI " + dni);
+					
+			if(usuarioServices.validarDNIUsuario(dni) == 0)
+			{	System.out.println("Validando codigo de usuario" + idUsuario);
+			
+				if(usuarioServices.validarCodigoUsuario(idUsuario) == 0)
+				{	
+					
+					if (validarCamposUsuarioCite(nombres, contrasenia, confirmaClave, idRol, codCite, codDependencia, dni, idUsuario, emailItp, codSede) == true) {
+						UsuarioBO usuarioNuevo = new UsuarioBO();
+						usuarioNuevo.setIdUsuario(idUsuario);
+						usuarioNuevo.setContrasenia(contrasenia);
+						usuarioNuevo.setNombres(nombres);  
+						usuarioNuevo.setTelefono(telefonoITP);
+						usuarioNuevo.setTelefono2(telefonoPersonal); 
+						usuarioNuevo.setCodCITE(codCite);
+						usuarioNuevo.setCodSede(codSede); 
+						usuarioNuevo.setTelefonoJefeInmediato(telefonoJefe); 
+						usuarioNuevo.setJefeInmediato(jefe); 
+						usuarioNuevo.setCodDependencia(codDependencia); 
+						//falta telefono personal
+						usuarioNuevo.setEmail1(emailpersonal); 
+						usuarioNuevo.setCodigoUbigeo(codigoUbigeo);
+						usuarioNuevo.setEmailAdmin(emailItp);
+						usuarioNuevo.setDni(dni);
+						usuarioNuevo.setCargo(cargo);
+						usuarioNuevo.setIdRol(idRol); 
+						usuarioNuevo.setFechaNac(fechaNacimiento);
+		
+						usuarioServices.grabarUsuario(usuarioNuevo);
+						limpiarCampos();
+						inicializarClases();
+						cargarUbigeo();
+						cargarCITES();
+						mostrarMensajeNuevoUsuario(13);
+								
 						
+						RequestContext rc = RequestContext.getCurrentInstance();
+						rc.execute("dialogNuevoUsuarioCite.show()");
+					}
+					// }
+					/*
+					 * else{ mostrarMensaje(7); }
+					 */
+				}else mostrarMensajeNuevoUsuario(41);
 				
-				RequestContext rc = RequestContext.getCurrentInstance();
-				rc.execute("dialogNuevoUsuarioCite.show()");
-			}
-			// }
-			/*
-			 * else{ mostrarMensaje(7); }
-			 */
+			}else mostrarMensajeNuevoUsuario(40);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			mostrarMensajeNuevoUsuario(14);
@@ -1006,6 +1018,19 @@ public class UsuarioMBean extends GenericoController {
 		case 14:
 			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "",
 					"Hubo un error al guardar el usuario");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		case 40:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "Este dni ya existe, porfavor introduzca otro.",
+					"Este dni ya existe, porfavor introduzca otro.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			break;
+		
+		case 41:
+			message = new FacesMessage(
+					FacesMessage.SEVERITY_FATAL, "Este codigo de usuario ya existe, porfavor introduzca otro.",
+					"Este codigo de usuario ya existe, porfavor introduzca otro.");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			break;
 		}

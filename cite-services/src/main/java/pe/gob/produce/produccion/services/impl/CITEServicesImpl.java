@@ -146,4 +146,12 @@ public class CITEServicesImpl implements CITEServices{
 		citeDAO.grabarDocumentosCites(servicioInformativo);
 		
 	}
+
+
+	@Override
+	public int validarDatosCite(String codCite, String codSede,
+			String codDepdnencia) throws Exception {
+		// TODO Auto-generated method stub
+		return citeDAO.validarDatosCite(codCite, codSede, codDepdnencia);
+	}
 }

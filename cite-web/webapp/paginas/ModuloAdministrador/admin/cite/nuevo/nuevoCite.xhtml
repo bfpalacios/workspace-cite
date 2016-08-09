@@ -28,8 +28,22 @@
 		
 	
 		<h:form id="formu1">
-		<!--p:messages id="messages" />-->
+		<p:outputPanel id="mensajeNuevoServicio"
+				style="width:400px;margin-top:5px;">
+				
+				<p:row>
+					<p:column colspan="4" rowspan="4">
+						<p:messages id="messages" autoUpdate="true"
+							closable="true" />
+					</p:column>
+				</p:row>
+				
+	
+			</p:outputPanel>
+		<!--p:messages id="messages" / -->
 		<p:panelGrid id="pnlGridNuevoCite">
+		
+			<p:focus context="pnlGridNuevoCite"/>
 			<f:facet name="header">
 				<p:row>
 					<p:column colspan="6">Datos de la Nueva CITE</p:column>
@@ -156,7 +170,7 @@
 
 				<p:column colspan="2" styleClass="styleAlignRightColumn">
 					<p:commandButton value="Cancelar" id="botonCamcelar"
-						actionListener="#{citesMBean.cancelarCite}" ajax="false" />
+						actionListener="#{citesMBean.cancelarCite}" ajax="false" immediate="true" />
 				</p:column>
 			</p:row>
 		</p:outputPanel>

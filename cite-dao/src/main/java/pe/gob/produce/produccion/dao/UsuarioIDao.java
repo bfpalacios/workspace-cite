@@ -16,5 +16,6 @@ public interface UsuarioIDao {
 	public List<UsuarioBO> buscarUsuarioCite(String codUsuario, String nomUsuario) throws Exception;
 	public Integer eliminarUsuario(Integer id);
 	public String recuperarContrasenia(UsuarioBO usuario) throws Exception;
-	
+	public int validarDNIUsuario(String dni) throws Exception;
+	public int validarCodigoUsuario(String codUsuario) throws Exception;
 }

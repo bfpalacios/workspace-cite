@@ -105,4 +105,16 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		// TODO Auto-generated method stub
 		return usuarioDao.recuperarContrasenia(usuario);
 	}
+
+	@Override
+	public int validarDNIUsuario(String dni) throws Exception {
+		// TODO Auto-generated method stub
+		return usuarioDao.validarDNIUsuario(dni);
+	}
+
+	@Override
+	public int validarCodigoUsuario(String codUsuario) throws Exception {
+		// TODO Auto-generated method stub
+		return usuarioDao.validarCodigoUsuario(codUsuario);
+	}
 }

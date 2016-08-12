@@ -16,12 +16,13 @@
 </h:head>      
       <ui:composition template="/plantilla/ModuloProduccion/Plantillas/plantilla_cite.xhtml">      		
 	        <ui:define name="contenido">	        
-	        		 <h:graphicImage 
+	        		 <!--h:graphicImage 
 	        		 	id="imgPrincipal" 
 	        		  	value="/resources/images/principal/body.png"
 	        		  	height="100%"
-	        		  	width="75%"/>  
-	        		  	<!--}ui:include src="/paginas/ModuloProduccion/cite/portadaPrincipal/bienvenida.xhtml" / -->
+	        		  	width="75%"/ -->  
+	        		  	<ui:include src="/paginas/ModuloProduccion/cite/portadaPrincipal/bienvenida.xhtml">
+	        		  	</ui:include>
 			</ui:define>
       </ui:composition>		
 </html>

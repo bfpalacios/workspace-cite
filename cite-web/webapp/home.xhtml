@@ -8,21 +8,21 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <c:set var="RESULTADO" scope="session" value="${loginMBean.rol}" />
 		<!-- Módulo de alumnos Observados -->
-		<c:if test="${RESULTADO=='ROLE_CITE'}">
+		<c:if test="${RESULTADO=='ROLE-CITE'}">
 			<HEAD>
-				<!-- <META http-equiv="refresh"
+				<<META http-equiv="refresh"
 					  content="0;URL='/cite-web/paginas/ModuloProduccion/principal_cite.xhtml'" /> -->
 					<!--META http-equiv="refresh"
-					  content="0;URL='/cite-web/paginas/ModuloProduccion/cite/portadaPrincipal/bienvenida.xhtml'" / -->
+					  content="0;URL='/cite-web/paginas/ModuloProduccion/cite/portadaPrincipal/bienvenida.xhtml'" />
 			</HEAD>
 		</c:if>
 		
-		<!--c:if test="${RESULTADO=='ROLE_ADMIN'}">
+		<c:if test="${RESULTADO=='ROLE-ADMIN'}">
 			<HEAD>
 				<META http-equiv="refresh"
 					  content="0;URL='/cite-web/paginas/ModuloAdministrador/principal_admin.xhtml'" />
 			</HEAD>
-		</c:if -->
+		</c:if>
 		
 		<c:if test="${RESULTADO=='0'}">
         	ROL OTROS
